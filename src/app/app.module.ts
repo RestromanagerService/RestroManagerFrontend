@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { LoginComponent } from './components/ui/login/login.component';
+import { ContactInfoComponent } from './components/shared/navbar/contact-info/contact-info.component';
+import { RegisterComponent } from './components/ui/register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    ContactInfoComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
