@@ -11,6 +11,24 @@
         </div>
     </div>
 </div>
-<div class="py-10 custom-navbar-orange">
-    
+<div class="py-2 custom-navbar-orange">
+    <div class="flex flex-row">
+        <div class="basis-1/4 flex justify-center items-center">
+                <img src="../../../../assets/icono-restromanager.jpg" class="w-14 h-10 sm:w-24 sm:h-18 md:w-30 md:h-22 lg:w-36 lg:h-28"  alt="logo">
+        </div>
+        <div class="basis-1/2 flex justify-center items-center flex-row space-x-12">
+            <app-navbar-link linkRoute="/home" linkText="HOME"></app-navbar-link>
+            <app-navbar-link linkRoute="/about" linkText="ABOUT"></app-navbar-link>
+            <app-navbar-link linkRoute="/menu" linkText="MENÚ"></app-navbar-link>
+            <app-navbar-link linkRoute="/contact" linkText="CONTACT"></app-navbar-link>
+        </div>
+        <div class="basis-1/4 flex justify-between items-center">
+            <div> <app-cart-icon></app-cart-icon> </div>
+            <div>
+                <a routerLink="/user-profile"> <img src="../../../../assets/avatar.jpg" alt="User profile" class="rounded-full w-16 h-16 mr-24"> </a>
+                
+            </div>
+        </div>
+        
+    </div>
 </div>

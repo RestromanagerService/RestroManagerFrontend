@@ -8,6 +8,8 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { LoginComponent } from './components/ui/login/login.component';
 import { ContactInfoComponent } from './components/shared/navbar/contact-info/contact-info.component';
 import { RegisterComponent } from './components/ui/register/register.component';
+import { NavbarLinkComponent } from './components/shared/navbar/navbar-link/navbar-link.component';
+import { CartIconComponent } from './components/shared/navbar/cart-icon/cart-icon.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { RegisterComponent } from './components/ui/register/register.component';
     FooterComponent,
     LoginComponent,
     ContactInfoComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarLinkComponent,
+    CartIconComponent
   ],
   imports: [
     BrowserModule,
