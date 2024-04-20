@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 
@@ -8,8 +9,14 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {}
+
+
   title = 'RestroManagerFrontend';
+  
   ngOnInit(): void {
-    initFlowbite();
+    if (isPlatformBrowser(this.platformId)) initFlowbite();
   }
 }
