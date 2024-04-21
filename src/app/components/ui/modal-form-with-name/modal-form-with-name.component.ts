@@ -1,4 +1,5 @@
 import { Component, Input, input } from '@angular/core';
+import { IWithName } from '../../../domain/models/IWithName';
 
 @Component({
   selector: 'app-modal-form-with-name',
@@ -10,5 +11,14 @@ export class ModalFormWithNameComponent {
   idModal!: string;
   @Input() 
   titleModal!: string;
+  @Input()
+  objectWithName: IWithName;
+
+  constructor(){
+    this.objectWithName= {id:"", name: ""};
+  }
+
+
+
 
 }

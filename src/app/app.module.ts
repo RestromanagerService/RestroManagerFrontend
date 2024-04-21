@@ -13,7 +13,17 @@ import { CartIconComponent } from './components/shared/navbar/cart-icon/cart-ico
 import { ModalFormWithNameComponent } from './components/ui/modal-form-with-name/modal-form-with-name.component';
 import { CategoriesComponent } from './components/ui/categories/categories.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DomainModule } from './domain/domain.module';
+import { CategoryGateway } from './domain/models/category/gateway/category.gateway';
+import { CategoryService } from './infraestructure/category/category.service';
+import { CategoryUseCase } from './domain/usecases/category/category.usecase';
 
+const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
+export const categoryCreaterUseCaseProvider = {
+  provide: CategoryGateway,
+  useFactory: categoryCreaterUseCaseFactory,
+  deps: [CategoryGateway]
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,9 +40,10 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DomainModule
   ],
-  providers: [
+  providers: [categoryCreaterUseCaseProvider,{provide:CategoryGateway, useClass: CategoryService},
     provideClientHydration(),
   ],
   bootstrap: [AppComponent]

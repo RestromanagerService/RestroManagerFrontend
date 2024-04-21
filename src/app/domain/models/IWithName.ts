@@ -1,4 +1,4 @@
-export interface Category {
+export interface IWithName {
     id:string;
     name:string;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Category } from '../../../domain/models/category';
+import { IWithName } from '../../../domain/models/IWithName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CategoryUseCase } from '../../../domain/usecases/category/category.usecase';
 
 @Component({
   selector: 'app-categories',
@@ -9,23 +10,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class CategoriesComponent implements OnInit {
 
-  private CATEGORY_URL_BASE: string = "https://localhost:7056/api/Categories"; 
-
-  private httpHeaders = new HttpHeaders({
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-  });
-
   
-  categorias:Category[]=[];
+  categorias:IWithName[]=[];
 
-  constructor(private http: HttpClient) {
+  constructor(private categoryUseCase:CategoryUseCase) {
+
   }
 
   ngOnInit(): void {
-      this.http.get<Category[]>(this.CATEGORY_URL_BASE,{headers: this.httpHeaders})
-      .subscribe(data=>this.categorias=data)
+      this.categoryUseCase.getAllCategories().subscribe(data=>this.categorias=data)
   }
 
 }
