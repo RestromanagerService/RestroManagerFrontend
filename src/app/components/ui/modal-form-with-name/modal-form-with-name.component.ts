@@ -7,6 +7,8 @@ import { Component, Input, input } from '@angular/core';
 })
 export class ModalFormWithNameComponent {
   @Input() 
+  idModal!: string;
+  @Input() 
   titleModal!: string;
 
 }
