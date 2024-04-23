@@ -17,12 +17,22 @@ import { DomainModule } from './domain/domain.module';
 import { CategoryGateway } from './domain/models/category/gateway/category.gateway';
 import { CategoryService } from './infraestructure/category/category.service';
 import { CategoryUseCase } from './domain/usecases/category/category.usecase';
+import { TypeExpenseGateway } from './domain/models/type-expense/gateway/type-expense.gateway';
+import { TypeExpenseUseCase } from './domain/usecases/type-expense/type-expense.usecase';
+import { TypeExpenseService } from './infraestructure/type-expense.service';
+import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
   provide: CategoryGateway,
   useFactory: categoryCreaterUseCaseFactory,
   deps: [CategoryGateway]
+}
+const typeExpenseCreaterUseCaseFactory = (typeExpenseGateway : TypeExpenseGateway) => new TypeExpenseUseCase(typeExpenseGateway);
+export const typeExpenseCreaterUseCaseProvider = {
+  provide: TypeExpenseGateway,
+  useFactory: typeExpenseCreaterUseCaseFactory,
+  deps: [TypeExpenseGateway]
 }
 @NgModule({
   declarations: [
@@ -36,6 +46,7 @@ export const categoryCreaterUseCaseProvider = {
     CartIconComponent,
     ModalFormWithNameComponent,
     CategoriesComponent,
+    TypeExpenseComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +55,7 @@ export const categoryCreaterUseCaseProvider = {
     DomainModule
   ],
   providers: [categoryCreaterUseCaseProvider,{provide:CategoryGateway, useClass: CategoryService},
+    typeExpenseCreaterUseCaseProvider, {provide:TypeExpenseGateway, useClass:TypeExpenseService},
     provideClientHydration(),
   ],
   bootstrap: [AppComponent]
