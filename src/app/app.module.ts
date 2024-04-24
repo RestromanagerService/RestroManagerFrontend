@@ -10,20 +10,12 @@ import { ContactInfoComponent } from './components/shared/navbar/contact-info/co
 import { RegisterComponent } from './components/ui/register/register.component';
 import { NavbarLinkComponent } from './components/shared/navbar/navbar-link/navbar-link.component';
 import { CartIconComponent } from './components/shared/navbar/cart-icon/cart-icon.component';
-import { ModalFormWithNameComponent } from './components/ui/modal-form-with-name/modal-form-with-name.component';
 import { CategoriesComponent } from './components/ui/categories/categories.component';
 import { HttpClientModule } from '@angular/common/http';
-import { DomainModule } from './domain/domain.module';
-import { CategoryGateway } from './domain/models/category/gateway/category.gateway';
-import { CategoryService } from './infraestructure/category/category.service';
-import { CategoryUseCase } from './domain/usecases/category/category.usecase';
+import { EditCategoriesComponent } from './components/ui/categories/edit-categories/edit-categories.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
-export const categoryCreaterUseCaseProvider = {
-  provide: CategoryGateway,
-  useFactory: categoryCreaterUseCaseFactory,
-  deps: [CategoryGateway]
-}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,16 +26,17 @@ export const categoryCreaterUseCaseProvider = {
     RegisterComponent,
     NavbarLinkComponent,
     CartIconComponent,
-    ModalFormWithNameComponent,
     CategoriesComponent,
+    EditCategoriesComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    DomainModule
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [categoryCreaterUseCaseProvider,{provide:CategoryGateway, useClass: CategoryService},
+  providers: [
     provideClientHydration(),
   ],
   bootstrap: [AppComponent]

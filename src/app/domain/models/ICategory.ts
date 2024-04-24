@@ -1,4 +1,4 @@
-export interface IWithName {
+export interface ICategory {
     id:string;
     name:string;
 }

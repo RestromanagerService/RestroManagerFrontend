@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IWithName } from '../../../domain/models/IWithName';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CategoryUseCase } from '../../../domain/usecases/category/category.usecase';
+import { ICategory } from '../../../domain/models/ICategory';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-categories',
@@ -11,14 +10,16 @@ import { CategoryUseCase } from '../../../domain/usecases/category/category.usec
 export class CategoriesComponent implements OnInit {
 
   
-  categorias:IWithName[]=[];
+  categorias:ICategory[]=[];
+  totalPages:number=1;
 
-  constructor(private categoryUseCase:CategoryUseCase) {
+  constructor(private categoryService:GenericService<ICategory>) {
 
   }
 
   ngOnInit(): void {
-      this.categoryUseCase.getAllCategories().subscribe(data=>this.categorias=data)
+    this.categoryService.getAll("categories/").subscribe(data=>this.categorias=data.getResponse())
+    this.categoryService.getTotalPages("categories/").subscribe(data=>this.totalPages=data.getResponse())
   }
 
 }
