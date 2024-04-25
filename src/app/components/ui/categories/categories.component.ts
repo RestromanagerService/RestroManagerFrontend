@@ -28,7 +28,6 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryService.getAll("categories/").subscribe(data=>this.categorias=data.getResponse())
-    this.categoryService.getTotalPages("categories/").subscribe(data=>this.totalPages=data.getResponse())
   }
 
   deleteCategory(id:string): void{
@@ -39,7 +38,7 @@ export class CategoriesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminar"
+      confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
         this.categoryService.delete(id,"categories/").subscribe(data=>this.ngOnInit());

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import { Observable, catchError, map, throwError } from "rxjs";
 import { HttpResponseWrapper } from "./http-response-wrapper";
 import { Injectable } from "@angular/core";
@@ -25,14 +25,21 @@ export class GenericService<T> {
         return this.http.get<T>(this.URL_BASE+path+id, { headers: this.httpHeaders })
         .pipe(catchError(this.handleError)).pipe(map((t:T)=>new HttpResponseWrapper(t,false,'')));
     }
-    getTotalPages(path:string): Observable<HttpResponseWrapper<number>> {
-        return this.http.get<number>(this.URL_BASE+path+"totalPages", { headers: this.httpHeaders })
+    getTotalPages(path:string,params:HttpParams): Observable<HttpResponseWrapper<number>> {
+        return this.http.get<number>(this.URL_BASE+path+"totalPages", { headers: this.httpHeaders,params:params})
         .pipe(catchError(this.handleError)).pipe(map((t:number)=>new HttpResponseWrapper(t,false,'')));
     }
     put(t:T,path:string): Observable<HttpResponseWrapper<T>> {
         return this.http.put<T>(this.URL_BASE+path,t,{ headers: this.httpHeaders }).pipe(
-            catchError(this.handleError)).pipe(map((t:T)=>new HttpResponseWrapper(t,false,'')));
-            
+            catchError(this.handleError)).pipe(map((t:T)=>new HttpResponseWrapper(t,false,'')));         
+    }
+    post(t:T,path:string): Observable<HttpResponseWrapper<T>> {
+      return this.http.post<T>(this.URL_BASE+path,t,{ headers: this.httpHeaders }).pipe(
+          catchError(this.handleError)).pipe(map((t:T)=>new HttpResponseWrapper(t,false,'')));
+    }
+    delete(id:string,path:string): Observable<Object> {
+      return this.http.delete(this.URL_BASE+path+id,{ headers: this.httpHeaders }).pipe(
+          catchError(this.handleError)).pipe(map((t)=>new HttpResponseWrapper(t,false,'')));
     }
   
     private handleError(error: HttpErrorResponse) {

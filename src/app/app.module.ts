@@ -14,6 +14,9 @@ import { CategoriesComponent } from './components/ui/categories/categories.compo
 import { HttpClientModule } from '@angular/common/http';
 import { EditCategoriesComponent } from './components/ui/categories/edit-categories/edit-categories.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormWithNameComponent } from './components/ui/form-with-name/form-with-name.component';
+import { CreateCategoriesComponent } from './components/ui/categories/create-categories/create-categories.component';
+import { PaginationComponent } from './components/ui/pagination/pagination.component';
 
 
 @NgModule({
@@ -28,6 +31,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CartIconComponent,
     CategoriesComponent,
     EditCategoriesComponent,
+    FormWithNameComponent,
+    CreateCategoriesComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
