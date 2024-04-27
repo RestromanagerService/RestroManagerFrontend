@@ -5,13 +5,19 @@ import { RegisterComponent } from './components/ui/register/register.component';
 import { CategoriesComponent } from './components/ui/categories/categories.component';
 import { EditCategoriesComponent } from './components/ui/categories/edit-categories/edit-categories.component';
 import { CreateCategoriesComponent } from './components/ui/categories/create-categories/create-categories.component';
+import { StockcommercialproductsComponent } from './components/ui/stockcommercialproducts/stockcommercialproducts.component';
+import { EditstockcommercialproductsComponent } from './components/ui/stockcommercialproducts/editstockcommercialproducts/editstockcommercialproducts.component';
+import { CreatetockcommercialproductsComponent } from './components/ui/stockcommercialproducts/createtockcommercialproducts/createtockcommercialproducts.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register',component: RegisterComponent},
   { path: 'categories',component: CategoriesComponent},
   { path: 'categories/edit/:id',component: EditCategoriesComponent},
-  { path: 'categories/create',component: CreateCategoriesComponent}
+  { path: 'categories/create',component: CreateCategoriesComponent},
+  { path: 'stockCommercialProducts',component: StockcommercialproductsComponent},
+  { path: 'stockCommercialProducts/edit/:id',component: EditstockcommercialproductsComponent},
+  { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent}
   
 ];
 

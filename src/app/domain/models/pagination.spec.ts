@@ -1,7 +1,7 @@
-import { Pagination } from './pagination';
+import { BuildPagination } from './pagination';
 
 describe('Pagination', () => {
   it('should create an instance', () => {
-    expect(new Pagination()).toBeTruthy();
+    expect(BuildPagination.build('',2,3)).toBeTruthy();
   });
 });

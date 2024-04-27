@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ICategory } from '../../../domain/models/ICategory';
+import { Component } from '@angular/core';
+import { IStockCommercialProducts } from '../../../domain/models/stock-commercial-products';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
-import Swal from 'sweetalert2';
 import { BuildPagination } from '../../../domain/models/pagination';
+import Swal from 'sweetalert2';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -13,40 +13,43 @@ const Toast = Swal.mixin({
   timerProgressBar: true
 })
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  selector: 'app-stockcommercialproducts',
+  templateUrl: './stockcommercialproducts.component.html',
+  styleUrl: './stockcommercialproducts.component.css'
 })
-export class CategoriesComponent implements OnInit {
-
-  
-  categorias:ICategory[]=[];
+export class StockcommercialproductsComponent {
+  stock:IStockCommercialProducts[]=[];
   actualPage:number=1;
   recordsNumber:number=5;
   totalPages:number=2;
+  loading:boolean=true;
 
-  constructor(private categoryService:GenericService<ICategory>) {
+  constructor(private stockService:GenericService<IStockCommercialProducts>) {
     
   }
 
   ngOnInit(): void {
-    this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage))
+    this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage))
     .subscribe(data=>{
-      this.categorias=data.getResponse()
-      if(this.categorias.length==0 && this.actualPage!=1){
+      this.stock=data.getResponse()
+      if(this.stock.length==0 && this.actualPage!=1){
         this.actualPage=this.actualPage-1;
+        this.loading=true;
         this.ngOnInit()
       }
-    })
-    this.categoryService.getTotalPages("categories/",
+      this.stockService.getTotalPages("StockCommercialProduct/",
       BuildPagination.build('',this.recordsNumber,this.actualPage))
       .subscribe(data=>{
       this.totalPages=data.getResponse();
+      this.loading=false;
+      });
     });
+    
+    
     
   }
 
-  deleteCategory(id:string): void{
+  deleteProduct(id:string): void{
     Swal.fire({
       title: "¿Estás seguro de eliminar la categoría?",
       text: "No podrás revertir los cambios",
@@ -57,7 +60,7 @@ export class CategoriesComponent implements OnInit {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoryService.delete(id,"categories/").subscribe(data=>this.ngOnInit()); 
+        this.stockService.delete(id,"StockCommercialProduct/").subscribe(data=>this.ngOnInit()); 
         Toast.fire({
           icon: 'success',
           title: 'Eliminación exitosa',
@@ -70,5 +73,4 @@ export class CategoriesComponent implements OnInit {
     this.actualPage=page;
     this.ngOnInit()
   }
-
 }

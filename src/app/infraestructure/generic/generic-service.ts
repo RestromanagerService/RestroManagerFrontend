@@ -17,16 +17,16 @@ export class GenericService<T> {
     constructor(private http: HttpClient) {
   
     }
-    getAll(path:string): Observable<HttpResponseWrapper<T[]>> {
-      return this.http.get<T[]>(this.URL_BASE+path, { headers: this.httpHeaders })
+    getAll(path:string,pagination?:HttpParams): Observable<HttpResponseWrapper<T[]>> {
+      return this.http.get<T[]>(this.URL_BASE+path, { headers: this.httpHeaders,params:pagination })
       .pipe(catchError(this.handleError)).pipe(map((t:T[])=>new HttpResponseWrapper(t,false,'')));
     }
     getById(path:string,id:string): Observable<HttpResponseWrapper<T>> {
         return this.http.get<T>(this.URL_BASE+path+id, { headers: this.httpHeaders })
         .pipe(catchError(this.handleError)).pipe(map((t:T)=>new HttpResponseWrapper(t,false,'')));
     }
-    getTotalPages(path:string,params:HttpParams): Observable<HttpResponseWrapper<number>> {
-        return this.http.get<number>(this.URL_BASE+path+"totalPages", { headers: this.httpHeaders,params:params})
+    getTotalPages(path:string,pagination:HttpParams): Observable<HttpResponseWrapper<number>> {
+        return this.http.get<number>(this.URL_BASE+path+"totalPages", { headers: this.httpHeaders,params:pagination})
         .pipe(catchError(this.handleError)).pipe(map((t:number)=>new HttpResponseWrapper(t,false,'')));
     }
     put(t:T,path:string): Observable<HttpResponseWrapper<T>> {

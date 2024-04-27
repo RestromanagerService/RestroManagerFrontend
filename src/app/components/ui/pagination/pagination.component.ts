@@ -1,40 +1,48 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { HttpParams } from '@angular/common/http';
-
+import { BuildPagination } from '../../../domain/models/pagination';
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit,OnChanges {
+  @Input() actualPage:number=1;
+  @Input() totalPages:number=2;
+  @Input() radius:number=1;
+  @Output() pageNumber = new EventEmitter<number>();
 
-
-  actualPage:number=1;
-  @Input() id:string='';
-  @Input() recordsNumber:number=2;
-  page:number=1;
-  totalPages:number=2;
-  constructor(private service:GenericService<Object>){
-    
+  
+  pages:number[]=[]  
+  
+  
+  constructor(){
+    this.createPaginator()
   }
-
   ngOnInit(): void {
-    let params = new HttpParams();
-    if(this.id!=''){
-      params.set('id',this.id)
+    
+
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+      this.ngOnInit(); 
+  }
+  createPaginator(){
+    this.pages=[]
+    let limInf=this.actualPage-this.radius;
+    let limSup=this.actualPage+this.radius;
+    limInf=(limInf<=0)?1:limInf;
+    limSup=(limSup>this.totalPages)?this.totalPages:limSup;
+    let cont=limInf
+    while(this.pages.length<=this.radius*2+1){
+      this.pages.push(cont);
+      cont+=1;
     }
-    params.set('RecordsNumber', this.recordsNumber.toString());
-    params.set('Page', this.page.toString());
-    this.service.getTotalPages("categories/",params).subscribe(data=>this.totalPages=data.getResponse());
   }
 
-  range(startPage: number,endPage: number){
-    let pages:number[]=[]
-    for (let i=startPage;i<=endPage;i++){
-        pages.push(i);
+  pageTurn(page:number){
+    if(page>0 && page<=this.totalPages){
+      this.pageNumber.emit(page);
     }
-    return pages;
   }
 
 }

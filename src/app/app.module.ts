@@ -17,7 +17,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormWithNameComponent } from './components/ui/form-with-name/form-with-name.component';
 import { CreateCategoriesComponent } from './components/ui/categories/create-categories/create-categories.component';
 import { PaginationComponent } from './components/ui/pagination/pagination.component';
-
+import { StockcommercialproductsComponent } from './components/ui/stockcommercialproducts/stockcommercialproducts.component';
+import { EditstockcommercialproductsComponent } from './components/ui/stockcommercialproducts/editstockcommercialproducts/editstockcommercialproducts.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { LoadingComponent } from './components/shared/loading/loading.component';
+import { CreatetockcommercialproductsComponent } from './components/ui/stockcommercialproducts/createtockcommercialproducts/createtockcommercialproducts.component';
 
 @NgModule({
   declarations: [
@@ -33,14 +37,19 @@ import { PaginationComponent } from './components/ui/pagination/pagination.compo
     EditCategoriesComponent,
     FormWithNameComponent,
     CreateCategoriesComponent,
-    PaginationComponent
+    PaginationComponent,
+    StockcommercialproductsComponent,
+    EditstockcommercialproductsComponent,
+    LoadingComponent,
+    CreatetockcommercialproductsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [
     provideClientHydration(),
