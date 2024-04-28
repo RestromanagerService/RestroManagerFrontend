@@ -1,4 +1,3 @@
-import { ICategory } from "./ICategory";
 import { INewProductCategory, IProductCategory } from "./IProductCategory";
 
 export interface IProduct {

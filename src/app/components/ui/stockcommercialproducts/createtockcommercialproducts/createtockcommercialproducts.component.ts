@@ -31,14 +31,22 @@ export class CreatetockcommercialproductsComponent {
   urlBack:string="/stockCommercialProducts";
   idModel:string='';
   loading:boolean=true;
-  errorNameProduct={error:true,message:'El nombre de producto es requerido'}
-  errorCategoriesProduct={error:true,message:'Seleccione al menos una categoría'}
-  errorAmount={error:true,message:'La cantidad es requerida'}
-  errorUnitsId={error:true,message:'Seleccione la unidad de medida'}
-  errorUnitCost={error:true,message:'El costo por unidad es requerido'}
 
-  settingsCategories;
-  settingsUnits;
+  settingsCategories={
+    singleSelection: false,
+    idField: 'id',
+    textField: 'name',
+    selectAllText: 'Seleccionar todas',
+    unSelectAllText: 'Deseleccionar',
+    allowSearchFilter: true
+  
+  };
+  settingsUnits={
+    singleSelection: true,
+    idField: 'id',
+    textField: 'name',
+    allowSearchFilter: true
+  }; 
 
 
 
@@ -57,21 +65,6 @@ export class CreatetockcommercialproductsComponent {
       unitsId:new FormControl([],Validators.required),
       unitCost:new FormControl('',Validators.required),
     });
-    this.settingsCategories = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'name',
-      selectAllText: 'Seleccionar todas',
-      unSelectAllText: 'Deseleccionar',
-      allowSearchFilter: true
-    
-    }; 
-    this.settingsUnits = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'name',
-      allowSearchFilter: true
-    }; 
     
   }
   
@@ -91,7 +84,7 @@ export class CreatetockcommercialproductsComponent {
   getUnits():Observable<HttpResponseWrapper<IUnits[]>>{
     return this.unitsService.getAll("Units/full")
   }
-  updateModel(){
+  saveModel(){
     if(this.validarErrores()){
         var updateModel:INewStockCommercialProducts=
         {
@@ -105,13 +98,48 @@ export class CreatetockcommercialproductsComponent {
         }
         this.modelService.put(updateModel,this.urlRequest).subscribe();
         this._router.navigate(["/"+this.urlBack])
-        ToastManager.showToastSuccess("Actualización exitosa")
+        ToastManager.showToastSuccess("Registro exitoso")
         return
     }else{
       ToastManager.showToastWarning("Tienes campos sin rellenar")
     }
-      
-
+  }
+  back():void{
+    if(this.hasChanged()){
+      Swal.fire({
+        title: "¿Estás seguro de salir?",
+        text: "Perderás los cambios",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, descartar cambios",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this._router.navigate(["/"+this.urlBack]);
+        }
+      })
+    }else{
+      this._router.navigate(["/"+this.urlBack]);
+    }
+  }
+  hasChanged():boolean{
+    if(this.editModelForm.value.nameProduct!=''){
+      return true;
+    }
+    if(this.editModelForm.value.categoriesProduct.length>0){
+      return true;
+    }
+    if(this.editModelForm.value.amount!=''){
+      return true;
+    }
+    if(this.editModelForm.value.unitsId.length>0){
+      return true;
+    }
+    if(this.editModelForm.value.unitCost!=''){
+      return true;
+    }
+    return false;
   }
   private validarErrores():boolean{
     if(this.editModelForm.get('nameProduct')!.errors){
@@ -123,7 +151,7 @@ export class CreatetockcommercialproductsComponent {
     if(this.editModelForm.get('amount')!.errors){
       return false;
     }
-    if(this.editModelForm.get('amount')!.errors){
+    if(this.editModelForm.get('unitsId')!.errors){
       return false;
     }
     if(this.editModelForm.get('unitCost')!.errors){

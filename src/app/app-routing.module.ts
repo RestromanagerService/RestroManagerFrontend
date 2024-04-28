@@ -8,6 +8,9 @@ import { CreateCategoriesComponent } from './components/ui/categories/create-cat
 import { StockcommercialproductsComponent } from './components/ui/stockcommercialproducts/stockcommercialproducts.component';
 import { EditstockcommercialproductsComponent } from './components/ui/stockcommercialproducts/editstockcommercialproducts/editstockcommercialproducts.component';
 import { CreatetockcommercialproductsComponent } from './components/ui/stockcommercialproducts/createtockcommercialproducts/createtockcommercialproducts.component';
+import { StockRawMaterialsComponent } from './components/ui/stock-raw-materials/stock-raw-materials.component';
+import { EditStockRawMaterialsComponent } from './components/ui/stock-raw-materials/edit-stock-raw-materials/edit-stock-raw-materials.component';
+import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-materials/create-stock-raw-materials/create-stock-raw-materials.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,7 +20,10 @@ const routes: Routes = [
   { path: 'categories/create',component: CreateCategoriesComponent},
   { path: 'stockCommercialProducts',component: StockcommercialproductsComponent},
   { path: 'stockCommercialProducts/edit/:id',component: EditstockcommercialproductsComponent},
-  { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent}
+  { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent},
+  { path: 'stockRawMaterials',component: StockRawMaterialsComponent},
+  { path: 'stockRawMaterials/edit/:id',component: EditStockRawMaterialsComponent},
+  { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent}
   
 ];
 

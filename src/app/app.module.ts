@@ -22,6 +22,9 @@ import { EditstockcommercialproductsComponent } from './components/ui/stockcomme
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { LoadingComponent } from './components/shared/loading/loading.component';
 import { CreatetockcommercialproductsComponent } from './components/ui/stockcommercialproducts/createtockcommercialproducts/createtockcommercialproducts.component';
+import { StockRawMaterialsComponent } from './components/ui/stock-raw-materials/stock-raw-materials.component';
+import { EditStockRawMaterialsComponent } from './components/ui/stock-raw-materials/edit-stock-raw-materials/edit-stock-raw-materials.component';
+import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-materials/create-stock-raw-materials/create-stock-raw-materials.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { CreatetockcommercialproductsComponent } from './components/ui/stockcomm
     StockcommercialproductsComponent,
     EditstockcommercialproductsComponent,
     LoadingComponent,
-    CreatetockcommercialproductsComponent
+    CreatetockcommercialproductsComponent,
+    StockRawMaterialsComponent,
+    EditStockRawMaterialsComponent,
+    CreateStockRawMaterialsComponent
   ],
   imports: [
     BrowserModule,

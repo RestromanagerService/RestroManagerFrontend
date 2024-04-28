@@ -2,19 +2,10 @@
     <app-loading></app-loading>
 </ng-template>
 <ng-template #loaded>
-    <form [formGroup]="editModelForm" (submit)="saveModel()" class="max-w-sm mx-auto" required>
+    <form [formGroup]="editModelForm" (submit)="saveModel()" class="max-w-sm mx-auto">
         <div class="mb-5">
-            <label for="nameProduct" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-            <input id="nameProduct" formControlName="nameProduct" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
-        </div>
-        <div class="mb-5">
-            <label for="category.id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categorías</label>
-            <ng-multiselect-dropdown formControlName="categoriesProduct"
-                [placeholder]="'Categorías'"
-                [settings]="settingsCategories"
-                [data]="categories"
-            >
-            </ng-multiselect-dropdown>
+            <label for="nameRawMaterial" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+            <input id="nameRawMaterial" formControlName="nameRawMaterial" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
         </div>
         <div class="mb-5">
             <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>

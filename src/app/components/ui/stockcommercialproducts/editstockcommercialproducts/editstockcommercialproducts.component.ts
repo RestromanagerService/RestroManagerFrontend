@@ -137,7 +137,6 @@ export class EditstockcommercialproductsComponent {
       return true;
     }
     if(!this.validateCategories(this.editModelForm.value.categoriesProduct,this.model.product.productCategories)){
-      console.log("categorías cambió")
       return true;
     }
     if(this.editModelForm.value.amount!=this.model.aumount){
@@ -165,5 +164,5 @@ export class EditstockcommercialproductsComponent {
     const modelCategoriesIds = productCategories.map(productCategory => productCategory.categoryId);
     const allCategoriesIncluded = formCategoriesIds.every(id => modelCategoriesIds.includes(id));
     return allCategoriesIncluded;
-}
+  }
 }
