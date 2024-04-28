@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ICategory } from '../../../domain/models/ICategory';
+import { ICategory } from '../../../domain/models/interfaces/ICategory';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
 import Swal from 'sweetalert2';
 import { BuildPagination } from '../../../domain/models/pagination';

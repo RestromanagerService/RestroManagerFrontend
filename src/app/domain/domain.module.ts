@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryUseCase } from './usecases/category/category.usecase';
 import { TypeExpenseUseCase } from './usecases/type-expense/type-expense.usecase';
+import { ExpenseUseCase } from './usecases/expense/expense.usecase';
 
 @NgModule({
   declarations: [],
@@ -9,7 +10,8 @@ import { TypeExpenseUseCase } from './usecases/type-expense/type-expense.usecase
     CommonModule
   ],providers:[
     CategoryUseCase,
-    TypeExpenseUseCase
+    TypeExpenseUseCase,
+    ExpenseUseCase
   ]
 })
 export class DomainModule { }

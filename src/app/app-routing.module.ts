@@ -14,6 +14,7 @@ import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-mate
 import { RecipesComponent } from './components/ui/recipes/recipes.component';
 import { RecipesDetailsComponent } from './components/ui/recipes/recipes-details/recipes-details.component';
 import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
+import { ExpenseComponent } from './components/ui/expense/expense.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,9 +29,9 @@ const routes: Routes = [
   { path: 'stockRawMaterials/edit/:id',component: EditStockRawMaterialsComponent},
   { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent},
   { path: 'recipes',component: RecipesComponent},
-  { path: 'recipes/details/:id',component: RecipesDetailsComponent}
-
-  { path: 'typeExpenses',component:TypeExpenseComponent}
+  { path: 'recipes/details/:id',component: RecipesDetailsComponent},
+  { path: 'typeExpenses',component:TypeExpenseComponent},
+  { path: 'expenses',component:ExpenseComponent}
 ];
 
 @NgModule({

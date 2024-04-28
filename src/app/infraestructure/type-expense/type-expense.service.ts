@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { TypeExpenseGateway } from '../domain/models/type-expense/gateway/type-expense.gateway';
+import { TypeExpenseGateway } from '../../domain/models/type-expense/gateway/type-expense.gateway';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IWithName } from '../domain/models/IWithName';
+import { IWithName } from '../../domain/models/interfaces/IWithName';
 
 @Injectable({
   providedIn: 'root'

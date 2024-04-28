@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IWithName } from '../../../domain/models/IWithName';
+import { IWithName } from '../../../domain/models/interfaces/IWithName';
 import { TypeExpenseUseCase } from '../../../domain/usecases/type-expense/type-expense.usecase';
 
 @Component({
