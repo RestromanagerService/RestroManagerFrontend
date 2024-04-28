@@ -1,4 +1,4 @@
-import { INewRawMaterial, IRawMaterial } from "./IRawMaterial";
+import { INewRawMaterial, IRawMaterial } from "./interfaces/IRawMaterial";
 import { IUnits } from "./Iunits";
 
 

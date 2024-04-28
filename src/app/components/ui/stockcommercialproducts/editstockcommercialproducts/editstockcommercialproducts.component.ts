@@ -3,11 +3,11 @@ import { IStockCommercialProducts } from '../../../../domain/models/stock-commer
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { ICategory } from '../../../../domain/models/ICategory';
+import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { IUnits } from '../../../../domain/models/Iunits';
 import { Observable } from 'rxjs';
 import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
-import { IProductCategory } from '../../../../domain/models/IProductCategory';
+import { IProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
 import Swal from 'sweetalert2';
 
 const Toast = Swal.mixin({

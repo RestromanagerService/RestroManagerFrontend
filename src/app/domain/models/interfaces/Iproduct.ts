@@ -1,5 +1,5 @@
 import { INewProductCategory, IProductCategory } from "./IProductCategory";
-import { IUnits } from "./Iunits";
+import { IUnits } from "../Iunits";
 
 export interface IProduct {
     id:string;

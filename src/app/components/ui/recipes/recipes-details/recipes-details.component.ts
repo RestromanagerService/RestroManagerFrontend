@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IProductFoods, IProductRecipe } from '../../../../domain/models/Iproduct';
+import { IProductFoods, IProductRecipe } from '../../../../domain/models/interfaces/Iproduct';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { Observable } from 'rxjs';

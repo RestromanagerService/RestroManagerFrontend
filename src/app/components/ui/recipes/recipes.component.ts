@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { BuildPagination } from '../../../domain/models/pagination';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { IProductRecipe } from '../../../domain/models/Iproduct';
+import { IProductRecipe } from '../../../domain/models/interfaces/Iproduct';
 
 const Toast = Swal.mixin({
   toast: true,

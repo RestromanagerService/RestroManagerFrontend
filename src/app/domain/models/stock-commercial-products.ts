@@ -1,4 +1,4 @@
-import { INewProduct, IProduct } from "./Iproduct";
+import { INewProduct, IProduct } from "./interfaces/Iproduct";
 import { IUnits } from "./Iunits";
 
 

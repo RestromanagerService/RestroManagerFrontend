@@ -36,9 +36,7 @@ import { TypeExpenseService } from './infraestructure/type-expense/type-expense.
 import { ExpenseGateway } from './domain/models/expense/gateway/expense.gateway';
 import { ExpenseUseCase } from './domain/usecases/expense/expense.usecase';
 import { ExpenseService } from './infraestructure/expense/expense.service';
-import { ModalFormWithNameComponent } from './components/ui/modal-form-with-name/modal-form-with-name.component';
 import { AddresCardComponent } from './components/shared/footer/addres-card/addres-card.component';
-import { CategoriesComponent } from './components/ui/categories/categories.component';
 import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
 import { DomainModule } from './domain/domain.module';
 import { ExpenseComponent } from './components/ui/expense/expense.component';
@@ -87,7 +85,7 @@ export const expenseCreaterUseCaseProvider = {
     EditStockRawMaterialsComponent,
     CreateStockRawMaterialsComponent,
     RecipesComponent,
-    RecipesDetailsComponent
+    RecipesDetailsComponent,
     TypeExpenseComponent,
     AddresCardComponent,
     ExpenseComponent,

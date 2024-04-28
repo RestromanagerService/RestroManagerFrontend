@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ICategory } from '../../../../domain/models/ICategory';
+import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { IUnits } from '../../../../domain/models/Iunits';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ICategory } from '../../../../domain/models/ICategory';
+import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import Swal from 'sweetalert2'
