@@ -26,6 +26,7 @@ import { StockRawMaterialsComponent } from './components/ui/stock-raw-materials/
 import { EditStockRawMaterialsComponent } from './components/ui/stock-raw-materials/edit-stock-raw-materials/edit-stock-raw-materials.component';
 import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-materials/create-stock-raw-materials/create-stock-raw-materials.component';
 import { RecipesComponent } from './components/ui/recipes/recipes.component';
+import { RecipesDetailsComponent } from './components/ui/recipes/recipes-details/recipes-details.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { RecipesComponent } from './components/ui/recipes/recipes.component';
     StockRawMaterialsComponent,
     EditStockRawMaterialsComponent,
     CreateStockRawMaterialsComponent,
-    RecipesComponent
+    RecipesComponent,
+    RecipesDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -36,9 +36,11 @@ export class CategoriesComponent implements OnInit {
     this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
     .subscribe(data=>{
       this.categorias=data.getResponse()
-      if(this.categorias.length==0 && this.actualPage!=1){
-        this.actualPage=this.actualPage-1;
-        this.ngOnInit()
+      if(!this.valueSearch.trim()){
+        if(this.categorias.length==0 && this.actualPage!=1){
+          this.actualPage=this.actualPage-1;
+          this.ngOnInit()
+        }
       }
       this.categoryService.getTotalPages("categories/",
       BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))

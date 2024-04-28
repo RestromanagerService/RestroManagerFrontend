@@ -15,7 +15,7 @@ export class GenericService<T> {
     });
   
     constructor(private http: HttpClient) {
-  
+      
     }
     getAll(path:string,pagination?:HttpParams): Observable<HttpResponseWrapper<T[]>> {
       return this.http.get<T[]>(this.URL_BASE+path, { headers: this.httpHeaders,params:pagination })

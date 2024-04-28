@@ -11,6 +11,8 @@ import { CreatetockcommercialproductsComponent } from './components/ui/stockcomm
 import { StockRawMaterialsComponent } from './components/ui/stock-raw-materials/stock-raw-materials.component';
 import { EditStockRawMaterialsComponent } from './components/ui/stock-raw-materials/edit-stock-raw-materials/edit-stock-raw-materials.component';
 import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-materials/create-stock-raw-materials/create-stock-raw-materials.component';
+import { RecipesComponent } from './components/ui/recipes/recipes.component';
+import { RecipesDetailsComponent } from './components/ui/recipes/recipes-details/recipes-details.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,7 +25,9 @@ const routes: Routes = [
   { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent},
   { path: 'stockRawMaterials',component: StockRawMaterialsComponent},
   { path: 'stockRawMaterials/edit/:id',component: EditStockRawMaterialsComponent},
-  { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent}
+  { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent},
+  { path: 'recipes',component: RecipesComponent},
+  { path: 'recipes/details/:id',component: RecipesDetailsComponent}
   
 ];
 

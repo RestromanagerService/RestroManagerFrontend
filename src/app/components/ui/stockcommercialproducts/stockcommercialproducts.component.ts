@@ -35,10 +35,12 @@ export class StockcommercialproductsComponent {
       this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
       .subscribe(data=>{
         this.stock=data.getResponse()
-        if(this.stock.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.loading=true;
-          this.ngOnInit()
+        if(!this.valueSearch.trim()){
+          if(this.stock.length==0 && this.actualPage!=1){
+            this.actualPage=this.actualPage-1;
+            this.loading=true;
+            this.ngOnInit()
+          }
         }
         this.stockService.getTotalPages("StockCommercialProduct/",
         BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))

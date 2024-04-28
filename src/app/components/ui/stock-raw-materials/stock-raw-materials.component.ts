@@ -28,11 +28,12 @@ export class StockRawMaterialsComponent {
       this.stockService.getAll(this.urlRequest,BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
       .subscribe(data=>{
         this.stock=data.getResponse()
+        if(!this.valueSearch.trim()){
         if(this.stock.length==0 && this.actualPage!=1){
           this.actualPage=this.actualPage-1;
           this.loading=true;
           this.ngOnInit()
-        }
+        }}
         this.stockService.getTotalPages(this.urlRequest,
         BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
         .subscribe(data=>{

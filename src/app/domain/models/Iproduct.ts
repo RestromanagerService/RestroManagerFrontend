@@ -21,6 +21,7 @@ export interface IProductRecipe {
     productFoodsNumber:number;
     productCategories:INewProductCategory[];
     productCategoriesNumber?:number;
+    productionCost:number;
 }
 export interface IProductFoods {
     id:string;
