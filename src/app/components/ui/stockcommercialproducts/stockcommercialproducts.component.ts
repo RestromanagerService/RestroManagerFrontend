@@ -20,7 +20,7 @@ const Toast = Swal.mixin({
 export class StockcommercialproductsComponent {
   stock:IStockCommercialProducts[]=[];
   actualPage:number=1;
-  recordsNumber:number=5;
+  recordsNumber:number=10;
   totalPages:number=2;
   loading:boolean=true;
 
@@ -29,24 +29,38 @@ export class StockcommercialproductsComponent {
   }
 
   ngOnInit(): void {
-    this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage))
-    .subscribe(data=>{
-      this.stock=data.getResponse()
-      if(this.stock.length==0 && this.actualPage!=1){
-        this.actualPage=this.actualPage-1;
-        this.loading=true;
-        this.ngOnInit()
-      }
-      this.stockService.getTotalPages("StockCommercialProduct/",
-      BuildPagination.build('',this.recordsNumber,this.actualPage))
+    if(this.recordsNumber!=0){
+      this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage))
       .subscribe(data=>{
-      this.totalPages=data.getResponse();
-      this.loading=false;
+        this.stock=data.getResponse()
+        if(this.stock.length==0 && this.actualPage!=1){
+          this.actualPage=this.actualPage-1;
+          this.loading=true;
+          this.ngOnInit()
+        }
+        this.stockService.getTotalPages("StockCommercialProduct/",
+        BuildPagination.build('',this.recordsNumber,this.actualPage))
+        .subscribe(data=>{
+        this.totalPages=data.getResponse();
+        this.loading=false;
+        });
       });
-    });
-    
-    
-    
+    }
+    else{
+      this.stockService.getAll("StockCommercialProduct/full")
+      .subscribe(data=>{
+        this.stock=data.getResponse()
+        if(this.stock.length==0 && this.actualPage!=1){
+          this.actualPage=this.actualPage-1;
+          this.loading=true;
+          this.ngOnInit()
+        }
+        console.log("entramos a consultar el full")
+        this.totalPages=1;
+        this.loading=false;
+      });
+    }
+
   }
 
   deleteProduct(id:string): void{
@@ -72,5 +86,11 @@ export class StockcommercialproductsComponent {
   getChange(page:number){
     this.actualPage=page;
     this.ngOnInit()
+  }
+  getChangeRecordsNumber(records:number){
+    this.actualPage=1;
+    this.recordsNumber=records;
+    this.loading=true;
+    this.ngOnInit();
   }
 }

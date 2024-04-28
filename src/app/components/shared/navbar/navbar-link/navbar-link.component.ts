@@ -8,4 +8,6 @@ import { Component, Input } from '@angular/core';
 export class NavbarLinkComponent {
   @Input() linkRoute!: string;
   @Input() linkText!: string;
+  @Input() subItemsLink:string[][]=[];
+  @Input() dropDownId?: string;
 }

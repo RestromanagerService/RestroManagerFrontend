@@ -22,14 +22,16 @@ export class CategoriesComponent implements OnInit {
   
   categorias:ICategory[]=[];
   actualPage:number=1;
-  recordsNumber:number=5;
+  recordsNumber:number=10;
   totalPages:number=2;
+  loading:boolean=true;
 
   constructor(private categoryService:GenericService<ICategory>) {
     
   }
 
   ngOnInit(): void {
+    if(this.recordsNumber!=0){
     this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage))
     .subscribe(data=>{
       this.categorias=data.getResponse()
@@ -37,13 +39,25 @@ export class CategoriesComponent implements OnInit {
         this.actualPage=this.actualPage-1;
         this.ngOnInit()
       }
-    })
-    this.categoryService.getTotalPages("categories/",
+      this.categoryService.getTotalPages("categories/",
       BuildPagination.build('',this.recordsNumber,this.actualPage))
       .subscribe(data=>{
       this.totalPages=data.getResponse();
-    });
-    
+      this.loading=false;
+      });
+    })
+    }else{
+      this.categoryService.getAll("categories/full")
+      .subscribe(data=>{
+      this.categorias=data.getResponse()
+      if(this.categorias.length==0 && this.actualPage!=1){
+        this.actualPage=this.actualPage-1;
+        this.ngOnInit()
+      }
+      this.totalPages=1;
+      this.loading=false;
+      });
+    }
   }
 
   deleteCategory(id:string): void{
@@ -69,6 +83,12 @@ export class CategoriesComponent implements OnInit {
   getChange(page:number){
     this.actualPage=page;
     this.ngOnInit()
+  }
+  getChangeRecordsNumber(records:number){
+    this.actualPage=1;
+    this.recordsNumber=records;
+    this.loading=true;
+    this.ngOnInit();
   }
 
 }

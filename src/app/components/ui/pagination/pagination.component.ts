@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { BuildPagination } from '../../../domain/models/pagination';
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
@@ -9,19 +7,21 @@ import { BuildPagination } from '../../../domain/models/pagination';
 export class PaginationComponent implements OnInit,OnChanges {
   @Input() actualPage:number=1;
   @Input() totalPages:number=2;
+  @Input() recordsNumberActual:number=10;
   @Input() radius:number=1;
   @Output() pageNumber = new EventEmitter<number>();
+  @Output() recordsNumber = new EventEmitter<number>();
 
   
-  pages:number[]=[]  
+  pages:number[]=[];
+  paginationOptions=[[3,"3"],[5,"5"],[10,"10"],[25,"25"],[50,"50"],[0,"Todos"]]
   
   
   constructor(){
     this.createPaginator()
   }
   ngOnInit(): void {
-    
-
+    this.createPaginator()
   }
   ngOnChanges(changes: SimpleChanges): void {
       this.ngOnInit(); 
@@ -42,6 +42,13 @@ export class PaginationComponent implements OnInit,OnChanges {
   pageTurn(page:number){
     if(page>0 && page<=this.totalPages){
       this.pageNumber.emit(page);
+    }
+  }
+  onSelectChange(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      const value = parseInt(target.value);
+      this.recordsNumber.emit(value);
     }
   }
 
