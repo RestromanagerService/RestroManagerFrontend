@@ -11,6 +11,7 @@ export class PaginationComponent implements OnInit,OnChanges {
   @Input() radius:number=1;
   @Output() pageNumber = new EventEmitter<number>();
   @Output() recordsNumber = new EventEmitter<number>();
+  @Output() searchValue = new EventEmitter<string>();
 
   
   pages:number[]=[];
@@ -50,6 +51,14 @@ export class PaginationComponent implements OnInit,OnChanges {
       const value = parseInt(target.value);
       this.recordsNumber.emit(value);
     }
+  }
+  inputChange(event: Event){
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      const value = target.value;
+      this.searchValue.emit(value);
+    }
+
   }
 
 }

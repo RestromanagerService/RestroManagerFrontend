@@ -24,6 +24,7 @@ export class CategoriesComponent implements OnInit {
   actualPage:number=1;
   recordsNumber:number=10;
   totalPages:number=2;
+  valueSearch:string='';
   loading:boolean=true;
 
   constructor(private categoryService:GenericService<ICategory>) {
@@ -32,7 +33,7 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-    this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage))
+    this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
     .subscribe(data=>{
       this.categorias=data.getResponse()
       if(this.categorias.length==0 && this.actualPage!=1){
@@ -40,7 +41,7 @@ export class CategoriesComponent implements OnInit {
         this.ngOnInit()
       }
       this.categoryService.getTotalPages("categories/",
-      BuildPagination.build('',this.recordsNumber,this.actualPage))
+      BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
       .subscribe(data=>{
       this.totalPages=data.getResponse();
       this.loading=false;
@@ -87,6 +88,12 @@ export class CategoriesComponent implements OnInit {
   getChangeRecordsNumber(records:number){
     this.actualPage=1;
     this.recordsNumber=records;
+    this.loading=true;
+    this.ngOnInit();
+  }
+  getChangeValueSearch(valueSearch:string){
+    this.actualPage=1;
+    this.valueSearch=valueSearch;
     this.loading=true;
     this.ngOnInit();
   }

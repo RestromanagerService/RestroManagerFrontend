@@ -17,6 +17,7 @@ export class StockRawMaterialsComponent {
   totalPages:number=2;
   loading:boolean=true;
   urlRequest:string="StockRawMaterial/";
+  valueSearch:string='';
 
   constructor(private stockService:GenericService<IStockRawMaterials>) {
     
@@ -24,7 +25,7 @@ export class StockRawMaterialsComponent {
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-      this.stockService.getAll(this.urlRequest,BuildPagination.build('',this.recordsNumber,this.actualPage))
+      this.stockService.getAll(this.urlRequest,BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
       .subscribe(data=>{
         this.stock=data.getResponse()
         if(this.stock.length==0 && this.actualPage!=1){
@@ -33,7 +34,7 @@ export class StockRawMaterialsComponent {
           this.ngOnInit()
         }
         this.stockService.getTotalPages(this.urlRequest,
-        BuildPagination.build('',this.recordsNumber,this.actualPage))
+        BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
         .subscribe(data=>{
         this.totalPages=data.getResponse();
         this.loading=false;
@@ -81,6 +82,12 @@ export class StockRawMaterialsComponent {
   getChangeRecordsNumber(records:number){
     this.actualPage=1;
     this.recordsNumber=records;
+    this.loading=true;
+    this.ngOnInit();
+  }
+  getChangeValueSearch(valueSearch:string){
+    this.actualPage=1;
+    this.valueSearch=valueSearch;
     this.loading=true;
     this.ngOnInit();
   }

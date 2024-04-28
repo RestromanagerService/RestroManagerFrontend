@@ -23,6 +23,8 @@ export class StockcommercialproductsComponent {
   recordsNumber:number=10;
   totalPages:number=2;
   loading:boolean=true;
+  valueSearch:string='';
+  
 
   constructor(private stockService:GenericService<IStockCommercialProducts>) {
     
@@ -30,7 +32,7 @@ export class StockcommercialproductsComponent {
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-      this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage))
+      this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
       .subscribe(data=>{
         this.stock=data.getResponse()
         if(this.stock.length==0 && this.actualPage!=1){
@@ -39,7 +41,7 @@ export class StockcommercialproductsComponent {
           this.ngOnInit()
         }
         this.stockService.getTotalPages("StockCommercialProduct/",
-        BuildPagination.build('',this.recordsNumber,this.actualPage))
+        BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
         .subscribe(data=>{
         this.totalPages=data.getResponse();
         this.loading=false;
@@ -90,6 +92,12 @@ export class StockcommercialproductsComponent {
   getChangeRecordsNumber(records:number){
     this.actualPage=1;
     this.recordsNumber=records;
+    this.loading=true;
+    this.ngOnInit();
+  }
+  getChangeValueSearch(valueSearch:string){
+    this.actualPage=1;
+    this.valueSearch=valueSearch;
     this.loading=true;
     this.ngOnInit();
   }

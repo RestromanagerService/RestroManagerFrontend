@@ -5,7 +5,7 @@
 <div style="width:60%; padding: 40px; margin:0 auto">
     <button [routerLink]="['create']"  type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-small rounded-lg text-sm px-1 py-1 me-1 mb-1 dark:focus:ring-yellow-900">Registar producto</button>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <app-pagination [actualPage]="actualPage" [totalPages]="totalPages" [recordsNumberActual]="recordsNumber" (pageNumber)="getChange($event)" (recordsNumber)="getChangeRecordsNumber($event)"></app-pagination>
+      <app-pagination [actualPage]="actualPage" [totalPages]="totalPages" [recordsNumberActual]="recordsNumber" (pageNumber)="getChange($event)" (recordsNumber)="getChangeRecordsNumber($event)" (searchValue)="getChangeValueSearch($event)"></app-pagination>
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
