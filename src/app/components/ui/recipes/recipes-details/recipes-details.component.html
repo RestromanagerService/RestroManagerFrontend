@@ -1,0 +1,20 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+    <app-loading></app-loading>
+</ng-template>
+<ng-template #loaded>
+<div style="width:70%; padding: 40px; margin:0 auto">
+    <div>
+        <h1>Detalles de la receta</h1>
+    </div>
+    <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
+        <figure *ngFor="let alimento of alimentos" class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
+            <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{alimento.food.name}}</h3>
+                <p class="my-4">Contiene {{alimento.amount}} {{alimento.units.name}}</p>
+            </blockquote>
+            <figcaption class="flex items-center justify-center ">
+                <img src="../../../../assets/icono-restromanager.jpg" class="w-14 h-10 sm:w-24 sm:h-18 md:w-30 md:h-22 lg:w-36 lg:h-28"  alt="logo">
+            </figcaption>    
+        </figure>
+    </div>
+</div>
