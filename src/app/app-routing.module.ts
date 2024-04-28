@@ -13,6 +13,7 @@ import { EditStockRawMaterialsComponent } from './components/ui/stock-raw-materi
 import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-materials/create-stock-raw-materials/create-stock-raw-materials.component';
 import { RecipesComponent } from './components/ui/recipes/recipes.component';
 import { RecipesDetailsComponent } from './components/ui/recipes/recipes-details/recipes-details.component';
+import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,7 +29,8 @@ const routes: Routes = [
   { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent},
   { path: 'recipes',component: RecipesComponent},
   { path: 'recipes/details/:id',component: RecipesDetailsComponent}
-  
+
+  { path: 'typeExpenses',component:TypeExpenseComponent}
 ];
 
 @NgModule({
