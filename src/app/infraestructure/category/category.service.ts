@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IWithName } from '../../domain/models/IWithName';
+import { IWithName } from '../../domain/models/interfaces/IWithName';
 import { CategoryGateway } from '../../domain/models/category/gateway/category.gateway';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { IWithName } from "../../IWithName";
+import { IWithName } from "../../interfaces/IWithName";
 
 
 export abstract class CategoryGateway {

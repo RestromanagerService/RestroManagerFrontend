@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { TypeExpenseGateway } from "../../models/type-expense/gateway/type-expense.gateway";
 import { Observable, catchError, of } from "rxjs";
-import { IWithName } from "../../models/IWithName";
+import { IWithName } from "../../models/interfaces/IWithName";
 
 @Injectable()
 export class TypeExpenseUseCase {

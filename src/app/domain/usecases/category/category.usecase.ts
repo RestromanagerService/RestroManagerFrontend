@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { CategoryGateway } from "../../models/category/gateway/category.gateway";
 import { catchError } from 'rxjs/operators'
-import { IWithName } from "../../models/IWithName";
+import { IWithName } from "../../models/interfaces/IWithName";
 
 @Injectable()
 export class CategoryUseCase {

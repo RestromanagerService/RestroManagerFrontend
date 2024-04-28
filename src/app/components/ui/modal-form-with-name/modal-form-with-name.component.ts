@@ -1,5 +1,5 @@
 import { Component, Input, input } from '@angular/core';
-import { IWithName } from '../../../domain/models/IWithName';
+import { IWithName } from '../../../domain/models/interfaces/IWithName';
 
 @Component({
   selector: 'app-modal-form-with-name',

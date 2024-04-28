@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IWithName } from '../../../domain/models/IWithName';
+import { IWithName } from '../../../domain/models/interfaces/IWithName';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CategoryUseCase } from '../../../domain/usecases/category/category.usecase';
 
