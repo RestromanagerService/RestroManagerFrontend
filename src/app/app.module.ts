@@ -21,6 +21,7 @@ import { TypeExpenseGateway } from './domain/models/type-expense/gateway/type-ex
 import { TypeExpenseUseCase } from './domain/usecases/type-expense/type-expense.usecase';
 import { TypeExpenseService } from './infraestructure/type-expense.service';
 import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
+import { AddresCardComponent } from './components/shared/footer/addres-card/addres-card.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
@@ -47,6 +48,7 @@ export const typeExpenseCreaterUseCaseProvider = {
     ModalFormWithNameComponent,
     CategoriesComponent,
     TypeExpenseComponent,
+    AddresCardComponent,
   ],
   imports: [
     BrowserModule,
