@@ -1,22 +1,15 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
+export class AppComponent {
+  title='Restro-manager-service';
+  reloadNavBar:boolean=false;
 
-
-  title = 'RestroManagerFrontend';
-  
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
+  changeComponent(comp:any){
+    this.reloadNavBar=!this.reloadNavBar;
   }
 }

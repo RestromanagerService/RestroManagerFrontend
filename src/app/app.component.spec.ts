@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'RestroManagerFrontend'`, () => {
+  it(`should have as title 'restro-manager-frontend-v2'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('RestroManagerFrontend');
+    expect(app.title).toEqual('restro-manager-frontend-v2');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, RestroManagerFrontend');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, restro-manager-frontend-v2');
   });
 });
