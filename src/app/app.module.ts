@@ -5,18 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
-import { LoginComponent } from './components/ui/login/login.component';
+import { LoginComponent } from './components/ui/user/login/login.component';
 import { ContactInfoComponent } from './components/shared/navbar/contact-info/contact-info.component';
-import { RegisterComponent } from './components/ui/register/register.component';
 import { NavbarLinkComponent } from './components/shared/navbar/navbar-link/navbar-link.component';
 import { CartIconComponent } from './components/shared/navbar/cart-icon/cart-icon.component';
 import { CategoriesComponent } from './components/ui/categories/categories.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { EditCategoriesComponent } from './components/ui/categories/edit-categories/edit-categories.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormWithNameComponent } from './components/ui/form-with-name/form-with-name.component';
 import { CreateCategoriesComponent } from './components/ui/categories/create-categories/create-categories.component';
-import { PaginationComponent } from './components/ui/pagination/pagination.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 import { StockcommercialproductsComponent } from './components/ui/stockcommercialproducts/stockcommercialproducts.component';
 import { EditstockcommercialproductsComponent } from './components/ui/stockcommercialproducts/editstockcommercialproducts/editstockcommercialproducts.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -28,19 +27,40 @@ import { CreateStockRawMaterialsComponent } from './components/ui/stock-raw-mate
 import { RecipesComponent } from './components/ui/recipes/recipes.component';
 import { RecipesDetailsComponent } from './components/ui/recipes/recipes-details/recipes-details.component';
 import { CategoryGateway } from './domain/models/category/gateway/category.gateway';
-import { CategoryService } from './infraestructure/category/category.service';
 import { CategoryUseCase } from './domain/usecases/category/category.usecase';
 import { TypeExpenseGateway } from './domain/models/type-expense/gateway/type-expense.gateway';
 import { TypeExpenseUseCase } from './domain/usecases/type-expense/type-expense.usecase';
-import { TypeExpenseService } from './infraestructure/type-expense/type-expense.service';
 import { ExpenseGateway } from './domain/models/expense/gateway/expense.gateway';
 import { ExpenseUseCase } from './domain/usecases/expense/expense.usecase';
-import { ExpenseService } from './infraestructure/expense/expense.service';
 import { AddresCardComponent } from './components/shared/footer/addres-card/addres-card.component';
-import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
-import { DomainModule } from './domain/domain.module';
-import { ExpenseComponent } from './components/ui/expense/expense.component';
 import { ExpenseModalComponent } from './components/shared/modals/expense-modal/expense-modal.component';
+import { CategoryService } from './infrastructure/category/category.service';
+import { ExpenseService } from './infrastructure/expense/expense.service';
+import { TypeExpenseService } from './infrastructure/type-expense/type-expense.service';
+import { RegisterUserComponent } from './components/ui/user/register-user/register-user.component';
+import { ModalComponent } from './components/shared/modal/modal.component';
+import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
+import { ExpenseComponent } from './components/ui/expense/expense.component';
+import { ConfirmEmailComponent } from './components/ui/user/confirm-email/confirm-email.component';
+import { CountriesComponent } from './components/ui/countries/countries.component';
+import { StatesByCountryComponent } from './components/ui/countries/states-by-country/states-by-country.component';
+import { CitiesByStateComponent } from './components/ui/countries/cities-by-state/cities-by-state.component';
+import { AddCityComponent } from './components/ui/countries/add-city/add-city.component';
+import { AddStateComponent } from './components/ui/countries/add-state/add-state.component';
+import { EditCityComponent } from './components/ui/countries/edit-city/edit-city.component';
+import { AuthInterceptor } from './security/helper/auth-interceptor';
+import { EditUserComponent } from './components/ui/user/edit-user/edit-user.component';
+import { WelcomeComponent } from './components/ui/welcome/welcome.component';
+import { ResetPasswordComponent } from './components/ui/user/reset-password/reset-password.component';
+import { EditProductFoodComponent } from './components/ui/recipes/edit-product-food/edit-product-food.component';
+import { AddFoodsComponent } from './components/ui/recipes/add-foods/add-foods.component';
+import { DrawerComponent } from './components/shared/drawer/drawer.component';
+import { SearchComponent } from './components/shared/search/search.component';
+import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
+import { ChangePasswordComponent } from './components/ui/user/change-password/change-password.component';
+import { FoodsDetailsComponent } from './components/ui/recipes/foods-details/foods-details.component';
+import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
+import { AddRawMaterialsComponent } from './components/ui/recipes/add-raw-materials/add-raw-materials.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
@@ -67,9 +87,7 @@ export const expenseCreaterUseCaseProvider = {
     AppComponent,
     NavbarComponent,
     FooterComponent,
-    LoginComponent,
     ContactInfoComponent,
-    RegisterComponent,
     NavbarLinkComponent,
     CartIconComponent,
     CategoriesComponent,
@@ -90,6 +108,30 @@ export const expenseCreaterUseCaseProvider = {
     AddresCardComponent,
     ExpenseComponent,
     ExpenseModalComponent,
+    LoginComponent,
+    ModalComponent,
+    RegisterUserComponent,
+    ConfirmEmailComponent,
+    ResetPasswordComponent,
+    CountriesComponent,
+    StatesByCountryComponent,
+    CitiesByStateComponent,
+    AddCityComponent,
+    AddStateComponent,
+    EditCityComponent,
+    EditUserComponent,
+    EditRawMaterialComponent,
+    AddFoodsComponent,
+    SearchComponent,
+    WelcomeComponent,
+    EditProductFoodComponent,
+    DrawerComponent,
+    CreateFoodsComponent,
+    ChangePasswordComponent,
+    FoodsDetailsComponent,
+    AddRawMaterialsComponent
+    
+    
   ],
   imports: [
     BrowserModule,
@@ -102,6 +144,8 @@ export const expenseCreaterUseCaseProvider = {
   providers: [categoryCreaterUseCaseProvider,{provide:CategoryGateway, useClass: CategoryService},
     typeExpenseCreaterUseCaseProvider, {provide:TypeExpenseGateway, useClass:TypeExpenseService},
     expenseCreaterUseCaseProvider, {provide: ExpenseGateway, useClass:ExpenseService},
+    {provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi:true},
+    provideHttpClient(),
     provideClientHydration(),
   ],
   bootstrap: [AppComponent]

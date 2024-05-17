@@ -1,37 +1,72 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+    <p>Cargando... {{loading}}</p>
+</ng-template>
+<ng-template #loaded>
 <div class="py-1 custom-navbar-red ">
     <div class="flex flex-row">
-        <div class="basis-1/4 flex items-center justify-center">
-            <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
-        </div>
-        <div class="basis-1/4 flex items-center justify-start">
-            <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
-        </div>
-        <div class="basis-1/2 grid justify-items-end items-center">
-            <a routerLink="/register" class="text-white mr-24">REGISTER</a>
-        </div>
+        <ng-template [ngIf]="user?.role=='anonimous'" [ngIfElse]="optionRol">
+            <div class="basis-1/4 flex items-center justify-center">
+                <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
+            </div>
+            <div class="basis-1/4 flex items-center justify-start">
+                <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
+            </div>
+            <div class="basis-1/4 flex items-center justify-center">
+                <app-contact-info text="Ingresaste como invitado"></app-contact-info>
+            </div>
+            <div class="flex justify-end items-center space-x-4">
+                <button (click)="openModalLogin()" class="text-white  px-4 py-2">Iniciar sesión</button>
+                <button routerLink="/register" class="text-white px-4 py-2">Registrate</button>
+              </div>
+              
+        </ng-template>
+        <ng-template #optionRol>
+            <div class="basis-1/4 flex items-center justify-center">
+                <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
+            </div>
+            <div class="basis-1/4 flex items-center justify-start">
+                <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
+            </div>
+            <div class="basis-1/4 flex items-center justify-center">
+                <app-contact-info [text]="'Bienvenido '+user?.firstName+' '+user?.lastName"></app-contact-info>
+            </div>
+            <div class="basis-1/2 grid justify-items-end items-center">
+                <button (click)="logout()" class="text-white mr-24">Cerrar sesión</button>       
+            </div>
+        </ng-template>
+
     </div>
 </div>
 <div class="py-2 custom-navbar-orange">
     <div class="flex flex-row">
-        <div class="basis-1/4 flex justify-center items-center">
+        <div  class="basis-1/4 flex justify-center items-center">
+            <a href="/">
                 <img src="../../../../assets/icono-restromanager.jpg" class="w-14 h-10 sm:w-24 sm:h-18 md:w-30 md:h-22 lg:w-36 lg:h-28"  alt="logo">
-        </div>
-        <div class="basis-1/2 flex justify-center items-center flex-row space-x-12">
-            <app-navbar-link linkRoute="/home" linkText="HOME"></app-navbar-link>
-            <app-navbar-link linkRoute="/admin" linkText="ADMINISTRACIÓN" dropDownId="homeId" [subItemsLink]="[['/categories','Administrar categorías'],['/stockCommercialProducts','Almacén de productos comerciales'],['/stockRawMaterials','Almacén de materias primas'],['/recipes','Administración de recetas']]"></app-navbar-link>
-            <app-navbar-link linkRoute="/about" linkText="ABOUT"></app-navbar-link>
-            <app-navbar-link linkRoute="/menu" linkText="MENÚ"></app-navbar-link>
-            <app-navbar-link linkRoute="/contact" linkText="CONTACT"></app-navbar-link>
+            </a>
             
+        </div>
+        <div *ngFor="let item of items" class="basis-1/2 flex justify-center items-center flex-row space-x-12">
+            <app-navbar-link [item]="item" [dropDownId]="item.name"></app-navbar-link>            
         </div> 
         <div class="basis-1/4 flex justify-between items-center">
             <div> <app-cart-icon></app-cart-icon> </div>
+
             <div>
-                <a routerLink="/user-profile"> <img src="../../../../assets/avatar.jpg" alt="User profile" class="rounded-full w-16 h-16 mr-24"> </a>
-                
+                <a routerLink="/user/edit">
+                    <img [src]="user?.photo || '../../../../assets/avatar.jpg'" alt="User profile" class="rounded-full w-16 h-16 mr-24">
+                </a>
             </div>
+            
         </div>
         
     </div>
 </div>
+</ng-template>
+
+
+<app-modal idModal="loginModal" #modalLogin>
+    <!-- Contenido del modal aquí -->
+    <app-login (loginSuccess)="loginSuccess()"></app-login>
+</app-modal>
+
 
