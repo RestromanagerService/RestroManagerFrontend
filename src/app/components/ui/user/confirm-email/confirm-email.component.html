@@ -1,0 +1,6 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+    <app-loading></app-loading>
+</ng-template>
+<ng-template #loaded>
+<button (click)="confirmEmail()">Confirmar correo</button>
+</ng-template>
