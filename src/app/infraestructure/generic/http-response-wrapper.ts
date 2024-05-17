@@ -1,14 +1,12 @@
 export class HttpResponseWrapper<T> {
-    private response: T;
+    private response?: T;
     private error:boolean;
     private responseMessage:string;
-    constructor(response:T,error:boolean,message:string){
+    constructor(error:boolean,message:string,response?:T){
         this.response=response;
         this.error=error;
         this.responseMessage=message;
     }
-    
-
     public getResponse() {
         return this.response;
     }
