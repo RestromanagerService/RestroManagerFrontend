@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Item } from '../../../layout/navbar/data/item';
 
 @Component({
   selector: 'app-navbar-link',
@@ -6,8 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './navbar-link.component.css'
 })
 export class NavbarLinkComponent {
-  @Input() linkRoute!: string;
-  @Input() linkText!: string;
-  @Input() subItemsLink:string[][]=[];
-  @Input() dropDownId?: string;
+  @Input() item!: Item;
+  @Input() dropDownId!: string;
 }

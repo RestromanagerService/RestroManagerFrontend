@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './addres-card.component.css'
 })
 export class AddresCardComponent {
-@Input() Title! : string;
-@Input() SubTitle! : string;
+  @Input() Title! : string;
+  @Input() SubTitle! : string;
 }
