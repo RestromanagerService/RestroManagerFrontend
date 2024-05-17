@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { IModelWithName } from '../../../domain/models/interfaces/IModelWithName';
 import Swal from 'sweetalert2';
+import { GenericService } from '../../../infrastructure/generic/generic-service';
+import { ToastManager } from '../../shared/alerts/toast-manager';
+import { IModelWithName } from '../../../domain/models/interfaces/IModelWithName';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -27,7 +28,7 @@ export class FormWithNameComponent{
 
   constructor(private _router:Router,
     private _routeData:ActivatedRoute,
-    private formBuilder: FormBuilder, private modelService:GenericService<IModelWithName>){
+    private formBuilder: FormBuilder, private service:GenericService){
     this.editModelForm = this.formBuilder.group({
         name: ['',Validators.required]})
   }
@@ -35,7 +36,15 @@ export class FormWithNameComponent{
   ngOnInit(): void {
     var idModel=this._routeData.snapshot.params['id'];
     if(this.isUpdate){
-      this.modelService.getById(this.urlRequest+"/",idModel).subscribe(data=>this.model=data.getResponse())
+      this.service.getById<IModelWithName>(this.urlRequest+"/",idModel)
+      .subscribe(data=>{
+        if(data.getError()){
+          this._router.navigate(["/"+this.urlBack])
+          ToastManager.showToastError(data.getResponseMessage());
+        }else{
+          this.model=data.getResponse();
+        }
+      })
     }
     
   }
@@ -45,36 +54,34 @@ export class FormWithNameComponent{
       this.editModelForm.value.name!=''){
       var idModel=this._routeData.snapshot.params['id'];
       var updateModel:IModelWithName={id:idModel,name:this.editModelForm.value.name}
-      this.modelService.put(updateModel,this.urlRequest).subscribe();
-      this._router.navigate(["/"+this.urlRequest])
-      Toast.fire({
-        icon: 'success',
-        title: 'Actualización exitosa',
-      })
+      this.service.put<IModelWithName,IModelWithName>(updateModel,this.urlRequest).subscribe(data=>{
+        this._router.navigate(["/"+this.urlBack])
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+        }
+        else{
+          ToastManager.showToastSuccess("Actualización exitosa");
+        }
+      });
       return
     }
-    Toast.fire({
-      icon: 'info',
-      title: 'No has realizado modificaciones',
-    })
-
+    ToastManager.showToastInfo("No has realizado modificaciones");
   }
   saveModel(){
     if(this.editModelForm.value.name!=this.model?.name&&
       this.editModelForm.value.name!=''){
-      var updateModel:IModelWithName={name:this.editModelForm.value.name}
-      this.modelService.post(updateModel,this.urlRequest).subscribe();
-      this._router.navigate(["/"+this.urlRequest])
-      Toast.fire({
-        icon: 'success',
-        title: 'Actualización exitosa',
-      })
+      var saveModel:IModelWithName={name:this.editModelForm.value.name}
+      this.service.post<IModelWithName,IModelWithName>(saveModel,this.urlRequest).subscribe(data=>{
+        this._router.navigate(["/"+this.urlBack])
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage())
+        }
+        else{
+          ToastManager.showToastSuccess("Registro exitoso");
+        }
+      });
       return
     }
-    Toast.fire({
-      icon: 'info',
-      title: 'No has realizado modificaciones',
-    })
-
+    ToastManager.showToastInfo("No has realizado modificaciones");
   }
 }

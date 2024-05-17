@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { IExpense } from '../../../domain/models/interfaces/IExpense';
-import { ExpenseUseCase } from '../../../domain/usecases/expense/expense.usecase';
-import { TypeExpenseUseCase } from '../../../domain/usecases/type-expense/type-expense.usecase';
-import { IWithName } from '../../../domain/models/interfaces/IWithName';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from "@angular/core";
+import Swal from "sweetalert2";
+import { IExpense } from "../../../domain/models/interfaces/IExpense";
+import { IWithName } from "../../../domain/models/interfaces/IWithName";
+import { ExpenseUseCase } from "../../../domain/usecases/expense/expense.usecase";
+import { TypeExpenseUseCase } from "../../../domain/usecases/type-expense/type-expense.usecase";
+
 
 @Component({
   selector: 'app-expense',
