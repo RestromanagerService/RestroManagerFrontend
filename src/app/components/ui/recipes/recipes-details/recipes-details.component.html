@@ -2,19 +2,53 @@
     <app-loading></app-loading>
 </ng-template>
 <ng-template #loaded>
-<div style="width:70%; padding: 40px; margin:0 auto">
-    <div>
-        <h1>Detalles de la receta</h1>
+<div class="grid grid-cols-1 gap-4 content-center">
+    <div class="flex justify-center items-center">
+        <h3 class="mb-4 text-2xl py-4 font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-xl dark:text-white">{{model?.name}}</h3>
     </div>
-    <div class="grid mb-8 border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
-        <figure *ngFor="let alimento of alimentos" class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
-            <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{alimento.food.name}}</h3>
-                <p class="my-4">Contiene {{alimento.amount}} {{alimento.units.name}}</p>
-            </blockquote>
-            <figcaption class="flex items-center justify-center ">
-                <img src="../../../../assets/icono-restromanager.jpg" class="w-14 h-10 sm:w-24 sm:h-18 md:w-30 md:h-22 lg:w-36 lg:h-28"  alt="logo">
-            </figcaption>    
-        </figure>
+    <div class="flex justify-center items-center">
+        <a (click)="openAddFoodsDrawer()" class=" px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">¿Deseas agregar alimentos del almacén?</a>
+    </div>
+    
+</div>
+<div class="grid w-full gap-6 md:grid-cols-3" style="width:70%; padding: 40px; margin:0 auto">
+    <div class="w-full max-w-sm bg-white border-2 border-dashed border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-center items-center">
+        <button (click)="openCreateFoodModal()" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+            <svg class="w-8 h-8 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+            </svg>                                                                
+        </button>
+    </div>
+    <div *ngFor="let food of foods" class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex justify-end px-4 pt-4">
+            <button (click)="openEditFoodModal(food.id!)" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                </svg>                                   
+            </button>
+            <button (click)="deleteProductFood(food.id!)" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                  </svg>                  
+            </button>
+        </div>
+        <div class="flex flex-col items-center pb-10">
+            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" [src]="(food.food?.photo)?food.food?.photo:'../../../../../assets/icono-restromanager.jpg'"/>
+            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{food.food?.name}}</h5>
+            <span class="text-sm text-gray-500 dark:text-gray-400 m-2">Contiene {{food.amount}} {{food.units?.name}}</span>
+            <div class="flex mt-4 md:mt-6">
+                <a [routerLink]="['/recipe',idModel,'food','rawMaterials',food.id]" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Ver materias primas</a>
+            </div>
+        </div>
     </div>
 </div>
+<app-modal idModal="editFood" #editFoodModal>
+    <app-edit-product-food [productFoodId]="productFoodToEdit" [recipeId]="idModel" (updateSuccess)="updateSuccess()"></app-edit-product-food>
+</app-modal>
+<app-modal idModal="createFood" #createFoodModal>
+    <app-create-foods [recipeId]="idModel" (createSuccess)="createSuccess()"></app-create-foods>
+</app-modal>
+<app-drawer idDrawer="addFoodDrawer" labelDrawer="Almacén de alimentos"  #addFoodsDrawer>
+<app-add-foods [productId]="idModel" (addFoodEvent)="addFood()"></app-add-foods>
+</app-drawer>
+</ng-template>
