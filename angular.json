@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/restro-manager-frontend-v2",
+            "outputPath": "dist/restro-manager-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "restro-manager-frontend-v2:build:production"
+              "buildTarget": "RestroManagerFrontend:build:production"
             },
             "development": {
-              "buildTarget": "restro-manager-frontend-v2:build:development"
+              "buildTarget": "RestroManagerFrontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "restro-manager-frontend-v2:build"
+            "buildTarget": "RestroManagerFrontend:build"
           }
         },
         "test": {
