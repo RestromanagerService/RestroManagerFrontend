@@ -36,6 +36,7 @@ export class NavbarComponent {
       ),
       new SubItem('Almacén de materias primas', '/stockRawMaterials'),
       new SubItem('Administración de recetas', '/recipes'),
+      new SubItem('Administración de países', '/countries')
     ]),
     new Item('Productos', 'item-2', '/products'),
     new Item('Para el administrador', 'item-3', '/admin'),
@@ -43,11 +44,6 @@ export class NavbarComponent {
 
   private readonly menuChef = [
     new Item('Administración', 'item-4', undefined, [
-      new SubItem('Administrar categorías', '/categories'),
-      new SubItem(
-        'Almacén de productos comerciales',
-        '/stockCommercialProducts'
-      ),
       new SubItem('Almacén de materias primas', '/stockRawMaterials'),
       new SubItem('Administración de recetas', '/recipes'),
     ]),
@@ -56,29 +52,11 @@ export class NavbarComponent {
   ];
 
   private readonly menuWaiter = [
-    new Item('Administración', 'item-7', undefined, [
-      new SubItem('Administrar categorías', '/categories'),
-      new SubItem(
-        'Almacén de productos comerciales',
-        '/stockCommercialProducts'
-      ),
-      new SubItem('Almacén de materias primas', '/stockRawMaterials'),
-      new SubItem('Administración de recetas', '/recipes'),
-    ]),
     new Item('Productos', 'item-8', '/products'),
     new Item('Para el mesero', 'item-9', '/waiter'),
   ];
 
   private readonly menuUser = [
-    new Item('Administración', 'item-10', undefined, [
-      new SubItem('Administrar categorías', '/categories'),
-      new SubItem(
-        'Almacén de productos comerciales',
-        '/stockCommercialProducts'
-      ),
-      new SubItem('Almacén de materias primas', '/stockRawMaterials'),
-      new SubItem('Administración de recetas', '/recipes'),
-    ]),
     new Item('Productos', 'item-11', '/products'),
     new Item('Para el usuario', 'item-12', '/user'),
   ];
