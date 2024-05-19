@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "restro-manager-frontend-v2": {
+    "RestroManagerFrontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
