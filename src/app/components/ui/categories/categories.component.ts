@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ICategory } from '../../../domain/models/interfaces/ICategory';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
-import Swal from 'sweetalert2';
-import { BuildPagination } from '../../../domain/models/pagination';
+import { Component, OnInit } from "@angular/core";
+import Swal from "sweetalert2";
+import { ICategory } from "../../../domain/models/interfaces/ICategory";
+import { BuildPagination } from "../../../domain/models/pagination";
+import { ToastManager } from "../../shared/alerts/toast-manager";
+import { GenericService } from "../../../infraestructure/generic/generic-service";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -18,50 +19,60 @@ const Toast = Swal.mixin({
   styleUrl: './categories.component.css'
 })
 export class CategoriesComponent implements OnInit {
-
-  
-  categorias:ICategory[]=[];
+  categories:ICategory[]=[];
   actualPage:number=1;
   recordsNumber:number=10;
-  totalPages:number=2;
+  totalPages:number=1;
   valueSearch:string='';
   loading:boolean=true;
 
-  constructor(private categoryService:GenericService<ICategory>) {
+  constructor(private service:GenericService) {
     
   }
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-    this.categoryService.getAll("categories/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-    .subscribe(data=>{
-      this.categorias=data.getResponse()
-      if(!this.valueSearch.trim()){
-        if(this.categorias.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.ngOnInit()
+      let pagination=BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch);
+      this.service.getAll<ICategory>("categories/",pagination)
+      .subscribe(data=>{
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
         }
-      }
-      this.categoryService.getTotalPages("categories/",
-      BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-      .subscribe(data=>{
-      this.totalPages=data.getResponse();
-      this.loading=false;
-      });
-    })
+        else{
+          this.categories=data.getResponse()!;
+          if(this.categories.length<0){
+            ToastManager.showToastInfo("No hay registros por mostrar")
+          }
+          this.service.getTotalPages("categories/",pagination)
+          .subscribe(data=>{
+            this.totalPages=data.getError()?1:data.getResponse()!;
+            this.loading=false;
+          });
+        }
+    });
     }else{
-      this.categoryService.getAll("categories/full")
+      this.service.getAll<ICategory>("categories/full")
       .subscribe(data=>{
-      this.categorias=data.getResponse()
-      if(this.categorias.length==0 && this.actualPage!=1){
-        this.actualPage=this.actualPage-1;
-        this.ngOnInit()
-      }
-      this.totalPages=1;
-      this.loading=false;
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
+        }
+        else{
+          this.categories=data.getResponse()!;
+          this.totalPages=1;
+        }
+        this.loading=false;
       });
     }
   }
+  resetVariables():void{
+    this.totalPages=1;
+    this.categories=[];
+    this.loading=false;
+  }
+
+
 
   deleteCategory(id:string): void{
     Swal.fire({
@@ -74,7 +85,15 @@ export class CategoriesComponent implements OnInit {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.categoryService.delete(id,"categories/").subscribe(data=>this.ngOnInit()); 
+        this.service.delete(id,"categories/").subscribe(data=>{
+          if(data.getError()){
+            ToastManager.showToastError(data.getResponseMessage());
+          }
+          else{
+            this.ngOnInit();
+            ToastManager.showToastSuccess("Eliminación exitosa")
+          }
+        }); 
         Toast.fire({
           icon: 'success',
           title: 'Eliminación exitosa',
@@ -91,6 +110,9 @@ export class CategoriesComponent implements OnInit {
     this.actualPage=1;
     this.recordsNumber=records;
     this.loading=true;
+    if(this.recordsNumber<0){
+      this.recordsNumber=10;
+    }
     this.ngOnInit();
   }
   getChangeValueSearch(valueSearch:string){

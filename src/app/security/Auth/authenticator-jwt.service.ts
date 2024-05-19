@@ -3,12 +3,12 @@ import { Observable, map, of, switchMap } from 'rxjs';
 import { UserClaim } from './user-claim';
 import { LoginDTO } from '../DTOs/login-dto';
 import { TokenDTO } from '../DTOs/token-dto';
-import { GenericService } from '../../infrastructure/generic/generic-service';
 import { ToastManager } from '../../components/shared/alerts/toast-manager';
 import { jwtDecode } from 'jwt-decode';
 import { AuthenticationState } from './authentication-state';
 import { LocalStorageService } from '../helper/local-storage.service';
-import { HttpResponseWrapper } from '../../infrastructure/generic/http-response-wrapper';
+import { GenericService } from '../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../infraestructure/generic/http-response-wrapper';
 @Injectable({
   providedIn: 'root'
 })

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GenericService } from './../../../../infrastructure/generic/generic-service'
 import Swal from 'sweetalert2'
 
 const Toast = Swal.mixin({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-confirm-email',

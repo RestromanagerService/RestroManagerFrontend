@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ICity } from '../../../../domain/models/interfaces/ICity';
@@ -11,6 +10,7 @@ import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { IUser } from '../../../../domain/models/interfaces/IUser';
 import { AuthenticatorJWTService } from '../../../../security/Auth/authenticator-jwt.service';
 import { TokenDTO } from '../../../../security/DTOs/token-dto';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-edit-user',

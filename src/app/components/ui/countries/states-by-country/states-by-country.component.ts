@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BuildPagination } from '../../../../domain/models/pagination';
 import { ICountry } from '../../../../domain/models/interfaces/ICountry';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-states-by-country',
