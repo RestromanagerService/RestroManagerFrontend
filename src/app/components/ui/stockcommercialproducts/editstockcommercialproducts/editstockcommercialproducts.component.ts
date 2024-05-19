@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { IStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { ICategory } from '../../../../domain/models/interfaces/ICategory';
-import { IUnits } from '../../../../domain/models/Iunits';
 import { Observable } from 'rxjs';
-import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
-import { IProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
 import Swal from 'sweetalert2';
+import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { IStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
+import { IUnits } from '../../../../domain/models/Iunits';
+import { ICategory } from '../../../../domain/models/interfaces/ICategory';
+import { IProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
+import { ProductType } from '../../../../domain/models/enums/user-type';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -41,9 +43,7 @@ export class EditstockcommercialproductsComponent {
   constructor(private _router:Router,
     private _routeData:ActivatedRoute,
     private formBuilder: FormBuilder,
-    private modelService:GenericService<IStockCommercialProducts>,
-    private categoryService:GenericService<ICategory>,
-    private unitsService:GenericService<IUnits>){
+    private service:GenericService){
       
     this.idModel=_routeData.snapshot.params['id'];
     this.editModelForm = new FormGroup({
@@ -73,34 +73,52 @@ export class EditstockcommercialproductsComponent {
   
   ngOnInit(): void {
     this.getModelById().subscribe(dataModel=>{
-      this.model=dataModel.getResponse();
+      if(dataModel.getError()){
+        this.navigateUrlBack();
+        ToastManager.showToastError(dataModel.getResponseMessage());
+        return;
+      }
+      this.model=dataModel.getResponse()!;
       this.getCategories().subscribe(dataCategory=>{
-       this.categories=dataCategory.getResponse();
-       this.getUnits().subscribe(dataUnits=>{
-         this.units=dataUnits.getResponse();
-         this.editModelForm.controls['nameProduct'].setValue(this.model.product.name);
-         let categoriesP:ICategory[]=[];
-         this.model.product.productCategories?.forEach(p=>categoriesP.push(p.category));
-         this.editModelForm.controls['categoriesProduct'].setValue(categoriesP);
-         this.editModelForm.controls['amount'].setValue(this.model.aumount);
-         let units:IUnits[]=[];
-         units.push({id:this.model.unitsId,name:this.model.units?.name});
-         this.editModelForm.controls['unitsId'].setValue(units);
-         this.editModelForm.controls['unitCost'].setValue(this.model.unitCost);
-         this.loading=false;
-       })
-      })
+        if(dataCategory.getError()){
+          this.navigateUrlBack();
+          ToastManager.showToastError(dataCategory.getResponseMessage());
+          return;
+        }
+        this.categories=dataCategory.getResponse()!;
+        this.getUnits().subscribe(dataUnits=>{
+          if(dataUnits.getError()){
+            this.navigateUrlBack();
+            ToastManager.showToastError(dataUnits.getResponseMessage());
+            return;
+          }
+          this.units=dataUnits.getResponse()!;
+          this.editModelForm.controls['nameProduct'].setValue(this.model.product.name);
+          let categoriesP:ICategory[]=[];
+          this.model.product.productCategories?.forEach(p=>categoriesP.push(p.category));
+          this.editModelForm.controls['categoriesProduct'].setValue(categoriesP);
+          this.editModelForm.controls['amount'].setValue(this.model.aumount);
+          let units:IUnits[]=[];
+          units.push({id:this.model.unitsId,name:this.model.units?.name});
+          this.editModelForm.controls['unitsId'].setValue(units);
+          this.editModelForm.controls['unitCost'].setValue(this.model.unitCost);
+          this.loading=false;
+        })
+        });
+      
+      
+      
    })
   }
 
   getModelById():Observable<HttpResponseWrapper<IStockCommercialProducts>>{
-    return this.modelService.getById(this.urlRequest+"/",this.idModel)
+    return this.service.getById<IStockCommercialProducts>(this.urlRequest+"/",this.idModel)
   }
   getCategories():Observable<HttpResponseWrapper<ICategory[]>>{
-    return this.categoryService.getAll("Categories/full")
+    return this.service.getAll<ICategory>("Categories/full")
   }
   getUnits():Observable<HttpResponseWrapper<IUnits[]>>{
-    return this.unitsService.getAll("Units/full")
+    return this.service.getAll<IUnits>("Units/full")
   }
   updateModel(){
     if(this.hasChanged())
@@ -112,27 +130,46 @@ export class EditstockcommercialproductsComponent {
         product:{
           id:this.model.product.id,
           name:this.editModelForm.value.nameProduct,
+          productType:ProductType.Commercial,
           productCategories:this.categoryToProductCategory(this.editModelForm.value.categoriesProduct,this.model.product.id)
         },
         aumount:this.editModelForm.value.amount,
         unitsId:this.editModelForm.value.unitsId[0].id,
         unitCost:this.editModelForm.value.unitCost
       }
-      this.modelService.put(updateModel,this.urlRequest).subscribe();
-      this._router.navigate(["/"+this.urlBack])
-      Toast.fire({
-        icon: 'success',
-        title: 'Actualización exitosa',
-      })
+      this.service.put<IStockCommercialProducts,IStockCommercialProducts>(updateModel,this.urlRequest).subscribe(data=>{
+        if(data.getError()){
+          this.navigateUrlBack();
+          ToastManager.showToastError(data.getResponseMessage());
+          return;
+        }
+        this.navigateUrlBack();
+        ToastManager.showToastSuccess("Actualización exitosa");
+      });
       return
     }
-    Toast.fire({
-      icon: 'info',
-      title: 'No has realizado modificaciones',
-    })
-
+    ToastManager.showToastInfo("No has realizado modificaciones");
   }
-  hasChanged():boolean{
+  back():void{
+    if(this.hasChanged()){
+      Swal.fire({
+        title: "¿Estás seguro de salir?",
+        text: "Perderás los cambios",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, descartar cambios",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.navigateUrlBack();
+        }
+      })
+    }else{
+      this.navigateUrlBack();
+    }
+  }
+  private hasChanged():boolean{
     if(this.editModelForm.value.nameProduct!=this.model.product.name){
       return true;
     }
@@ -150,13 +187,13 @@ export class EditstockcommercialproductsComponent {
     }
     return false;
   }
-  categoryToProductCategory(categorias:ICategory[],productId:string):IProductCategory[]{
+  private categoryToProductCategory(categorias:ICategory[],productId:string):IProductCategory[]{
     return categorias.map(c=>{
       let category:IProductCategory={categoryId:c.id,productId:productId,category:c};
       return category;
     });
   }
-  validateCategories(categoriesFromForm: ICategory[], productCategories: IProductCategory[]): boolean {
+  private validateCategories(categoriesFromForm: ICategory[], productCategories: IProductCategory[]): boolean {
     if (categoriesFromForm.length !== productCategories.length) {
         return false;
     }
@@ -164,5 +201,8 @@ export class EditstockcommercialproductsComponent {
     const modelCategoriesIds = productCategories.map(productCategory => productCategory.categoryId);
     const allCategoriesIncluded = formCategoriesIds.every(id => modelCategoriesIds.includes(id));
     return allCategoriesIncluded;
+  }
+  private navigateUrlBack(){
+    this._router.navigate(["/"+this.urlBack]);
   }
 }

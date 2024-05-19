@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ICategory } from '../../../../domain/models/interfaces/ICategory';
-import { INewProductCategory, IProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
-import { IUnits } from '../../../../domain/models/Iunits';
-import { INewStockCommercialProducts, IStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
-import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 import Swal from 'sweetalert2';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { IUnits } from '../../../../domain/models/Iunits';
+import { ICategory } from '../../../../domain/models/interfaces/ICategory';
+import { INewProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
+import { INewStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
+import { ProductType } from '../../../../domain/models/enums/user-type';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 const Toast = Swal.mixin({
   toast: true,
   animation: false,
@@ -26,7 +27,7 @@ const Toast = Swal.mixin({
 export class CreatetockcommercialproductsComponent {
   categories:ICategory[]=[];
   units:IUnits[]=[];
-  editModelForm: FormGroup;
+  createModelForm: FormGroup;
   urlRequest:string="StockCommercialProduct";
   urlBack:string="/stockCommercialProducts";
   idModel:string='';
@@ -51,14 +52,8 @@ export class CreatetockcommercialproductsComponent {
 
 
   constructor(private _router:Router,
-    private _routeData:ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private modelService:GenericService<INewStockCommercialProducts>,
-    private categoryService:GenericService<ICategory>,
-    private unitsService:GenericService<IUnits>){
-      
-    this.idModel=_routeData.snapshot.params['id'];
-    this.editModelForm = new FormGroup({
+    private service:GenericService){
+    this.createModelForm = new FormGroup({
       nameProduct: new FormControl('',Validators.required),
       categoriesProduct:new FormControl([],Validators.required),
       amount:new FormControl('',Validators.required),
@@ -70,19 +65,29 @@ export class CreatetockcommercialproductsComponent {
   
   ngOnInit(): void {
     this.getCategories().subscribe(dataCategory=>{
-      this.categories=dataCategory.getResponse();
+      if(dataCategory.getError()){
+        this.navigateUrlBack();
+        ToastManager.showToastError(dataCategory.getResponseMessage());
+        return;
+      }
+      this.categories=dataCategory.getResponse()!;
       this.getUnits().subscribe(dataUnits=>{
-        this.units=dataUnits.getResponse();
+        if(dataUnits.getError()){
+          this.navigateUrlBack();
+          ToastManager.showToastError(dataUnits.getResponseMessage());
+          return;
+        }
+        this.units=dataUnits.getResponse()!;
         this.loading=false;
       })
     });
   }
 
   getCategories():Observable<HttpResponseWrapper<ICategory[]>>{
-    return this.categoryService.getAll("Categories/full")
+    return this.service.getAll<ICategory>("Categories/full")
   }
   getUnits():Observable<HttpResponseWrapper<IUnits[]>>{
-    return this.unitsService.getAll("Units/full")
+    return this.service.getAll<IUnits>("Units/full")
   }
   saveModel(){
     if(this.validarErrores()){
@@ -90,16 +95,22 @@ export class CreatetockcommercialproductsComponent {
         {
           product:{
             name:this.getProductName(),
-            productCategories:this.categoryToProductCategory(this.getProductCategories())
+            productCategories:this.categoryToProductCategory(this.getProductCategories()),
+            productType:ProductType.Commercial
           },
           aumount:this.getAmount(),
           unitsId:this.getUnitsForm().id,
           unitCost:this.getUnitCost()
         }
-        this.modelService.put(updateModel,this.urlRequest).subscribe();
-        this._router.navigate(["/"+this.urlBack])
-        ToastManager.showToastSuccess("Registro exitoso")
-        return
+        this.service.post<INewStockCommercialProducts,INewStockCommercialProducts>(updateModel,this.urlRequest).subscribe(data=>{
+          if(data.getError()){
+            this.navigateUrlBack();
+            ToastManager.showToastError(data.getResponseMessage());
+            return;
+          }
+          this.navigateUrlBack();
+          ToastManager.showToastSuccess("Registro exitoso");
+        });
     }else{
       ToastManager.showToastWarning("Tienes campos sin rellenar")
     }
@@ -116,66 +127,66 @@ export class CreatetockcommercialproductsComponent {
         confirmButtonText: "Sí, descartar cambios",
       }).then((result) => {
         if (result.isConfirmed) {
-          this._router.navigate(["/"+this.urlBack]);
+          this.navigateUrlBack();
         }
       })
     }else{
-      this._router.navigate(["/"+this.urlBack]);
+      this.navigateUrlBack();
     }
   }
-  hasChanged():boolean{
-    if(this.editModelForm.value.nameProduct!=''){
+  private hasChanged():boolean{
+    if(this.createModelForm.value.nameProduct!=''){
       return true;
     }
-    if(this.editModelForm.value.categoriesProduct.length>0){
+    if(this.createModelForm.value.categoriesProduct.length>0){
       return true;
     }
-    if(this.editModelForm.value.amount!=''){
+    if(this.createModelForm.value.amount!=''){
       return true;
     }
-    if(this.editModelForm.value.unitsId.length>0){
+    if(this.createModelForm.value.unitsId.length>0){
       return true;
     }
-    if(this.editModelForm.value.unitCost!=''){
+    if(this.createModelForm.value.unitCost!=''){
       return true;
     }
     return false;
   }
   private validarErrores():boolean{
-    if(this.editModelForm.get('nameProduct')!.errors){
+    if(this.createModelForm.get('nameProduct')!.errors){
       return false;
     }
-    if(this.editModelForm.get('categoriesProduct')!.errors){
+    if(this.createModelForm.get('categoriesProduct')!.errors){
       return false;
     }
-    if(this.editModelForm.get('amount')!.errors){
+    if(this.createModelForm.get('amount')!.errors){
       return false;
     }
-    if(this.editModelForm.get('unitsId')!.errors){
+    if(this.createModelForm.get('unitsId')!.errors){
       return false;
     }
-    if(this.editModelForm.get('unitCost')!.errors){
+    if(this.createModelForm.get('unitCost')!.errors){
       return false;
     }
     return true;
   }
   private getUnitCost(): number {
-    return this.editModelForm.value.unitCost;
+    return this.createModelForm.value.unitCost;
   }
 
   private getUnitsForm() {
-    return this.editModelForm.value.unitsId[0];
+    return this.createModelForm.value.unitsId[0];
   }
 
   private getAmount(): number {
-    return this.editModelForm.value.amount;
+    return this.createModelForm.value.amount;
   }
   private getProductName(): string {
-    return this.editModelForm.value.nameProduct;
+    return this.createModelForm.value.nameProduct;
   }
 
   private getProductCategories(): ICategory[] {
-    return this.editModelForm.value.categoriesProduct;
+    return this.createModelForm.value.categoriesProduct;
   }
 
   private categoryToProductCategory(categorias:ICategory[]):INewProductCategory[]{
@@ -183,5 +194,8 @@ export class CreatetockcommercialproductsComponent {
       let category:INewProductCategory={categoryId:c.id};
       return category;
     });
+  }
+  private navigateUrlBack(){
+    this._router.navigate(["/"+this.urlBack]);
   }
 }

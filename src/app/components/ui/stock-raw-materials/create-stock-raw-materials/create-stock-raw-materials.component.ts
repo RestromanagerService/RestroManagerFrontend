@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute,Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import Swal from 'sweetalert2';
-import { IUnits } from '../../../../domain/models/Iunits';
-import { INewStockRawMaterials, IStockRawMaterials } from '../../../../domain/models/stock-raw-materials';
-import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
-import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { Component } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Observable } from "rxjs";
+import Swal from "sweetalert2";
+import { IUnits } from "../../../../domain/models/Iunits";
+import { INewStockRawMaterials } from "../../../../domain/models/stock-raw-materials";
+import { ToastManager } from "../../../shared/alerts/toast-manager";
+import { HttpResponseWrapper } from "../../../../infraestructure/generic/http-response-wrapper";
+import { GenericService } from "../../../../infraestructure/generic/generic-service";
+
 
 @Component({
   selector: 'app-create-stock-raw-materials',
@@ -15,9 +16,9 @@ import { ToastManager } from '../../../shared/alerts/toast-manager';
   styleUrl: './create-stock-raw-materials.component.css'
 })
 export class CreateStockRawMaterialsComponent {
+  private URL_REQUEST:string="StockRawMaterial";
   units:IUnits[]=[];
   editModelForm: FormGroup;
-  urlRequest:string="StockRawMaterial";
   urlBack:string="/stockRawMaterials";
   idModel:string='';
   loading:boolean=true;
@@ -32,12 +33,7 @@ export class CreateStockRawMaterialsComponent {
 
 
   constructor(private _router:Router,
-    private _routeData:ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private modelService:GenericService<INewStockRawMaterials>,
-    private unitsService:GenericService<IUnits>){
-      
-    this.idModel=_routeData.snapshot.params['id'];
+    private service:GenericService){
     this.editModelForm = new FormGroup({
       nameRawMaterial: new FormControl('',Validators.required),
       amount:new FormControl('',Validators.required),
@@ -48,13 +44,18 @@ export class CreateStockRawMaterialsComponent {
   
   ngOnInit(): void {
     this.getUnits().subscribe(dataUnits=>{
-        this.units=dataUnits.getResponse();
-        this.loading=false;
+      if(dataUnits.getError()){
+        this.navigateUrlBack();
+        ToastManager.showToastError(dataUnits.getResponseMessage());
+        return;
+      }
+      this.units=dataUnits.getResponse()!;
+      this.loading=false;
     })
   }
 
   getUnits():Observable<HttpResponseWrapper<IUnits[]>>{
-    return this.unitsService.getAll("Units/full")
+    return this.service.getAll<IUnits>("Units/full")
   }
   saveModel(){
     if(this.validarErrores())
@@ -68,9 +69,15 @@ export class CreateStockRawMaterialsComponent {
         unitsId:this.getUnitsForm().id,
         unitCost:this.getUnitCost()
       };
-      this.modelService.post(saveModel,this.urlRequest).subscribe();
-      this._router.navigate(["/"+this.urlBack]);
-      ToastManager.showToastSuccess("Registro exitoso");
+      this.service.post<INewStockRawMaterials,INewStockRawMaterials>(saveModel,this.URL_REQUEST).subscribe(data=>{
+        if(data.getError()){
+          this.navigateUrlBack();
+          ToastManager.showToastError(data.getResponseMessage());
+          return;
+        }
+        this.navigateUrlBack();
+        ToastManager.showToastSuccess("Registro exitoso");
+      });
       return
     }
     ToastManager.showToastInfo("Tienes campos sin rellenar");
@@ -103,11 +110,11 @@ export class CreateStockRawMaterialsComponent {
         confirmButtonText: "Sí, descartar cambios",
       }).then((result) => {
         if (result.isConfirmed) {
-          this._router.navigate(["/"+this.urlBack]);
+          this.navigateUrlBack();
         }
       })
     }else{
-      this._router.navigate(["/"+this.urlBack]);
+      this.navigateUrlBack();
     }
   }
   private hasChanged():boolean{
@@ -139,5 +146,8 @@ export class CreateStockRawMaterialsComponent {
       return false;
     }
     return true;
+  }
+  private navigateUrlBack(){
+    this._router.navigate(["/"+this.urlBack]);
   }
 }

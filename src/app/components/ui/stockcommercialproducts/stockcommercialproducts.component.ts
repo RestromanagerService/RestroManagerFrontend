@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IStockCommercialProducts } from '../../../domain/models/stock-commercial-products';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { BuildPagination } from '../../../domain/models/pagination';
 import Swal from 'sweetalert2';
+import { ToastManager } from '../../shared/alerts/toast-manager';
+import { IStockCommercialProducts } from '../../../domain/models/stock-commercial-products';
+import { BuildPagination } from '../../../domain/models/pagination';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
 
 const Toast = Swal.mixin({
   toast: true,
@@ -18,58 +19,63 @@ const Toast = Swal.mixin({
   styleUrl: './stockcommercialproducts.component.css'
 })
 export class StockcommercialproductsComponent {
+  private URL_REQUEST:string="StockCommercialProduct/";
   stock:IStockCommercialProducts[]=[];
   actualPage:number=1;
   recordsNumber:number=10;
   totalPages:number=2;
   loading:boolean=true;
   valueSearch:string='';
-  
-
-  constructor(private stockService:GenericService<IStockCommercialProducts>) {
+  constructor(private stockService:GenericService) {
     
   }
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-      this.stockService.getAll("StockCommercialProduct/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
+      let pagination=BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch);
+      this.stockService.getAll<IStockCommercialProducts>(this.URL_REQUEST,pagination)
       .subscribe(data=>{
-        this.stock=data.getResponse()
-        if(!this.valueSearch.trim()){
-          if(this.stock.length==0 && this.actualPage!=1){
-            this.actualPage=this.actualPage-1;
-            this.loading=true;
-            this.ngOnInit()
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
+        }
+        else{
+          this.stock=data.getResponse()!;
+          if(this.stock.length<0){
+            ToastManager.showToastInfo("No hay registros por mostrar")
           }
+          this.stockService.getTotalPages(this.URL_REQUEST,pagination)
+          .subscribe(data=>{
+            this.totalPages=data.getError()?1:data.getResponse()!;
+            this.loading=false;
+          });
         }
-        this.stockService.getTotalPages("StockCommercialProduct/",
-        BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-        .subscribe(data=>{
-        this.totalPages=data.getResponse();
-        this.loading=false;
-        });
-      });
-    }
-    else{
-      this.stockService.getAll("StockCommercialProduct/full")
+    });
+    }else{
+      this.stockService.getAll<IStockCommercialProducts>(this.URL_REQUEST+"full")
       .subscribe(data=>{
-        this.stock=data.getResponse()
-        if(this.stock.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.loading=true;
-          this.ngOnInit()
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
         }
-        console.log("entramos a consultar el full")
-        this.totalPages=1;
+        else{
+          this.stock=data.getResponse()!;
+          this.totalPages=1;
+        }
         this.loading=false;
       });
     }
 
   }
+  private resetVariables():void{
+    this.totalPages=1;
+    this.stock=[];
+    this.loading=false;
+  }
 
   deleteProduct(id:string): void{
     Swal.fire({
-      title: "¿Estás seguro de eliminar la categoría?",
+      title: "¿Estás seguro de eliminar el producto comercial?",
       text: "No podrás revertir los cambios",
       icon: "warning",
       showCancelButton: true,
@@ -78,11 +84,15 @@ export class StockcommercialproductsComponent {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.stockService.delete(id,"StockCommercialProduct/").subscribe(data=>this.ngOnInit()); 
-        Toast.fire({
-          icon: 'success',
-          title: 'Eliminación exitosa',
-        })
+        this.stockService.delete(id,this.URL_REQUEST).subscribe(data=>{
+          if(data.getError()){
+            ToastManager.showToastError(data.getResponseMessage());
+          }
+          else{
+            this.ngOnInit();
+            ToastManager.showToastSuccess("Eliminación exitosa")
+          }
+        });
       }
     });    
   }
