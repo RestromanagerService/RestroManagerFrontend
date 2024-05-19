@@ -9,6 +9,9 @@
     <div class="flex justify-center items-center">
         <a (click)="openAddRawMaterialsDrawer()" class=" px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">¿Deseas agregar materias primas del almacén?</a>
     </div>
+    <div class="flex justify-center items-center">
+        <button [routerLink]="['/stockRawMaterials']" class=" px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Ir al almacén</button>
+    </div>
     
 </div>
 <div class="grid w-full gap-6 md:grid-cols-3" style="width:70%; padding: 40px; margin:0 auto">

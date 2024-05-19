@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IUnits } from '../../../../domain/models/Iunits';
-import { IProductFoods, IFood, IFoodRawMaterials } from '../../../../domain/models/interfaces/Iproduct';
+import { IFoodRawMaterials } from '../../../../domain/models/interfaces/Iproduct';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 

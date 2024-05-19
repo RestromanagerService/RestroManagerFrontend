@@ -25,6 +25,7 @@ export class EditProductFoodComponent implements OnChanges{
   }
   ngOnChanges(changes: SimpleChanges): void {
     if(this.productFoodId!=""){
+      this.resetForm();
       this.imageBase64=undefined;
       this.service.getById<IProductFoods>("productFood/",this.productFoodId).subscribe(data=>{
         if(data.getError()){
@@ -107,12 +108,18 @@ export class EditProductFoodComponent implements OnChanges{
   }
   buildForm(){
     this.editForm = this.formBuilder.group({
-      ammount:new FormControl(0,[Validators.pattern("^[+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?$"),Validators.required]),
+      ammount:new FormControl(1,[Validators.pattern("^[+]?[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?$"),Validators.required]),
       units:new FormControl('',Validators.required),
       nameFood:new FormControl('',Validators.required),
       photo:new FormControl(),
       productionCost:new FormControl(0,Validators.required),}
     );
+  }
+  resetForm(){
+    this.editForm.get("ammount")?.setValue(1);
+    this.editForm.get("units")?.setValue('');
+    this.editForm.get("nameFood")?.setValue('');
+    this.editForm.get("productionCost")?.setValue(0);
   }
   isChange(productFoodEdit:IProductFoods):boolean{
     if(productFoodEdit.amount!=this.productFood.amount){

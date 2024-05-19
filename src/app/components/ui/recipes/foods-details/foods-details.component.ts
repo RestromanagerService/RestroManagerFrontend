@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IProductRecipe, IProductFoods, IFood, IFoodRawMaterials } from '../../../../domain/models/interfaces/Iproduct';
+import {IFood, IFoodRawMaterials } from '../../../../domain/models/interfaces/Iproduct';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { DrawerComponent } from '../../../shared/drawer/drawer.component';
 import { ModalComponent } from '../../../shared/modal/modal.component';
-import { IRawMaterial } from '../../../../domain/models/interfaces/IRawMaterial';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 

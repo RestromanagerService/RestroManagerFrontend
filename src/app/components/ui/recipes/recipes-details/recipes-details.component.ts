@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { IProductRecipe, IProductFoods } from '../../../../domain/models/interfaces/Iproduct';
 import { ModalComponent } from '../../../shared/modal/modal.component';
-import { FormGroup } from '@angular/forms';
 import { DrawerComponent } from '../../../shared/drawer/drawer.component';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
@@ -42,7 +41,7 @@ export class RecipesDetailsComponent implements OnInit {
         return;
       }
       this.model=data.getResponse()!;
-      this.foods=this.model.productFoods;
+      this.foods=this.model.productFoods!;
       this.loading=false;
       
     })
@@ -63,6 +62,7 @@ export class RecipesDetailsComponent implements OnInit {
     return this.service.getById<IProductRecipe>("products/",this.idModel)
   }
   openEditFoodModal(editId:string){
+    console.log(editId);
     this.productFoodToEdit=editId;
     this.editFoodModal.openModal();
   }
