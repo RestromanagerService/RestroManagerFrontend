@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ICategory } from '../../../../domain/models/interfaces/ICategory';
-import { IUnits } from '../../../../domain/models/Iunits';
-import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 import { IStockRawMaterials } from '../../../../domain/models/stock-raw-materials';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import Swal from 'sweetalert2';
+import { IUnits } from '../../../../domain/models/Iunits';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 
 @Component({
   selector: 'app-edit-stock-raw-materials',
@@ -16,10 +15,10 @@ import Swal from 'sweetalert2';
   styleUrl: './edit-stock-raw-materials.component.css'
 })
 export class EditStockRawMaterialsComponent {
+  private URL_REQUEST:string="StockRawMaterial";
   model!:IStockRawMaterials;
   units:IUnits[]=[];
   editModelForm: FormGroup;
-  urlRequest:string="StockRawMaterial";
   urlBack:string="/stockRawMaterials";
   idModel:string='';
   loading:boolean=true;
@@ -36,8 +35,7 @@ export class EditStockRawMaterialsComponent {
   constructor(private _router:Router,
     private _routeData:ActivatedRoute,
     private formBuilder: FormBuilder,
-    private modelService:GenericService<IStockRawMaterials>,
-    private unitsService:GenericService<IUnits>){
+    private service:GenericService){
       
     this.idModel=_routeData.snapshot.params['id'];
     this.editModelForm = new FormGroup({
@@ -50,25 +48,35 @@ export class EditStockRawMaterialsComponent {
   
   ngOnInit(): void {
     this.getModelById().subscribe(dataModel=>{
-      this.model=dataModel.getResponse();
+      if(dataModel.getError()){
+        this.navigateUrlBack();
+        ToastManager.showToastError(dataModel.getResponseMessage());
+        return;
+      }
+      this.model=dataModel.getResponse()!;
       this.getUnits().subscribe(dataUnits=>{
-         this.units=dataUnits.getResponse();
-         this.editModelForm.controls['nameRawMaterial'].setValue(this.model.rawMaterial.name);
-         this.editModelForm.controls['amount'].setValue(this.model.aumount);
-         let units:IUnits[]=[];
-         units.push({id:this.model.unitsId,name:this.model.units?.name});
-         this.editModelForm.controls['unitsId'].setValue(units);
-         this.editModelForm.controls['unitCost'].setValue(this.model.unitCost);
-         this.loading=false;
+        if(dataUnits.getError()){
+          this.navigateUrlBack();
+          ToastManager.showToastError(dataUnits.getResponseMessage());
+          return;
+        }
+        this.units=dataUnits.getResponse()!;
+        this.editModelForm.controls['nameRawMaterial'].setValue(this.model.rawMaterial.name);
+        this.editModelForm.controls['amount'].setValue(this.model.aumount);
+        let units:IUnits[]=[];
+        units.push({id:this.model.unitsId,name:this.model.units?.name});
+        this.editModelForm.controls['unitsId'].setValue(units);
+        this.editModelForm.controls['unitCost'].setValue(this.model.unitCost);
+        this.loading=false;
        })
    })
   }
 
   getModelById():Observable<HttpResponseWrapper<IStockRawMaterials>>{
-    return this.modelService.getById(this.urlRequest+"/",this.idModel)
+    return this.service.getById<IStockRawMaterials>(this.URL_REQUEST+"/",this.idModel)
   }
   getUnits():Observable<HttpResponseWrapper<IUnits[]>>{
-    return this.unitsService.getAll("Units/full")
+    return this.service.getAll<IUnits>("Units/full")
   }
   updateModel(){
     if(!this.validarErrores()){
@@ -89,9 +97,15 @@ export class EditStockRawMaterialsComponent {
         unitsId:this.editModelForm.value.unitsId[0].id,
         unitCost:this.editModelForm.value.unitCost
       };
-      this.modelService.put(updateModel,this.urlRequest).subscribe();
-      this._router.navigate(["/"+this.urlBack]);
+      this.service.put<IStockRawMaterials,IStockRawMaterials>(updateModel,this.URL_REQUEST).subscribe(data=>{
+      if(data.getError()){
+        this.navigateUrlBack();
+        ToastManager.showToastError(data.getResponseMessage());
+        return;
+      }
+      this.navigateUrlBack();
       ToastManager.showToastSuccess("Actualización exitosa");
+      });
       return
     }
     ToastManager.showToastInfo("No has realizado modificaciones");
@@ -112,11 +126,11 @@ export class EditStockRawMaterialsComponent {
         confirmButtonText: "Sí, descartar cambios",
       }).then((result) => {
         if (result.isConfirmed) {
-          this._router.navigate(["/"+this.urlBack]);
+          this.navigateUrlBack();
         }
       })
     }else{
-      this._router.navigate(["/"+this.urlBack]);
+      this.navigateUrlBack();
     }
   }
   hasChanged():boolean{
@@ -148,5 +162,8 @@ export class EditStockRawMaterialsComponent {
       return false;
     }
     return true;
+  }
+  private navigateUrlBack(){
+    this._router.navigate(["/"+this.urlBack]);
   }
 }

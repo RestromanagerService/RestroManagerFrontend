@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { IState } from '../../../../domain/models/interfaces/IState';
 import { ICity } from '../../../../domain/models/interfaces/ICity';
 import { IWithName } from '../../../../domain/models/interfaces/IWithName';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { IModelWithName } from '../../../../domain/models/interfaces/IModelWithName';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 const Toast = Swal.mixin({
   toast: true,

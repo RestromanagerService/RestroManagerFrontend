@@ -5,9 +5,9 @@ import { UserDTO } from "../../../../security/DTOs/user-dto";
 import { ICity } from "../../../../domain/models/interfaces/ICity";
 import { ICountry } from "../../../../domain/models/interfaces/ICountry";
 import { IState } from "../../../../domain/models/interfaces/IState";
-import { GenericService } from "../../../../infrastructure/generic/generic-service";
 import { ToastManager } from "../../../shared/alerts/toast-manager";
 import { UserType } from "../../../../security/Auth/user-type";
+import { GenericService } from "../../../../infraestructure/generic/generic-service";
 
 @Component({
   selector: 'app-register-user',

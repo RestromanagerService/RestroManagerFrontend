@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
-import { BuildPagination } from '../../../domain/models/pagination';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
 import { ToastManager } from '../../shared/alerts/toast-manager';
 import { IStockRawMaterials } from '../../../domain/models/stock-raw-materials';
+import { BuildPagination } from '../../../domain/models/pagination';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-stock-raw-materials',
@@ -11,57 +11,60 @@ import { IStockRawMaterials } from '../../../domain/models/stock-raw-materials';
   styleUrl: './stock-raw-materials.component.css'
 })
 export class StockRawMaterialsComponent {
+  private URL_REQUEST:string="StockRawMaterial/";
   stock:IStockRawMaterials[]=[];
   actualPage:number=1;
   recordsNumber:number=10;
   totalPages:number=2;
   loading:boolean=true;
-  urlRequest:string="StockRawMaterial/";
   valueSearch:string='';
 
-  constructor(private stockService:GenericService<IStockRawMaterials>) {
+  constructor(private stockService:GenericService) {
     
   }
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-      this.stockService.getAll(this.urlRequest,BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
+      let pagination=BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch);
+      this.stockService.getAll<IStockRawMaterials>(this.URL_REQUEST,pagination)
       .subscribe(data=>{
-        this.stock=data.getResponse()
-        if(!this.valueSearch.trim()){
-        if(this.stock.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.loading=true;
-          this.ngOnInit()
-        }}
-        this.stockService.getTotalPages(this.urlRequest,
-        BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-        .subscribe(data=>{
-        this.totalPages=data.getResponse();
-        this.loading=false;
-        });
-      });
-    }
-    else{
-      this.stockService.getAll(this.urlRequest+"full")
-      .subscribe(data=>{
-        this.stock=data.getResponse()
-        if(this.stock.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.loading=true;
-          this.ngOnInit()
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
         }
-        console.log("entramos a consultar el full")
-        this.totalPages=1;
+        else{
+          this.stock=data.getResponse()!;
+          if(this.stock.length<0){
+            ToastManager.showToastInfo("No hay registros por mostrar")
+          }
+          this.stockService.getTotalPages(this.URL_REQUEST,pagination)
+          .subscribe(data=>{
+            this.totalPages=data.getError()?1:data.getResponse()!;
+            this.loading=false;
+          });
+        }
+    });
+    }else{
+      this.stockService.getAll<IStockRawMaterials>(this.URL_REQUEST+"full")
+      .subscribe(data=>{
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
+        }
+        else{
+          this.stock=data.getResponse()!;
+          this.totalPages=1;
+        }
         this.loading=false;
       });
     }
 
   }
+  
 
   deleteProduct(id:string): void{
     Swal.fire({
-      title: "¿Estás seguro de eliminar la categoría?",
+      title: "¿Estás seguro de eliminar la materia prima?",
       text: "No podrás revertir los cambios",
       icon: "warning",
       showCancelButton: true,
@@ -70,8 +73,15 @@ export class StockRawMaterialsComponent {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.stockService.delete(id,this.urlRequest).subscribe(data=>this.ngOnInit()); 
-        ToastManager.showToastSuccess("Eliminación exitosa");
+        this.stockService.delete(id,this.URL_REQUEST).subscribe(data=>{
+          if(data.getError()){
+            ToastManager.showToastError(data.getResponseMessage());
+          }
+          else{
+            this.ngOnInit();
+            ToastManager.showToastSuccess("Eliminación exitosa")
+          }
+        });
       }
     });    
   }
@@ -91,5 +101,10 @@ export class StockRawMaterialsComponent {
     this.valueSearch=valueSearch;
     this.loading=true;
     this.ngOnInit();
+  }
+  private resetVariables():void{
+    this.totalPages=1;
+    this.stock=[];
+    this.loading=false;
   }
 }

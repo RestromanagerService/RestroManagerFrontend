@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ICountry } from '../../../domain/models/interfaces/ICountry';
 import { ToastManager } from '../../shared/alerts/toast-manager';
-import { GenericService } from '../../../infrastructure/generic/generic-service';
 import { BuildPagination } from '../../../domain/models/pagination';
 import Swal from 'sweetalert2';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-countries',

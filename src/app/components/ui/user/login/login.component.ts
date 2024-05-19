@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { AuthenticatorJWTService } from '../../../../security/Auth/authenticator-jwt.service';
 import { LoginDTO } from '../../../../security/DTOs/login-dto';
 import Swal from 'sweetalert2';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { EmailDTO } from '../../../../security/DTOs/email-dto';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-login',

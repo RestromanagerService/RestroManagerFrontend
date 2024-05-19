@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
-import { HttpResponseWrapper } from '../../../../infrastructure/generic/http-response-wrapper';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 
 @Component({
   selector: 'app-change-password',

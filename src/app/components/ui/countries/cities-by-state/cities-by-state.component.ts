@@ -4,7 +4,7 @@ import { ICity } from '../../../../domain/models/interfaces/ICity';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BuildPagination } from '../../../../domain/models/pagination';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-cities-by-state',

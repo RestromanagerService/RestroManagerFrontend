@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { UserDTO } from '../../../../security/DTOs/user-dto';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { ResetPasswordDTO } from '../../../../security/DTOs/reset-password-dto';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
 
 @Component({
   selector: 'app-reset-password',

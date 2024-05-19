@@ -1,0 +1,42 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+    <app-loading></app-loading>
+</ng-template>
+<ng-template #loaded>
+<div class="grid grid-cols-1 gap-4 content-center">
+    <div class="flex justify-center items-center">
+        <h3 class="mb-4 text-2xl py-4 font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-xl dark:text-white">{{model?.name}}</h3>
+    </div>
+    <div class="flex justify-center items-center">
+        <a (click)="openAddRawMaterialsDrawer()" class=" px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">¿Deseas agregar materias primas del almacén?</a>
+    </div>
+    
+</div>
+<div class="grid w-full gap-6 md:grid-cols-3" style="width:70%; padding: 40px; margin:0 auto">
+    <div *ngFor="let rawMaterial of rawMaterials" class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex justify-end px-4 pt-4">
+            <button (click)="openEditRawMaterialModal(rawMaterial.id!)" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                </svg>                                   
+            </button>
+            <button (click)="deleteProductFood(rawMaterial.id!)" class="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                  </svg>                  
+            </button>
+        </div>
+        <div class="flex flex-col items-center pb-10">
+            <img class="w-24 h-24 mb-3 rounded-full shadow-lg" [src]="(rawMaterial.food?.photo)?rawMaterial.food?.photo:'../../../../../assets/icono-restromanager.jpg'"/>
+            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{rawMaterial.rawMaterial?.name}}</h5>
+            <span class="text-sm text-gray-500 dark:text-gray-400 m-2">Contiene {{rawMaterial.amount}} {{rawMaterial.units?.symbol}}</span>
+        </div>
+    </div>
+</div>
+
+<app-modal idModal="editFood" #editRawMaterialModal>
+    <app-edit-raw-material [foodRawMaterialsId]="foodRawMaterialsToEdit" [recipeId]="idRecipe" [foodId]="idFood" (updateSuccess)="updateSuccess()"></app-edit-raw-material>
+</app-modal>
+<app-drawer idDrawer="addRawMaterialDrawer" labelDrawer="Almacén de materias primas"  #addRawMaterialDrawer>
+<app-add-raw-materials [foodId]="idFood" (addRawMaterialEvent)="addRawMaterial()"></app-add-raw-materials>
+</app-drawer>
+</ng-template>

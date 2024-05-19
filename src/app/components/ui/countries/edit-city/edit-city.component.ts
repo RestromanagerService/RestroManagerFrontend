@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IState } from '../../../../domain/models/interfaces/IState';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenericService } from '../../../../infrastructure/generic/generic-service';
 import { ICity } from '../../../../domain/models/interfaces/ICity';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
-import { HttpResponseWrapper } from '../../../../infrastructure/generic/http-response-wrapper';
+import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
 
 
 @Component({

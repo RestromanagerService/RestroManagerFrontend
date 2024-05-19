@@ -34,9 +34,6 @@ import { ExpenseGateway } from './domain/models/expense/gateway/expense.gateway'
 import { ExpenseUseCase } from './domain/usecases/expense/expense.usecase';
 import { AddresCardComponent } from './components/shared/footer/addres-card/addres-card.component';
 import { ExpenseModalComponent } from './components/shared/modals/expense-modal/expense-modal.component';
-import { CategoryService } from './infrastructure/category/category.service';
-import { ExpenseService } from './infrastructure/expense/expense.service';
-import { TypeExpenseService } from './infrastructure/type-expense/type-expense.service';
 import { RegisterUserComponent } from './components/ui/user/register-user/register-user.component';
 import { ModalComponent } from './components/shared/modal/modal.component';
 import { TypeExpenseComponent } from './components/ui/type-expense/type-expense.component';
@@ -59,8 +56,11 @@ import { SearchComponent } from './components/shared/search/search.component';
 import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
 import { ChangePasswordComponent } from './components/ui/user/change-password/change-password.component';
 import { FoodsDetailsComponent } from './components/ui/recipes/foods-details/foods-details.component';
-import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
 import { AddRawMaterialsComponent } from './components/ui/recipes/add-raw-materials/add-raw-materials.component';
+import { CategoryService } from './infraestructure/category/category.service';
+import { ExpenseService } from './infraestructure/expense/expense.service';
+import { TypeExpenseService } from './infraestructure/type-expense/type-expense.service';
+import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {

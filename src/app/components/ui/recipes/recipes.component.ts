@@ -1,17 +1,10 @@
-import { Component } from '@angular/core';
-import Swal from 'sweetalert2';
-import { BuildPagination } from '../../../domain/models/pagination';
-import { GenericService } from '../../../infraestructure/generic/generic-service';
-import { IProductRecipe } from '../../../domain/models/interfaces/Iproduct';
+import { Component } from "@angular/core";
+import Swal from "sweetalert2";
+import { IProductRecipe } from "../../../domain/models/interfaces/Iproduct";
+import { BuildPagination } from "../../../domain/models/pagination";
+import { ToastManager } from "../../shared/alerts/toast-manager";
+import { GenericService } from "../../../infraestructure/generic/generic-service";
 
-const Toast = Swal.mixin({
-  toast: true,
-  animation: false,
-  position: 'bottom-right',
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true
-})
 @Component({
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
@@ -19,6 +12,7 @@ const Toast = Swal.mixin({
 })
 export class RecipesComponent {
 
+  private URL_REQUEST:string="products/recipes/";
   recipes:IProductRecipe[]=[]
   actualPage:number=1;
   recordsNumber:number=10;
@@ -26,45 +20,50 @@ export class RecipesComponent {
   valueSearch:string='';
   loading:boolean=true;
 
-  constructor(private recipesService:GenericService<IProductRecipe>) {
+  constructor(private recipesService:GenericService) {
     
   }
 
   ngOnInit(): void {
     if(this.recordsNumber!=0){
-    this.recipesService.getAll("products/recipes/",BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-    .subscribe(data=>{
-      this.recipes=data.getResponse()
-      if(!this.valueSearch.trim()){
-        if(this.recipes.length==0 && this.actualPage!=1){
-          this.actualPage=this.actualPage-1;
-          this.ngOnInit()
-        }
-      }
-      this.recipesService.getTotalPages("products/recipes/",
-        BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch))
-        .subscribe(data=>{
-        this.totalPages=data.getResponse();
-        this.loading=false;
-        });
-    })
-    }else{
-      this.recipesService.getAll("products/recipes/full")
+      let pagination=BuildPagination.build('',this.recordsNumber,this.actualPage,this.valueSearch);
+      this.recipesService.getAll<IProductRecipe>(this.URL_REQUEST,pagination)
       .subscribe(data=>{
-      this.recipes=data.getResponse()
-      if(this.recipes.length==0 && this.actualPage!=1){
-        this.actualPage=this.actualPage-1;
-        this.ngOnInit()
-      }
-      this.totalPages=1;
-      this.loading=false;
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
+        }
+        else{
+          this.recipes=data.getResponse()!;
+          if(this.recipes.length<0){
+            ToastManager.showToastInfo("No hay registros por mostrar")
+          }
+          this.recipesService.getTotalPages(this.URL_REQUEST,pagination)
+          .subscribe(data=>{
+            this.totalPages=data.getError()?1:data.getResponse()!;
+            this.loading=false;
+          });
+        }
+    });
+    }else{
+      this.recipesService.getAll<IProductRecipe>(this.URL_REQUEST+"full")
+      .subscribe(data=>{
+        if(data.getError()){
+          ToastManager.showToastError(data.getResponseMessage());
+          this.resetVariables();
+        }
+        else{
+          this.recipes=data.getResponse()!;
+          this.totalPages=1;
+        }
+        this.loading=false;
       });
     }
   }
 
   deleteProduct(id:string): void{
     Swal.fire({
-      title: "¿Estás seguro de eliminar la categoría?",
+      title: "¿Estás seguro de eliminar la receta?",
       text: "No podrás revertir los cambios",
       icon: "warning",
       showCancelButton: true,
@@ -73,11 +72,15 @@ export class RecipesComponent {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.recipesService.delete(id,"products/").subscribe(data=>this.ngOnInit()); 
-        Toast.fire({
-          icon: 'success',
-          title: 'Eliminación exitosa',
-        })
+        this.recipesService.delete(id,this.URL_REQUEST).subscribe(data=>{
+          if(data.getError()){
+            ToastManager.showToastError(data.getResponseMessage());
+          }
+          else{
+            this.ngOnInit();
+            ToastManager.showToastSuccess("Eliminación exitosa")
+          }
+        });
       }
     });    
   }
@@ -97,5 +100,10 @@ export class RecipesComponent {
     this.valueSearch=valueSearch;
     this.loading=true;
     this.ngOnInit();
+  }
+  private resetVariables():void{
+    this.totalPages=1;
+    this.recipes=[];
+    this.loading=false;
   }
 }

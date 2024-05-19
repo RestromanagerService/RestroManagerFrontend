@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { GenericService } from '../../../infrastructure/generic/generic-service';
 import { ToastManager } from '../../shared/alerts/toast-manager';
 import { IModelWithName } from '../../../domain/models/interfaces/IModelWithName';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
 
 const Toast = Swal.mixin({
   toast: true,

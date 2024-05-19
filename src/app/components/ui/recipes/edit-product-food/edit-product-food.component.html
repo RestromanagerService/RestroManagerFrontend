@@ -1,0 +1,45 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+    <app-loading></app-loading>
+</ng-template>
+<ng-template #loaded>
+<form [formGroup]="editForm" class="max-w-md mx-auto" (submit)="editProductFood()">
+    <div class="flex justify-center items-center flex-col mb-6">
+        <img *ngIf="productFood.food?.photo || imageBase64" class="w-24 h-24 mb-3 rounded-full shadow-lg" [src]="(imageBase64)?'data:image/jpeg;base64,'+imageBase64:productFood.food?.photo"/>
+        <p class="mb-3">{{productFood.food?.name}}</p>
+    </div>
+    <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative z-0 w-full mb-5 group">
+            <label for="nameFood" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del alimento</label>
+            <input type="text" name="nameFood" id="nameFood" formControlName="nameFood" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nombre" required="">
+            <p *ngIf="editForm.get('nameFood')?.touched && editForm.get('nameFood')?.invalid" class="mt-2 text-sm text-red-600 dark:text-red-500">Este campo es obligatorio</p>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <label for="ammount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
+            <input type="number" name="ammount" id="ammount" formControlName="ammount" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cantidad" required="">
+            <p *ngIf="editForm.get('ammount')?.touched && editForm.get('ammount')?.invalid" class="mt-2 text-sm text-red-600 dark:text-red-500">Este campo es obligatorio</p>
+        </div>
+    </div>
+    <div class="grid md:grid-cols-2 md:gap-6">
+        <div class="relative z-0 w-full mb-5 group">
+            <label for="units" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecciona la unidad de medida</label>
+            <select  id="units" formControlName="units"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option *ngFor="let unit of units" [value]="unit.id">{{unit.name}}</option>
+            </select>
+        </div>
+        <div class="relative z-0 w-full mb-5 group">
+            <label for="productionCost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Costo de producción</label>
+            <input type="number" name="productionCost" id="productionCost" formControlName="productionCost" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Costo" required="">
+            <p *ngIf="editForm.get('productionCost')?.touched && editForm.get('productionCost')?.invalid" class="mt-2 text-sm text-red-600 dark:text-red-500">Este campo es obligatorio</p>
+        </div>
+    </div>
+    <div class="relative z-0 w-full mb-5 group">
+        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="photo">Subir fotografía</label>
+        <input formControlName="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="photo" type="file" accept="image/jpeg, image/png, image/gif" (change)="onFileSelected($event)">
+    </div>
+    <div class="flex justify-center mt-5">
+        <button type="submit" [disabled]="!editForm.valid" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-700">
+            Guardar
+        </button>
+    </div>
+</form>
+</ng-template>
