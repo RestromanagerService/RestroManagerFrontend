@@ -19,14 +19,14 @@ export interface INewProduct {
     productCategoriesNumber?:number;
 }
 export interface IProductRecipe {
-    id:string;
+    id?:string;
     name:string;
     productType:ProductType;
-    productFoods:IProductFoods[];
-    productFoodsNumber:number;
-    productCategories:INewProductCategory[];
+    productFoods?:IProductFoods[];
+    productFoodsNumber?:number;
+    productCategories?:INewProductCategory[];
     productCategoriesNumber?:number;
-    productionCost:number;
+    productionCost?:number;
 }
 export interface IProductFoods {
     id?:string;

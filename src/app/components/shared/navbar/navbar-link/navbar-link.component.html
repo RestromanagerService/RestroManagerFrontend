@@ -1,19 +1,23 @@
 <ng-template [ngIf]="item.hasSubItems()" [ngIfElse]="withOutSubItems">
-    <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-        <button class="font-bold custom-navbar-blue text-lg" 
-            type="button" id="user-menu-button" aria-expanded="false" data-dropdown-trigger="hover"
-            data-dropdown-delay = "100"
-            [attr.data-dropdown-toggle]="dropDownId" data-dropdown-placement="bottom">{{ item.getName() }}</button>
-        <!-- Dropdown menu -->
-        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" [id]="dropDownId">
-        <ul class="py-2" aria-labelledby="user-menu-button">
+    <button [id]="'trigger-'+item.getId()" (click)="toggleItem()" data-dropdown-placement="right-start" [attr.data-dropdown-toggle]="'target-'+item.getId()"
+        class="flex items-center justify-between w-full py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-red-500 dark:focus:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent">{{item.getName()}}
+        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 10 6">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 4 4 4-4" />
+        </svg></button>
+    <!-- Dropdown menu -->
+    <div [id]="'target-'+item.getId()"
+        class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
             <li *ngFor="let subItem of item.getSubItems()">
-                <a [routerLink]="subItem.getLink()" class="font-bold custom-navbar-blue block px-4 py-2 text-sm">{{ subItem.getName() }}</a>
+                <a [routerLink]="subItem.getLink()"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{subItem.getName()}}</a>
             </li>
         </ul>
-        </div>
     </div>
 </ng-template>
 <ng-template #withOutSubItems>
-    <a [routerLink]="item.getLink()" class="font-bold custom-navbar-blue text-lg">{{ item.getName() }}</a>
+    <a [routerLink]="item.getLink()"
+        class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0 dark:text-white md:dark:hover:text-red-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">{{item.getName()}}</a>
 </ng-template>

@@ -1,4 +1,4 @@
-<app-search (searchValueEnter)="getChangeValueSearch($event)" ></app-search>
+<app-search class="w-full" (searchValueEnter)="getChangeValueSearch($event)" ></app-search>
 <div *ngFor="let food of foods" class="max-w-sm p-2 m-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <h5 class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white">{{food.name}}</h5>
     <div class="grid md:grid-cols-3 md:gap-2">

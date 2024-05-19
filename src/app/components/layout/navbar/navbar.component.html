@@ -2,41 +2,105 @@
     <p>Cargando... {{loading}}</p>
 </ng-template>
 <ng-template #loaded>
-<div class="py-1 custom-navbar-red ">
-    <div class="flex flex-row">
-        <ng-template [ngIf]="user?.role=='anonimous'" [ngIfElse]="optionRol">
-            <div class="basis-1/4 flex items-center justify-center">
-                <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
-            </div>
-            <div class="basis-1/4 flex items-center justify-start">
-                <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
-            </div>
-            <div class="basis-1/4 flex items-center justify-center">
-                <app-contact-info text="Ingresaste como invitado"></app-contact-info>
-            </div>
-            <div class="flex justify-end items-center space-x-4">
-                <button (click)="openModalLogin()" class="text-white  px-4 py-2">Iniciar sesión</button>
-                <button routerLink="/register" class="text-white px-4 py-2">Registrate</button>
-              </div>
-              
-        </ng-template>
-        <ng-template #optionRol>
-            <div class="basis-1/4 flex items-center justify-center">
-                <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
-            </div>
-            <div class="basis-1/4 flex items-center justify-start">
-                <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
-            </div>
-            <div class="basis-1/4 flex items-center justify-center">
-                <app-contact-info [text]="'Bienvenido '+user?.firstName+' '+user?.lastName"></app-contact-info>
-            </div>
-            <div class="basis-1/2 grid justify-items-end items-center">
-                <button (click)="logout()" class="text-white mr-24">Cerrar sesión</button>       
-            </div>
-        </ng-template>
 
+    <div class="py-1 bg-red-600 ">
+        <div class="flex flex-row">
+            <ng-template [ngIf]="user?.role=='anonimous'" [ngIfElse]="optionRol">
+                <div class="basis-1/4 flex items-center justify-center">
+                    <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
+                </div>
+                <div class="basis-1/4 flex items-center justify-start">
+                    <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
+                </div>
+                <div class="basis-1/4 flex items-center justify-center">
+                    <app-contact-info text="Ingresaste como invitado"></app-contact-info>
+                </div>
+                <div class="flex justify-end items-center space-x-4">
+                    <button (click)="openModalLogin()" class="text-white  px-4 py-2">Iniciar sesión</button>
+                    <button routerLink="/register" class="text-white px-4 py-2">Registrate</button>
+                </div>
+
+            </ng-template>
+            <ng-template #optionRol>
+                <div class="basis-1/4 flex items-center justify-center">
+                    <app-contact-info iconClasses="fa-solid fa-clock" text="7:30 AM - 5:00 PM"></app-contact-info>
+                </div>
+                <div class="basis-1/4 flex items-center justify-start">
+                    <app-contact-info iconClasses="fa-solid fa-phone" text="+ 57 300 768 55 27"></app-contact-info>
+                </div>
+                <div class="basis-1/4 flex items-center justify-center">
+                    <app-contact-info [text]="'Bienvenido '+user?.firstName+' '+user?.lastName"></app-contact-info>
+                </div>
+                <div class="basis-1/2 grid justify-items-end items-center">
+                    <button (click)="logout()" class="text-white mr-24">Cerrar sesión</button>
+                </div>
+            </ng-template>
+
+        </div>
     </div>
-</div>
+    <nav class="py-2 custom-navbar-orange border-gray-200 dark:bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a [routerLink]="['/']" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="../../../../assets/icono-restromanager.jpg" class="h-8 sm:h-8 md:h-16 lg:h-16" alt="logo">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Restromanager</span>
+            </a>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-red-500  rounded-full md:me-0 focus:ring-4 focus:ring-red-600 dark:focus:ring-red-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom" (click)="toggleUserMenu()">
+                    <img [src]="user?.photo || '../../../../assets/avatar.jpg'" alt="User profile"
+                        class="w-8 h-8 sm:h-8 sm:w-8 md:h-16 md:w-16 lg:h-16 lg:w-16 rounded-full">
+                </button>
+                <!-- Dropdown menu -->
+                <div
+                    class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                    id="user-dropdown">
+                    <div *ngIf="user?.role!='anonimous'">
+                        <div class="px-4 py-3">
+                            <span
+                                class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{user?.firstName}} {{user?.lastName}}</span>
+                        </div>
+                        <ul class="py-2" aria-labelledby="user-menu-button">
+                            <li>
+                                <a [routerLink]="['/user/edit']"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Mi perfil</a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/user/changePassword']"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Cambiar contraseña</a>
+                            </li>
+                            <li>
+                                <button (click)="logout()"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Cerrar
+                                    sesión</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Abrir menú</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border custom-navbar-orange rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li *ngFor="let item of items">
+                        <app-navbar-link [item]="item"></app-navbar-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--
 <div class="py-2 custom-navbar-orange">
     <div class="flex flex-row">
         <div  class="basis-1/4 flex justify-center items-center">
@@ -61,6 +125,7 @@
         
     </div>
 </div>
+-->
 </ng-template>
 
 
@@ -68,5 +133,3 @@
     <!-- Contenido del modal aquí -->
     <app-login (loginSuccess)="loginSuccess()"></app-login>
 </app-modal>
-
-

@@ -37,7 +37,7 @@
             <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{food.food?.name}}</h5>
             <span class="text-sm text-gray-500 dark:text-gray-400 m-2">Contiene {{food.amount}} {{food.units?.name}}</span>
             <div class="flex mt-4 md:mt-6">
-                <a [routerLink]="['/recipe',idModel,'food','rawMaterials',food.id]" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Ver materias primas</a>
+                <a [routerLink]="['/recipe',idModel,'food','rawMaterials',food.foodId]" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Ver materias primas</a>
             </div>
         </div>
     </div>

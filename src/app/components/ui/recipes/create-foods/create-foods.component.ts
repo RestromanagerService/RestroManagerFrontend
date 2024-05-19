@@ -85,7 +85,7 @@ export class CreateFoodsComponent implements OnInit {
       units:new FormControl('',Validators.required),
       nameFood:new FormControl('',Validators.required),
       photo:new FormControl(),
-      productionCost:new FormControl(0,[Validators.min(0.001),Validators.required])}
+      productionCost:new FormControl(0,[Validators.min(0),Validators.required])}
     );
   }
 }

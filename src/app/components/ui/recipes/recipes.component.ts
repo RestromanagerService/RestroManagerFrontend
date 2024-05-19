@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import Swal from "sweetalert2";
 import { IProductRecipe } from "../../../domain/models/interfaces/Iproduct";
 import { BuildPagination } from "../../../domain/models/pagination";
 import { ToastManager } from "../../shared/alerts/toast-manager";
+import { ModalComponent } from "../../shared/modal/modal.component";
 import { GenericService } from "../../../infraestructure/generic/generic-service";
 
 @Component({
@@ -18,7 +19,10 @@ export class RecipesComponent {
   recordsNumber:number=10;
   totalPages:number=2;
   valueSearch:string='';
+  recipeToEdit:string='';
   loading:boolean=true;
+  @ViewChild('modalRecipeCreate') modalCreate!: ModalComponent;
+  @ViewChild('modalRecipeEdit') modalEdit!: ModalComponent;
 
   constructor(private recipesService:GenericService) {
     
@@ -72,7 +76,7 @@ export class RecipesComponent {
       confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.recipesService.delete(id,this.URL_REQUEST).subscribe(data=>{
+        this.recipesService.delete(id,"products/").subscribe(data=>{
           if(data.getError()){
             ToastManager.showToastError(data.getResponseMessage());
           }
@@ -83,6 +87,10 @@ export class RecipesComponent {
         });
       }
     });    
+  }
+  editRecipe(recipe:string){
+    this.recipeToEdit=recipe;
+    this.modalEdit.openModal();
   }
 
   getChange(page:number){
@@ -105,5 +113,16 @@ export class RecipesComponent {
     this.totalPages=1;
     this.recipes=[];
     this.loading=false;
+  }
+  openModalCreate() {
+    this.modalCreate.openModal();
+  }
+  recipeCreated(){
+    this.modalCreate.closeModal();
+    this.ngOnInit();
+  }
+  recipeEdit(){
+    this.modalEdit.closeModal();
+    this.ngOnInit();
   }
 }

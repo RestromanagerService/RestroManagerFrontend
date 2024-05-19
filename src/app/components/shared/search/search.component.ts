@@ -8,8 +8,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SearchComponent {
   @Input() describeSearch:string="Buscar";
   @Output() searchValueEnter = new EventEmitter<string>();
-  @Output() searchValueClick = new EventEmitter<string>();
-  @Output() restoreValueClick = new EventEmitter<string>();
   inputChange(event: Event){
     const target = event.target as HTMLSelectElement;
     if (target) {
@@ -17,9 +15,6 @@ export class SearchComponent {
       this.searchValueEnter.emit(value);
     }
 
-  }
-  searchClick(){
-    
   }
 
 }

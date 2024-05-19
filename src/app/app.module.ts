@@ -49,18 +49,20 @@ import { AuthInterceptor } from './security/helper/auth-interceptor';
 import { EditUserComponent } from './components/ui/user/edit-user/edit-user.component';
 import { WelcomeComponent } from './components/ui/welcome/welcome.component';
 import { ResetPasswordComponent } from './components/ui/user/reset-password/reset-password.component';
-import { EditProductFoodComponent } from './components/ui/recipes/edit-product-food/edit-product-food.component';
 import { AddFoodsComponent } from './components/ui/recipes/add-foods/add-foods.component';
 import { DrawerComponent } from './components/shared/drawer/drawer.component';
 import { SearchComponent } from './components/shared/search/search.component';
-import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
 import { ChangePasswordComponent } from './components/ui/user/change-password/change-password.component';
 import { FoodsDetailsComponent } from './components/ui/recipes/foods-details/foods-details.component';
 import { AddRawMaterialsComponent } from './components/ui/recipes/add-raw-materials/add-raw-materials.component';
 import { CategoryService } from './infraestructure/category/category.service';
 import { ExpenseService } from './infraestructure/expense/expense.service';
 import { TypeExpenseService } from './infraestructure/type-expense/type-expense.service';
+import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
+import { EditProductFoodComponent } from './components/ui/recipes/edit-product-food/edit-product-food.component';
 import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
+import { CreateRecipeComponent } from './components/ui/recipes/create-recipe/create-recipe.component';
+import { EditRecipeComponent } from './components/ui/recipes/edit-recipe/edit-recipe.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
@@ -129,7 +131,9 @@ export const expenseCreaterUseCaseProvider = {
     CreateFoodsComponent,
     ChangePasswordComponent,
     FoodsDetailsComponent,
-    AddRawMaterialsComponent
+    AddRawMaterialsComponent,
+    CreateRecipeComponent,
+    EditRecipeComponent
     
     
   ],
