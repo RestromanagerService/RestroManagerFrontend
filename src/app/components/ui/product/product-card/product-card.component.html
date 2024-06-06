@@ -1,0 +1,28 @@
+<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white m-4">
+  <img class="w-full" [src]="product.photo" alt="Foto producto">
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2 text-center">{{ product.name }}</div>
+    <p class="text-gray-700 text-base text-center">
+      {{ getProductTypeLabel() }}
+    </p>
+  </div>
+  <div class="px-6 pt-4 pb-4 text-center flex justify-center items-center space-x-2">
+    <a [routerLink]="['/products/detail', product.id]" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+      Ver $ {{ product.productionCost }}
+    </a>
+  </div>
+  <div class="px-6 pt-4 pb-4 text-center flex justify-center items-center space-x-2">
+    <button (click)="decrementQuantity()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+      -
+    </button>
+    <div class="text-center w-12 border-2 border-red-500 rounded-full text-red-500 py-2">
+      {{ quantity }}
+    </div>
+    <button (click)="incrementQuantity()" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full">
+      +
+    </button>
+    <button (click)="addToCart()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full">
+      Añadir
+    </button>
+  </div>
+</div>

@@ -30,35 +30,47 @@ import { EditCityComponent } from './components/ui/countries/edit-city/edit-city
 import { ChangePasswordComponent } from './components/ui/user/change-password/change-password.component';
 import { FoodsDetailsComponent } from './components/ui/recipes/foods-details/foods-details.component';
 import { LoginComponent } from './components/ui/user/login/login.component';
+import { ProductComponent } from './components/ui/product/product.component';
+import { ProductDetailComponent } from './components/ui/product/product-detail/product-detail.component';
+import { CartComponent } from './components/ui/cart/cart.component';
+import { GetOrderComponent } from './components/ui/get-order/get-order.component';
+import { OrderManipulationComponent } from './components/ui/order-manipulation/order-manipulation.component';
+import { OrderDetailComponent } from './components/ui/order-manipulation/order-detail/order-detail.component';
+import { OrderManipulationWaiterComponent } from './components/ui/order-manipulation/order-manipulation-waiter/order-manipulation-waiter.component';
 
 const routes: Routes = [
   { path: '',component: WelcomeComponent},
   { path: 'categories',component: CategoriesComponent, canActivate:[AdminGuard]},
   { path: 'categories/edit/:id',component: EditCategoriesComponent,canActivate:[AdminGuard]},
   { path: 'categories/create',component: CreateCategoriesComponent,canActivate:[AdminGuard]},
-  { path: 'stockCommercialProducts',component: StockcommercialproductsComponent,canActivate:[AdminGuard]},
-  { path: 'stockCommercialProducts/edit/:id',component: EditstockcommercialproductsComponent,canActivate:[AdminGuard]},
-  { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent,canActivate:[AdminGuard]},
-  { path: 'stockRawMaterials',component: StockRawMaterialsComponent,canActivate:[AdminGuard]},
-  { path: 'stockRawMaterials/edit/:id',component: EditStockRawMaterialsComponent,canActivate:[AdminGuard]},
-  { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent,canActivate:[AdminGuard]},
-  { path: 'recipes',component: RecipesComponent,canActivate:[AdminGuard]},
-  { path: 'recipes/details/:id',component: RecipesDetailsComponent,canActivate:[AdminGuard]},
-  { path: 'recipe/:idRecipe/food/rawMaterials/:id',component: FoodsDetailsComponent,canActivate:[AdminGuard]},
-  { path: 'typeExpenses',component:TypeExpenseComponent,canActivate:[AdminGuard]},
-  { path: 'expenses',component:ExpenseComponent,canActivate:[AdminGuard]},
+  { path: 'stockCommercialProducts',component: StockcommercialproductsComponent},
+  { path: 'stockCommercialProducts/edit/:id',component: EditstockcommercialproductsComponent},
+  { path: 'stockCommercialProducts/create',component: CreatetockcommercialproductsComponent},
+  { path: 'stockRawMaterials',component: StockRawMaterialsComponent},
+  { path: 'stockRawMaterials/edit/:id',component: EditStockRawMaterialsComponent},
+  { path: 'stockRawMaterials/create',component: CreateStockRawMaterialsComponent},
+  { path: 'recipes',component: RecipesComponent},
+  { path: 'recipes/details/:id',component: RecipesDetailsComponent},
+  { path: 'recipe/:idRecipe/food/rawMaterials/:id',component: FoodsDetailsComponent},
+  { path: 'typeExpenses',component:TypeExpenseComponent},
+  { path: 'expenses',component:ExpenseComponent},
   { path: 'register',component: RegisterUserComponent},
   { path: 'user/confirmEmail',component: ConfirmEmailComponent},
   { path: 'user/edit',component: EditUserComponent},
   { path: 'user/resetPassword',component: ResetPasswordComponent},
   { path: 'user/changePassword', component:ChangePasswordComponent},
-  { path: 'countries', component:CountriesComponent,canActivate:[AdminGuard]},
-  { path: 'country/states/:id', component:StatesByCountryComponent,canActivate:[AdminGuard]},
-  { path: 'state/:idCountry/cities/:idState', component:CitiesByStateComponent,canActivate:[AdminGuard]},
-  { path: 'cities/:idCountry/create/:id', component:AddCityComponent,canActivate:[AdminGuard]},
-  { path: 'city/edit/:idCountry/:idState/:idCity', component:EditCityComponent,canActivate:[AdminGuard]},
-
-
+  { path: 'countries', component:CountriesComponent},
+  { path: 'country/states/:id', component:StatesByCountryComponent},
+  { path: 'state/:idCountry/cities/:idState', component:CitiesByStateComponent},
+  { path: 'cities/:idCountry/create/:id', component:AddCityComponent},
+  { path: 'city/edit/:idCountry/:idState/:idCity', component:EditCityComponent},
+  { path: 'products',component:ProductComponent},
+  { path: 'products/detail/:id', component:ProductDetailComponent},
+  { path: 'cart', component:CartComponent},
+  { path: 'getOrder', component:GetOrderComponent},
+  { path: 'order-manipulation', component:OrderManipulationComponent},
+  { path: 'order-detail/:id',component:OrderDetailComponent},
+  { path: 'order-manipulation-waiter',component:OrderManipulationWaiterComponent}
 ];
 
 @NgModule({

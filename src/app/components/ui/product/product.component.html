@@ -1,0 +1,26 @@
+<ng-template [ngIf]="loading" [ngIfElse]="loaded">
+  <app-loading></app-loading>
+</ng-template>
+<ng-template #loaded>
+  <div class="container mx-auto py-2">
+      <h2 class="text-2xl font-bold text-center my-6 blue-title py-2">Productos</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div *ngFor="let product of products">
+              <app-product-card [product]="product"></app-product-card>
+          </div>
+      </div>
+  </div>
+  <nav aria-label="Page navigation example" class="flex justify-center my-4">
+      <ul class="inline-flex -space-x-px text-sm">
+        <li>
+          <button (click)="changePage(actualPage - 1)" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</button>
+        </li>
+        <li *ngFor="let page of pages; let i = index">
+          <button (click)="changePage(page)" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{{ page }}</button>
+        </li>
+        <li>
+          <button (click)="changePage(actualPage + 1)" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</button>
+        </li>
+      </ul>
+    </nav>
+</ng-template>

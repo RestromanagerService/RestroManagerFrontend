@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 const Toast = Swal.mixin({
     toast: true,
     animation: false,
@@ -6,30 +7,44 @@ const Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true
-  });
+});
+
 export class ToastManager {
-    static showToastInfo(title:string) {
+    static showToastInfo(title: string) {
         Toast.fire({
-          icon: 'info',
-          title: title
+            icon: 'info',
+            title: title
         });
     }
-    static showToastError(title:string) {
+
+    static showToastError(title: string) {
         Toast.fire({
-          icon: 'error',
-          title: title
+            icon: 'error',
+            title: title
         });
     }
-    static showToastWarning(title:string) {
+
+    static showToastWarning(title: string) {
         Toast.fire({
-          icon: 'warning',
-          title: title
+            icon: 'warning',
+            title: title
         });
     }
-    static showToastSuccess(title:string) {
+
+    static showToastSuccess(title: string) {
         Toast.fire({
-          icon: 'success',
-          title: title
+            icon: 'success',
+            title: title
+        });
+    }
+
+    static showCenteredMessage(title: string, text: string, icon: 'info' | 'error' | 'warning' | 'success') {
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: icon,
+            position: 'center',
+            showConfirmButton: true
         });
     }
 }

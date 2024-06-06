@@ -49,20 +49,31 @@ import { AuthInterceptor } from './security/helper/auth-interceptor';
 import { EditUserComponent } from './components/ui/user/edit-user/edit-user.component';
 import { WelcomeComponent } from './components/ui/welcome/welcome.component';
 import { ResetPasswordComponent } from './components/ui/user/reset-password/reset-password.component';
+import { EditProductFoodComponent } from './components/ui/recipes/edit-product-food/edit-product-food.component';
 import { AddFoodsComponent } from './components/ui/recipes/add-foods/add-foods.component';
 import { DrawerComponent } from './components/shared/drawer/drawer.component';
 import { SearchComponent } from './components/shared/search/search.component';
+import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
 import { ChangePasswordComponent } from './components/ui/user/change-password/change-password.component';
 import { FoodsDetailsComponent } from './components/ui/recipes/foods-details/foods-details.component';
+import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
 import { AddRawMaterialsComponent } from './components/ui/recipes/add-raw-materials/add-raw-materials.component';
+import { ProductGateway } from './domain/models/product/gateway/product.gateway';
+import { ProductUseCase } from './domain/usecases/product/product.usecase';
+import { ProductComponent } from './components/ui/product/product.component';
+import { ProductCardComponent } from './components/ui/product/product-card/product-card.component';
+import { ProductDetailComponent } from './components/ui/product/product-detail/product-detail.component';
+import { CartComponent } from './components/ui/cart/cart.component';
+import { CartItemComponent } from './components/ui/cart/cart-item/cart-item.component';
+import { CartSummaryComponent } from './components/ui/cart/cart-summary/cart-summary.component';
+import { GetOrderComponent } from './components/ui/get-order/get-order.component';
+import { OrderManipulationComponent } from './components/ui/order-manipulation/order-manipulation.component';
+import { OrderDetailComponent } from './components/ui/order-manipulation/order-detail/order-detail.component';
+import { OrderManipulationWaiterComponent } from './components/ui/order-manipulation/order-manipulation-waiter/order-manipulation-waiter.component';
+import { ProductService } from './infraestructure/product/product.service';
 import { CategoryService } from './infraestructure/category/category.service';
 import { ExpenseService } from './infraestructure/expense/expense.service';
 import { TypeExpenseService } from './infraestructure/type-expense/type-expense.service';
-import { CreateFoodsComponent } from './components/ui/recipes/create-foods/create-foods.component';
-import { EditProductFoodComponent } from './components/ui/recipes/edit-product-food/edit-product-food.component';
-import { EditRawMaterialComponent } from './components/ui/recipes/edit-raw-material/edit-raw-material.component';
-import { CreateRecipeComponent } from './components/ui/recipes/create-recipe/create-recipe.component';
-import { EditRecipeComponent } from './components/ui/recipes/edit-recipe/edit-recipe.component';
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
@@ -82,6 +93,13 @@ export const expenseCreaterUseCaseProvider = {
   provide: ExpenseGateway,
   useFactory: expenseCreaterUseCaseFactory,
   deps: [ExpenseGateway]
+}
+
+const productCreaterUseCaseFactory = (productGateway : ProductGateway) => new ProductUseCase(productGateway);
+export const productCreaterUseCaseProvider = {
+  provide: ProductGateway,
+  useFactory: productCreaterUseCaseFactory,
+  deps: [ProductGateway]
 }
 
 @NgModule({
@@ -132,8 +150,16 @@ export const expenseCreaterUseCaseProvider = {
     ChangePasswordComponent,
     FoodsDetailsComponent,
     AddRawMaterialsComponent,
-    CreateRecipeComponent,
-    EditRecipeComponent
+    ProductComponent,
+    ProductCardComponent,
+    ProductDetailComponent,
+    CartComponent,
+    CartItemComponent,
+    CartSummaryComponent,
+    GetOrderComponent,
+    OrderManipulationComponent,
+    OrderDetailComponent,
+    OrderManipulationWaiterComponent
     
     
   ],
@@ -148,6 +174,7 @@ export const expenseCreaterUseCaseProvider = {
   providers: [categoryCreaterUseCaseProvider,{provide:CategoryGateway, useClass: CategoryService},
     typeExpenseCreaterUseCaseProvider, {provide:TypeExpenseGateway, useClass:TypeExpenseService},
     expenseCreaterUseCaseProvider, {provide: ExpenseGateway, useClass:ExpenseService},
+    productCreaterUseCaseProvider, {provide:ProductGateway, useClass: ProductService},
     {provide: HTTP_INTERCEPTORS,useClass: AuthInterceptor,multi:true},
     provideHttpClient(),
     provideClientHydration(),

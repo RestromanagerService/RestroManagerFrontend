@@ -1,0 +1,7 @@
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.blue-title {
+    color:#2A435D
+}
