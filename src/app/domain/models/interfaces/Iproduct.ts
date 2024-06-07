@@ -65,6 +65,7 @@ export interface INewFood {
 }
 
 export interface IItemCart{
+    id?:string;
     productId:string;
     product?:IProduct;
     quantity: number;
