@@ -74,6 +74,9 @@ import { ProductService } from './infraestructure/product/product.service';
 import { CategoryService } from './infraestructure/category/category.service';
 import { ExpenseService } from './infraestructure/expense/expense.service';
 import { TypeExpenseService } from './infraestructure/type-expense/type-expense.service';
+import { CreateRecipeComponent } from './components/ui/recipes/create-recipe/create-recipe.component';
+import { EditRecipeComponent } from './components/ui/recipes/edit-recipe/edit-recipe.component';
+
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
 export const categoryCreaterUseCaseProvider = {
@@ -124,6 +127,8 @@ export const productCreaterUseCaseProvider = {
     CreateStockRawMaterialsComponent,
     RecipesComponent,
     RecipesDetailsComponent,
+    CreateRecipeComponent,
+    EditRecipeComponent,
     TypeExpenseComponent,
     AddresCardComponent,
     ExpenseComponent,
