@@ -53,6 +53,7 @@ export class AuthenticatorJWTService {
       }
       var decodedToken=jwtDecode<UserClaim>(token);
       return {role:decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'],
+              nickName:decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
               firstName:decodedToken.FirstName,
               lastName:decodedToken.LastName,
               photo:decodedToken.Photo,

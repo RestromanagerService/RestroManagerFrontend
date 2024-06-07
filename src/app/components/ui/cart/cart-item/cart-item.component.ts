@@ -13,16 +13,18 @@ export class CartItemComponent {
   constructor(private cartService: CartService) {}
 
   removeItem() {
-    this.cartService.removeItemFromCart(this.item.id);
+    this.cartService.removeItemFromCart(this.item.productId);
   }
 
   incrementCount() {
-    this.cartService.updateItemCount(this.item.id, this.item.count + 1);
+    this.cartService.updateItemCount(this.item.productId, this.item.quantity + 1);
   }
 
   decrementCount() {
-    if (this.item.count > 1) {
-      this.cartService.updateItemCount(this.item.id, this.item.count - 1);
+    if (this.item.quantity > 1) {
+      this.cartService.updateItemCount(this.item.productId, this.item.quantity - 1);
     }
   }
+
 }
+

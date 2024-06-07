@@ -11,6 +11,7 @@ export interface IProduct {
     productCategories:IProductCategory[];
     productCategoriesNumber?:number;
     photo?:string;
+    price?:number;
 }
 export interface INewProduct {
     name:string;
@@ -18,6 +19,7 @@ export interface INewProduct {
     productionCost?:number;
     productCategories:INewProductCategory[];
     productCategoriesNumber?:number;
+    price?:number;
 }
 export interface IProductRecipe {
     id?:string;
@@ -28,6 +30,7 @@ export interface IProductRecipe {
     productCategories?:INewProductCategory[];
     productCategoriesNumber?:number;
     productionCost?:number;
+    price?:number;
 }
 export interface IProductFoods {
     id?:string;
@@ -62,9 +65,8 @@ export interface INewFood {
 }
 
 export interface IItemCart{
-    id: string;
-    name?: string;
-    count: number;
-    value?: number;
-    photo?: string;
+    productId:string;
+    product?:IProduct;
+    quantity: number;
+    value?:number;
 }

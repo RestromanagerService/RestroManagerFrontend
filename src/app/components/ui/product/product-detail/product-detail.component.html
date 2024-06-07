@@ -2,7 +2,7 @@
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div class="p-4 flex justify-center items-center">
-                <img [src]="product.photo" alt="Foto producto" class="w-full max-w-sm h-auto rounded-lg shadow-md">
+                <img [src]="(product.photo)?product.photo:'../../../../../assets/icono-restromanager.jpg'" alt="Foto producto" class="w-full max-w-sm h-auto rounded-lg shadow-md">
             </div>
             <div class="p-4 flex flex-col justify-center">
                 <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>

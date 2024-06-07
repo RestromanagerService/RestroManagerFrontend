@@ -1,13 +1,14 @@
 <div class="flex items-center space-x-4 p-2 border-b border-gray-200">
-    <img [src]="item.photo" alt="Producto" class="w-16 h-16 rounded-lg shadow-md">
+    <img [src]="(item.product?.photo)?item.product?.photo:'../../../../../assets/icono-restromanager.jpg'" alt="Producto" class="w-16 h-16 rounded-lg shadow-md">
     <div class="flex-1">
-      <h3 class="text-lg font-semibold">{{ item.name }}</h3>
-      <p class="text-gray-600">Cantidad: {{ item.count }}</p>
-      <p class="text-gray-600">Valor: {{ item.value | currency }}</p>
+      <h3 class="text-lg font-semibold">{{ item.product?.name}}</h3>
+      <p class="text-gray-600">Cantidad: {{ item.quantity }}</p>
+      <p class="text-gray-600">Valor: {{ item.product?.price | currency }}</p>
+      <p class="text-gray-600">SubTotal: {{ item.value| currency }}</p>
     </div>
     <div class="flex items-center space-x-2">
       <button (click)="decrementCount()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-2 py-1 rounded">-</button>
-      <span class="px-2">{{ item.count }}</span>
+      <span class="px-2">{{ item.quantity }}</span>
       <button (click)="incrementCount()" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-2 py-1 rounded">+</button>
       <button (click)="removeItem()" class="text-red-500 hover:text-red-700 font-bold">X</button>
     </div>

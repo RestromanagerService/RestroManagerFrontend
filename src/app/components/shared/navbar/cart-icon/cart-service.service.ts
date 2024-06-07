@@ -124,10 +124,9 @@ export class CartService {
     } else {
       this.updateCartTimestamp(cartData);
     }
-
-    const existingItem = cartData.items.find((i: IItemCart) => i.id === item.id);
+    const existingItem = cartData.items.find((i: IItemCart) => i.productId === item.productId);
     if (existingItem) {
-      existingItem.count += item.count;
+      existingItem.count += item.quantity;
     } else {
       cartData.items.push(item);
     }
@@ -137,25 +136,23 @@ export class CartService {
   removeItemFromCart(itemId: string) {
     const cartData = this.getCartData();
     if (cartData) {
-      cartData.items = cartData.items.filter((item: IItemCart) => item.id !== itemId);
+      cartData.items = cartData.items.filter((item: IItemCart) => item.productId !== itemId);
       this.saveCartData(cartData);
     }
   }
-
   updateItemCount(itemId: string, count: number) {
     const cartData = this.getCartData();
     if (cartData) {
-      const item = cartData.items.find((i: IItemCart) => i.id === itemId);
+      const item = cartData.items.find((i: IItemCart) => i.productId === itemId);
       if (item) {
         item.count = count;
       }
       this.saveCartData(cartData);
     }
   }
-
   getItemCount(): number {
     const items = this.getCartItems();
-    return items.reduce((total: number, item: IItemCart) => total += item.count, 0);
+    return items.reduce((total: number, item: IItemCart) => total += item.quantity, 0);
   }
 
   private checkAndRemoveExpiredCart() {

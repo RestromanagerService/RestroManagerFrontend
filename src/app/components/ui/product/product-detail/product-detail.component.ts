@@ -26,18 +26,12 @@ export class ProductDetailComponent implements OnInit {
     this.getProductDetails(productId);
   }
 
-  validatePhoto() {
-    if (!this.product.photo || this.product.photo.trim() === "") {
-      this.product.photo = "https://cdn.inoutdelivery.com/hotamericas.inoutdelivery.com.co/xl/1641566456602-pastas_spaghetti-a-la-bolagnesa.webp";
-    }
-  }
 
   getProductDetails(productId: string): void {
     this.genericService.getById<IProduct>(this.URL_REQUEST, productId).subscribe(
       (response: HttpResponseWrapper<IProduct>) => {
         if (!response.getError()) {
           this.product = response.getResponse()!;
-          this.validatePhoto();
         } else {
           console.error('Error fetching product details:', response.getResponseMessage());
         }
@@ -73,13 +67,13 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart(): void {
     if (this.quantity > 0) {
-      this.cartService.addItemToCart({
-        id: this.product.id,
-        name: this.product.name,
-        count: this.quantity,
-        value: this.product.productionCost,
-        photo: this.product.photo
-      });
+      //this.cartService.addItemToCart({
+      //  id: this.product.id,
+      //  name: this.product.name,
+      //  count: this.quantity,
+      //  value: this.product.productionCost,
+      //  photo: this.product.photo
+      //});
     }
   }
 }

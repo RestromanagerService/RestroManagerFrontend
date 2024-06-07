@@ -14,11 +14,11 @@ export class CartSummaryComponent {
   constructor(private cartService: CartService) {}
 
   getTotalCost(): number {
-    return this.items.reduce((total, item) => total + (item.value ?? 0) * item.count, 0);
+    return this.items.reduce((total, item) => total + (item.product?.price ?? 0) * item.quantity, 0);
   }
   
   getTotalItems(): number {
-    return this.items.reduce((total, item) => total + item.count, 0);
+    return this.items.reduce((total, item) => total + item.quantity, 0);
   }
 
   continuePurchase() {

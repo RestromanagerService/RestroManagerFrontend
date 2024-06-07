@@ -2,7 +2,6 @@
     <p>Cargando... {{loading}}</p>
 </ng-template>
 <ng-template #loaded>
-
     <div class="py-1 bg-red-600 ">
         <div class="flex flex-row">
             <ng-template [ngIf]="user?.role=='anonimous'" [ngIfElse]="optionRol">
@@ -37,6 +36,7 @@
             </ng-template>
 
         </div>
+
     </div>
     <nav class="py-2 custom-navbar-orange border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -96,36 +96,11 @@
                     <li *ngFor="let item of items">
                         <app-navbar-link [item]="item"></app-navbar-link>
                     </li>
+                    <li> <app-cart-icon></app-cart-icon> </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <!--
-<div class="py-2 custom-navbar-orange">
-    <div class="flex flex-row">
-        <div  class="basis-1/4 flex justify-center items-center">
-            <a href="/">
-                <img src="../../../../assets/icono-restromanager.jpg" class="w-14 h-10 sm:w-24 sm:h-18 md:w-30 md:h-22 lg:w-36 lg:h-28"  alt="logo">
-            </a>
-            
-        </div>
-        <div *ngFor="let item of items" class="basis-1/2 flex justify-center items-center flex-row space-x-12">
-            <app-navbar-link [item]="item" [dropDownId]="item.name"></app-navbar-link>            
-        </div> 
-        <div class="basis-1/4 flex justify-between items-center">
-            <div> <app-cart-icon></app-cart-icon> </div>
-
-            <div>
-                <a routerLink="/user/edit">
-                    <img [src]="user?.photo || '../../../../assets/avatar.jpg'" alt="User profile" class="rounded-full w-16 h-16 mr-24">
-                </a>
-            </div>
-            
-        </div>
-        
-    </div>
-</div>
--->
 </ng-template>
 
 
@@ -133,3 +108,5 @@
     <!-- Contenido del modal aquí -->
     <app-login (loginSuccess)="loginSuccess()"></app-login>
 </app-modal>
+
+

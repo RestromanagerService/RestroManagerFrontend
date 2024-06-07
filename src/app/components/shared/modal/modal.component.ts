@@ -9,6 +9,7 @@ import { Modal } from 'flowbite';
 export class ModalComponent {
 
   @Input() idModal:string="default";
+  @Input() modalTitle:string="";
   private modal!:Modal;
 
   constructor(){}
