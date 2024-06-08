@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CartService } from './cart-service.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationState } from '../../../../security/Auth/authentication-state';
 import { AuthenticatorJWTService } from '../../../../security/Auth/authenticator-jwt.service';
 import { IItemCart } from '../../../../domain/models/interfaces/Iproduct';
 import { ToastManager } from '../../alerts/toast-manager';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
+import { CartService } from '../../../../infraestructure/cart/cart-service.service';
 
 @Component({
   selector: 'app-cart-icon',
