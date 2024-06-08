@@ -20,6 +20,7 @@ export class CartComponent implements OnInit {
   user?:AuthenticationState;
   isAnonimous:boolean=true;
   table?:ITable;
+  totalQuantity: number = 0;
 
   constructor(private cartService: CartService,private authenticator:AuthenticatorJWTService,private service:GenericService,private localStorage:LocalStorageService) {}
 
@@ -49,6 +50,8 @@ export class CartComponent implements OnInit {
             return;
           }
           this.items=data.getResponse()!;
+          this.totalQuantity = this.items.reduce((sum, item) => sum + item.quantity, 0);
+          console.log(this.totalQuantity);
         });
       });
     }); 
