@@ -1,0 +1,7 @@
+<button type="button" (click)="this.modalTable.openModal()" *ngIf="table" class="flex items-center text-sm font-medium text-gray-900 dark:text-white my-6 mx-6 py-2">
+    <span class="flex w-2.5 h-2.5 bg-green-500 rounded-full me-1.5 flex-shrink-0"></span>
+    El pedido se está realizando en la {{table.name}}
+</button>
+<app-modal idModal="tableModal" modalTitle="Seleccionar mesa" #modalTable>
+<app-select-table (selectTableEvent)="selectedTable($event)"></app-select-table>
+</app-modal>

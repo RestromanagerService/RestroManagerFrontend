@@ -77,6 +77,7 @@ import { TypeExpenseService } from './infraestructure/type-expense/type-expense.
 import { CreateRecipeComponent } from './components/ui/recipes/create-recipe/create-recipe.component';
 import { EditRecipeComponent } from './components/ui/recipes/edit-recipe/edit-recipe.component';
 import { SelectTableComponent } from './components/ui/order-manipulation/select-table/select-table.component';
+import { TableIndicatorComponent } from './components/shared/table-indicator/table-indicator.component';
 
 
 const categoryCreaterUseCaseFactory = (categoryGateway : CategoryGateway) => new CategoryUseCase(categoryGateway);
@@ -166,7 +167,8 @@ export const productCreaterUseCaseProvider = {
     OrderManipulationComponent,
     OrderDetailComponent,
     OrderManipulationWaiterComponent,
-    SelectTableComponent
+    SelectTableComponent,
+    TableIndicatorComponent,
     
     
   ],

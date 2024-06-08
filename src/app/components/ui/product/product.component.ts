@@ -9,6 +9,7 @@ import { ITable, ITemporalOrder, ITemporalOrderDTO } from '../../../domain/model
 import { CartService } from '../../shared/navbar/cart-icon/cart-service.service';
 import { AuthenticatorJWTService } from '../../../security/Auth/authenticator-jwt.service';
 import { AuthenticationState } from '../../../security/Auth/authentication-state';
+import { TableIndicatorComponent } from '../../shared/table-indicator/table-indicator.component';
 
 @Component({
   selector: 'app-product',
@@ -28,7 +29,7 @@ export class ProductComponent implements OnInit {
   pages: number[] = [];
   table?:ITable;
   user?:AuthenticationState;
-  @ViewChild('modalTable') modalTable!: ModalComponent;
+  @ViewChild('indicator') tableIndicator!: TableIndicatorComponent;
 
   constructor(private service: GenericService,
     private localStorage: LocalStorageService,
@@ -50,7 +51,7 @@ export class ProductComponent implements OnInit {
         this.user = authState;
         this.fetchProducts();
       });
-    })
+    });
   }
 
   fetchProducts(): void {
@@ -94,7 +95,7 @@ export class ProductComponent implements OnInit {
   }
   addItem(item:IItemCart){
     if(this.table==undefined){
-      this.modalTable.openModal();
+      this.tableIndicator.openModal();
       return;
     }
     if(this.user?.role=="anonimous"){
@@ -108,14 +109,6 @@ export class ProductComponent implements OnInit {
         return;
       }
       ToastManager.showToastSuccess("Producto agregado");
-    })
-  }
-  selectedTable(table:ITable){
-    this.localStorage.setItem(this.ORDER_TABLE,table.id).subscribe(ok=>{
-      if(ok){
-        this.table=table;
-        this.modalTable.closeModal();
-      }
-    })
+    });
   }
 }

@@ -4,10 +4,7 @@
 <ng-template #loaded>
   <div class="container mx-auto py-2">
     <h2 class="text-2xl font-bold text-center my-6 blue-title py-2">Productos</h2>
-    <button type="button" (click)="this.modalTable.openModal()" *ngIf="table" class="flex items-center text-sm font-medium text-gray-900 dark:text-white my-6 mx-6 py-2">
-      <span class="flex w-2.5 h-2.5 bg-teal-500 rounded-full me-1.5 flex-shrink-0"></span>
-      Hola te encuentras en la {{table.name}}
-    </button>
+    <app-table-indicator #indicator></app-table-indicator>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <div *ngFor="let product of products">
             <app-product-card [product]="product" (addItemEvent)="addItem($event)"></app-product-card>
@@ -28,6 +25,3 @@
       </ul>
     </nav>
 </ng-template>
-<app-modal idModal="tableModal" modalTitle="Seleccionar mesa" #modalTable>
-  <app-select-table (selectTableEvent)="selectedTable($event)"></app-select-table>
-</app-modal>

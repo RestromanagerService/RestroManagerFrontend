@@ -1,9 +1,10 @@
 <div class="container mx-auto py-2">
   <h2 class="text-2xl font-bold text-center my-6 blue-title py-2">Carrito de Compras</h2>
+  <app-table-indicator></app-table-indicator>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <div class="lg:col-span-1">
       <div *ngFor="let item of items">
-        <app-cart-item [item]="item"></app-cart-item>
+        <app-cart-item [item]="item" [isAnonimous]="isAnonimous" [tableId]="table?.id!" (chartChange)="chartChange()"></app-cart-item>
       </div>
     </div>
     <div class="lg:col-span-1">
