@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IItemCart, IProduct} from '../../../../domain/models/interfaces/Iproduct';
-import { CartService } from '../../../shared/navbar/cart-icon/cart-service.service';
+import { CartService } from '../../../../infraestructure/cart/cart-service.service';
 import { ITemporalOrder } from '../../../../domain/models/interfaces/IOrder';
 
 @Component({

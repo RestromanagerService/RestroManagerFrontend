@@ -6,6 +6,7 @@ import { IRawMaterial } from "./IRawMaterial";
 export interface IProduct {
     id:string;
     name?:string;
+    description?:string;
     productType:ProductType;
     productionCost?:number;
     productCategories:IProductCategory[];

@@ -6,10 +6,11 @@ import { GenericService } from '../../../infraestructure/generic/generic-service
 import { LocalStorageService } from '../../../security/helper/local-storage.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 import { ITable, ITemporalOrder, ITemporalOrderDTO } from '../../../domain/models/interfaces/IOrder';
-import { CartService } from '../../shared/navbar/cart-icon/cart-service.service';
+import { CartService } from '../../../infraestructure/cart/cart-service.service';
 import { AuthenticatorJWTService } from '../../../security/Auth/authenticator-jwt.service';
 import { AuthenticationState } from '../../../security/Auth/authentication-state';
 import { TableIndicatorComponent } from '../../shared/table-indicator/table-indicator.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',

@@ -25,7 +25,7 @@ export class RecipesDetailsComponent implements OnInit {
   @ViewChild('createFoodModal') createFoodModal!: ModalComponent;
 
 
-  constructor(private _router:Router,
+  constructor(
     private _routeData:ActivatedRoute,
     private service:GenericService){
 

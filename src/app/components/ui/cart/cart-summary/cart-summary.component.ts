@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IItemCart } from '../../../../domain/models/interfaces/Iproduct';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
-import { CartService } from '../../../shared/navbar/cart-icon/cart-service.service';
+import { CartService } from '../../../../infraestructure/cart/cart-service.service';
 
 @Component({
   selector: 'app-cart-summary',

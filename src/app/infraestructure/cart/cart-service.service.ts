@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { IItemCart } from '../../../../domain/models/interfaces/Iproduct';
-import { IOrder } from '../../../../domain/models/interfaces/IOrder';
+import { IItemCart } from '../../domain/models/interfaces/Iproduct';
+import { IOrder, ITable } from '../../domain/models/interfaces/IOrder';
+import { AuthenticatorJWTService } from '../../security/Auth/authenticator-jwt.service';
+import { LocalStorageService } from '../../security/helper/local-storage.service';
+import { GenericService } from '../generic/generic-service';
+import { ToastManager } from '../../components/shared/alerts/toast-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +13,7 @@ import { IOrder } from '../../../../domain/models/interfaces/IOrder';
 export class CartService {
   private cartKey = 'shopping_cart';
   private lastOrderIdKey = 'last_order_id';
+  private ORDER_TABLE: string = "ORDER_TABLE";
   private cartLifetime = 10 * 60 * 1000;
   private itemCountSubject = new BehaviorSubject<number>(this.getItemCount());
   private cartItemsSubject = new BehaviorSubject<IItemCart[]>(this.getCartItems());
@@ -16,7 +21,7 @@ export class CartService {
   itemCount$ = this.itemCountSubject.asObservable();
   cartItems$ = this.cartItemsSubject.asObservable();
 
-  constructor() {
+  constructor(private authenticator:AuthenticatorJWTService) {
     this.checkAndRemoveExpiredCart();
   }
 
@@ -124,13 +129,16 @@ export class CartService {
     } else {
       this.updateCartTimestamp(cartData);
     }
-    const existingItem = cartData.items.find((i: IItemCart) => i.productId === item.productId);
+    const existingItem:IItemCart  = cartData.items.find((i: IItemCart) => i.productId === item.productId);
     if (existingItem) {
-      existingItem.count += item.quantity;
+      existingItem.quantity += item.quantity;
+      existingItem.value=existingItem.quantity*existingItem.product?.price!;
     } else {
+      item.value=item.quantity*item.product?.price!;
       cartData.items.push(item);
     }
     this.saveCartData(cartData);
+    ToastManager.showToastSuccess("Producto agregado");
   }
 
   removeItemFromCart(itemId: string) {
@@ -143,9 +151,10 @@ export class CartService {
   updateItemCount(itemId: string, count: number) {
     const cartData = this.getCartData();
     if (cartData) {
-      const item = cartData.items.find((i: IItemCart) => i.productId === itemId);
+      const item:IItemCart = cartData.items.find((i: IItemCart) => i.productId === itemId);
       if (item) {
-        item.count = count;
+        item.quantity = count;
+        item.value=item.quantity*item.product?.price!;
       }
       this.saveCartData(cartData);
     }

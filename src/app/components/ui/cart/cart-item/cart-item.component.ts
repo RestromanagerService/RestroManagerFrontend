@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IItemCart } from '../../../../domain/models/interfaces/Iproduct';
-import { CartService } from '../../../shared/navbar/cart-icon/cart-service.service';
+import { CartService } from '../../../../infraestructure/cart/cart-service.service';
 import { AuthenticationState } from '../../../../security/Auth/authentication-state';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
@@ -49,6 +49,7 @@ export class CartItemComponent  {
         this.cartService.updateItemCount(this.item.productId, this.item.quantity - 1);
         return;
       }
+      return;
     }
     this.actionChart(-1);
   }

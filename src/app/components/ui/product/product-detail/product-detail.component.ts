@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { IProduct } from '../../../../domain/models/interfaces/Iproduct';
-import { CartService } from '../../../shared/navbar/cart-icon/cart-service.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IItemCart, IProduct } from '../../../../domain/models/interfaces/Iproduct';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
-import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
+import { ToastManager } from '../../../shared/alerts/toast-manager';
+import { AuthenticatorJWTService } from '../../../../security/Auth/authenticator-jwt.service';
+import { LocalStorageService } from '../../../../security/helper/local-storage.service';
+import { ITable, ITemporalOrderDTO } from '../../../../domain/models/interfaces/IOrder';
+import { TableIndicatorComponent } from '../../../shared/table-indicator/table-indicator.component';
+import { AuthenticationState } from '../../../../security/Auth/authentication-state';
+import { CartService } from '../../../../infraestructure/cart/cart-service.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -11,35 +16,53 @@ import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-re
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
+  private URL_REQUEST: string = "Products/";
+  private ORDER_TABLE: string = "ORDER_TABLE";
   product!: IProduct;
   quantity: number = 1;
-  private URL_REQUEST: string = "Products/";
+  table?:ITable;
+  user?:AuthenticationState;
+  @ViewChild('indicator') tableIndicator!: TableIndicatorComponent;
 
   constructor(
     private route: ActivatedRoute,
-    private genericService: GenericService,
-    private cartService: CartService 
+    private service: GenericService,
+    private authenticator:AuthenticatorJWTService,
+    private localStorage: LocalStorageService,
+    private cartService:CartService,
+    private _router:Router
+
   ) {}
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('id')!;
     this.getProductDetails(productId);
+    this.localStorage.getItem(this.ORDER_TABLE).subscribe(table=>{
+      if(table!=""){
+        this.service.getById<ITable>("tables/",table).subscribe(resp=>{
+          if(resp.getError()){
+            this.localStorage.removeItem(this.ORDER_TABLE).subscribe();
+            return;
+          }
+          this.table=resp.getResponse();
+        })
+      }
+      this.authenticator.getAuthenticationState().subscribe((authState) => {
+        this.user = authState;
+      });
+    });
   }
 
 
   getProductDetails(productId: string): void {
-    this.genericService.getById<IProduct>(this.URL_REQUEST, productId).subscribe(
-      (response: HttpResponseWrapper<IProduct>) => {
-        if (!response.getError()) {
-          this.product = response.getResponse()!;
-        } else {
-          console.error('Error fetching product details:', response.getResponseMessage());
-        }
-      },
-      (error: any) => {
-        console.error('Error fetching product details', error);
+    this.service.getById<IProduct>(this.URL_REQUEST, productId).subscribe(data=>{
+      if(data.getError()){
+        ToastManager.showToastError(data.getResponseMessage());
+        this._router.navigate(["/products"]);
+        return;
       }
-    );
+      this.product = data.getResponse()!;
+    });
   }
 
   getProductTypeLabel(productType: number): string {
@@ -67,13 +90,24 @@ export class ProductDetailComponent implements OnInit {
 
   addToCart(): void {
     if (this.quantity > 0) {
-      //this.cartService.addItemToCart({
-      //  id: this.product.id,
-      //  name: this.product.name,
-      //  count: this.quantity,
-      //  value: this.product.productionCost,
-      //  photo: this.product.photo
-      //});
+      if(this.table==undefined){
+        this.tableIndicator.openModal();
+        return;
+      }
+      if(this.user?.role=="anonimous"){
+        const item:IItemCart={productId:this.product.id,product:this.product,quantity:this.quantity}
+        this.cartService.addItemToCart(item);
+        return;
+      }
+      var temporalOrder:ITemporalOrderDTO={tableId:this.table.id,productId:this.product.id,quantity:this.quantity}
+      this.service.post<ITemporalOrderDTO,ITemporalOrderDTO>(temporalOrder,"temporalOrders/full").subscribe(data=>{
+        if(data.getError()){
+          ToastManager.showToastError("No se pudo agregar el producto");
+          return;
+        }
+        ToastManager.showToastSuccess("Producto agregado");
+      });
     }
   }
+
 }

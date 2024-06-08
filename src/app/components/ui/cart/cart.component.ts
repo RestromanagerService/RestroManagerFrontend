@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IItemCart } from '../../../domain/models/interfaces/Iproduct';
-import { CartService } from '../../shared/navbar/cart-icon/cart-service.service';
+import { CartService } from '../../../infraestructure/cart/cart-service.service';
 import { AuthenticatorJWTService } from '../../../security/Auth/authenticator-jwt.service';
 import { AuthenticationState } from '../../../security/Auth/authentication-state';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
