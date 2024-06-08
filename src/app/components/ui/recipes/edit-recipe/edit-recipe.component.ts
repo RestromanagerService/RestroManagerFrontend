@@ -92,8 +92,9 @@ export class EditRecipeComponent implements OnChanges {
         productCategories:this.categoryToProductCategory(this.editModelForm.get('categoriesE')?.value,this.recipe.id),
         price:this.editModelForm.get('priceE')?.value,
         description:this.editModelForm.get('descriptionE')?.value,
-        photo:this.imageBase64
+        photo:(this.imageBase64==undefined)?this.recipe.photo:this.imageBase64
       };
+      console.log(saveModel);
       this.service
         .put<IProductRecipe, IProductRecipe>(
           saveModel,

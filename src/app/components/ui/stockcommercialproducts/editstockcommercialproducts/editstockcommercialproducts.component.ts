@@ -138,7 +138,7 @@ export class EditstockcommercialproductsComponent {
           productCategories:this.categoryToProductCategory(this.editModelForm.value.categoriesProduct,this.model.product.id),
           price:this.editModelForm.get("price")?.value,
           description:this.editModelForm.get("description")?.value,
-          photo:this.imageBase64
+          photo:(this.imageBase64==undefined)?this.model.product.photo:this.imageBase64
         },
         aumount:this.editModelForm.value.amount,
         unitsId:this.editModelForm.value.unitsId[0].id,
