@@ -3,12 +3,11 @@
 </ng-template>
 <ng-template #loaded>
 <div style="width:70%; padding: 40px; margin:0 auto">
-    <button [routerLink]="['create']"  type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-small rounded-lg text-sm px-1 py-1 me-1 mb-1 dark:focus:ring-yellow-900">Crear país</button>
     <div class="flex justify-center items-center ali">
         <div class="w-1/3 flex flex-col items-center">
             <button [routerLink]="['create']" type="button"
             class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-small rounded-lg text-sm px-1 py-1 me-1 mb-1 dark:focus:ring-yellow-900">Crear
-            Categoría</button>
+            País</button>
             <app-search (searchValueEnter)="getChangeValueSearch($event)"></app-search>
         </div>
     </div>
