@@ -9,7 +9,7 @@ import { IProduct } from '../../domain/models/interfaces/Iproduct';
 })
 
 export class ProductService extends ProductGateway {
-  private PRODUCT_URL_BASE: string = `https://localhost:7056/api/Products`; 
+  private PRODUCT_URL_BASE: string = `https://restromanagerbackend.azurewebsites.net/api/Products`; 
 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',

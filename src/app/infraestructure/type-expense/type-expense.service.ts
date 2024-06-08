@@ -8,7 +8,7 @@ import { IWithName } from '../../domain/models/interfaces/IWithName';
   providedIn: 'root'
 })
 export class TypeExpenseService extends TypeExpenseGateway {
-  private TYPE_EXPENSE_URL_BASE: string = `https://localhost:7056/api/TypeExpense`;
+  private TYPE_EXPENSE_URL_BASE: string = `https://restromanagerbackend.azurewebsites.net/api/TypeExpense`;
  
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
