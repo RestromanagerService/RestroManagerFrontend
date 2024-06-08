@@ -39,7 +39,6 @@ export class NavbarComponent {
       new SubItem('Administración de países', '/countries')
     ]),
     new Item('Productos', 'item-2', '/products'),
-    new Item('Para el administrador', 'item-3', '/admin'),
   ];
 
   private readonly menuChef = [
@@ -48,7 +47,6 @@ export class NavbarComponent {
       new SubItem('Administración de recetas', '/recipes'),
     ]),
     new Item('Productos', 'item-5', '/products'),
-    new Item('Para el chef', 'item-6', '/chef'),
   ];
 
   private readonly menuWaiter = [

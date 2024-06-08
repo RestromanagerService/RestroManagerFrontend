@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import Swal from "sweetalert2";
 import { IUnits } from "../../../../domain/models/Iunits";
-import { INewStockRawMaterials } from "../../../../domain/models/stock-raw-materials";
+import { INewStockRawMaterials } from "../../../../domain/models/interfaces/stock-raw-materials";
 import { ToastManager } from "../../../shared/alerts/toast-manager";
 import { HttpResponseWrapper } from "../../../../infraestructure/generic/http-response-wrapper";
 import { GenericService } from "../../../../infraestructure/generic/generic-service";

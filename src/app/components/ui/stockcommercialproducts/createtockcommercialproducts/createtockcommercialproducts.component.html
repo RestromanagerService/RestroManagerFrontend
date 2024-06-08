@@ -2,41 +2,66 @@
     <app-loading></app-loading>
 </ng-template>
 <ng-template #loaded>
-    <form [formGroup]="createModelForm" (submit)="saveModel()" class="max-w-sm mx-auto" required>
-        <div class="mb-5">
-            <label for="nameProduct" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-            <input id="nameProduct" formControlName="nameProduct" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+    <section>
+    <div class="flex flex-cols items-center justify-center mx-auto md:h-screen lg:py-0">
+    <form [formGroup]="createModelForm" (submit)="saveModel()" class="max-w-sm mx-auto">
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+                <label for="nameProduct" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                <input id="nameProduct" formControlName="nameProduct" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+            </div>
+            <div class="mb-5">
+                <label for="category.id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categorías</label>
+                <ng-multiselect-dropdown formControlName="categoriesProduct"
+                    [placeholder]="'Categorías'"
+                    [settings]="settingsCategories"
+                    [data]="categories"
+                >
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+                <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
+                <input id="amount" formControlName="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+            </div>
+            <div class="mb-5">
+                <label for="unitsId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidades</label>
+                <ng-multiselect-dropdown formControlName="unitsId"
+                    [placeholder]="'Unidades'"
+                    [settings]="settingsUnits"
+                    [data]="units"
+                >
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+        <div class="grid md:grid-cols-2 md:gap-6">
+            <div class="mb-5">
+                <label for="unitCost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Costo de la unidad</label>
+                <input id="unitCost"  formControlName="unitCost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+            </div>
+            <div class="mb-5">
+                <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precio</label>
+                <input id="price" formControlName="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+            </div>
         </div>
         <div class="mb-5">
-            <label for="category.id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categorías</label>
-            <ng-multiselect-dropdown formControlName="categoriesProduct"
-                [placeholder]="'Categorías'"
-                [settings]="settingsCategories"
-                [data]="categories"
-            >
-            </ng-multiselect-dropdown>
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+            <textarea id="description" formControlName="description"  rows="4" class="w-full p-2 border border-gray-300 rounded-md mb-4" placeholder="Observaciones"></textarea>
         </div>
-        <div class="mb-5">
-            <label for="amount" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
-            <input id="amount" formControlName="amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
-        </div>
-        <div class="mb-5">
-            <label for="unitsId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Unidades</label>
-            <ng-multiselect-dropdown formControlName="unitsId"
-                [placeholder]="'Unidades'"
-                [settings]="settingsUnits"
-                [data]="units"
-            >
-            </ng-multiselect-dropdown>
-        </div>
-        <div class="mb-5">
-            <label for="unitCost" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Costo de la unidad</label>
-            <input id="unitCost"  formControlName="unitCost" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+        <div class="relative z-0 w-full mb-5 group">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="photo">Subir fotografía</label>
+            <input formControlName="photo" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="photo" type="file" accept="image/jpeg, image/png, image/gif" (change)="onFileSelected($event)">
         </div>
         <div class="inline-flex rounded-md shadow-sm"  role="group">
             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Guardar</button>
             <span style="margin: 3px;"></span>
-            <button (click)="back()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retroceder</button>
+            <a (click)="back()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Retroceder</a>
         </div>
     </form>
+    <div *ngIf="imageBase64">
+        <img class="h-auto max-w-md m-24 rounded-lg" [src]="'data:image/jpeg;base64,'+imageBase64" alt="">
+    </div>
+    </div>
+</section>
 </ng-template>

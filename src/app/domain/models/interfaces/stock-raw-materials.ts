@@ -1,5 +1,5 @@
-import { INewRawMaterial, IRawMaterial } from "./interfaces/IRawMaterial";
-import { IUnits } from "./Iunits";
+import { INewRawMaterial, IRawMaterial } from "./IRawMaterial";
+import { IUnits } from "../Iunits";
 
 
 export interface IStockRawMaterials {

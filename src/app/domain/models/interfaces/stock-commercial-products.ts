@@ -1,5 +1,5 @@
-import { INewProduct, IProduct } from "./interfaces/Iproduct";
-import { IUnits } from "./Iunits";
+import { INewProduct, IProduct } from "./Iproduct";
+import { IUnits } from "../Iunits";
 
 
 export interface IStockCommercialProducts {

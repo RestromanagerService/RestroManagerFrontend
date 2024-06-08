@@ -7,7 +7,7 @@ import { ToastManager } from '../../../shared/alerts/toast-manager';
 import { IUnits } from '../../../../domain/models/Iunits';
 import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { INewProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
-import { INewStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
+import { INewStockCommercialProducts } from '../../../../domain/models/interfaces/stock-commercial-products';
 import { ProductType } from '../../../../domain/models/enums/user-type';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { HttpResponseWrapper } from '../../../../infraestructure/generic/http-response-wrapper';
@@ -30,8 +30,8 @@ export class CreatetockcommercialproductsComponent {
   createModelForm: FormGroup;
   urlRequest:string="StockCommercialProduct";
   urlBack:string="/stockCommercialProducts";
-  idModel:string='';
   loading:boolean=true;
+  imageBase64?:string;
 
   settingsCategories={
     singleSelection: false,
@@ -59,6 +59,9 @@ export class CreatetockcommercialproductsComponent {
       amount:new FormControl('',Validators.required),
       unitsId:new FormControl([],Validators.required),
       unitCost:new FormControl('',Validators.required),
+      description:new FormControl('',[Validators.required]),
+      photo:new FormControl('',[Validators.required]),
+      price:new FormControl(0,[Validators.required])
     });
     
   }
@@ -90,17 +93,20 @@ export class CreatetockcommercialproductsComponent {
     return this.service.getAll<IUnits>("Units/full")
   }
   saveModel(){
-    if(this.validarErrores()){
+    if(this.createModelForm.valid){
         var updateModel:INewStockCommercialProducts=
         {
           product:{
             name:this.getProductName(),
             productCategories:this.categoryToProductCategory(this.getProductCategories()),
-            productType:ProductType.Commercial
+            productType:ProductType.Commercial,
+            description:this.getProductDescription(),
+            price:this.getProductPrice(),
+            photo:this.imageBase64
           },
           aumount:this.getAmount(),
           unitsId:this.getUnitsForm().id,
-          unitCost:this.getUnitCost()
+          unitCost:this.getUnitCost(),
         }
         this.service.post<INewStockCommercialProducts,INewStockCommercialProducts>(updateModel,this.urlRequest).subscribe(data=>{
           if(data.getError()){
@@ -150,25 +156,16 @@ export class CreatetockcommercialproductsComponent {
     if(this.createModelForm.value.unitCost!=''){
       return true;
     }
+    if(this.createModelForm.value.description!=''){
+      return true;
+    }
+    if(this.createModelForm.value.photo!=''){
+      return true;
+    }
+    if(this.createModelForm.value.price!=0){
+      return true;
+    }
     return false;
-  }
-  private validarErrores():boolean{
-    if(this.createModelForm.get('nameProduct')!.errors){
-      return false;
-    }
-    if(this.createModelForm.get('categoriesProduct')!.errors){
-      return false;
-    }
-    if(this.createModelForm.get('amount')!.errors){
-      return false;
-    }
-    if(this.createModelForm.get('unitsId')!.errors){
-      return false;
-    }
-    if(this.createModelForm.get('unitCost')!.errors){
-      return false;
-    }
-    return true;
   }
   private getUnitCost(): number {
     return this.createModelForm.value.unitCost;
@@ -188,6 +185,12 @@ export class CreatetockcommercialproductsComponent {
   private getProductCategories(): ICategory[] {
     return this.createModelForm.value.categoriesProduct;
   }
+  private getProductDescription(): string {
+    return this.createModelForm.value.description;
+  }
+  private getProductPrice(): number {
+    return this.createModelForm.value.price;
+  }
 
   private categoryToProductCategory(categorias:ICategory[]):INewProductCategory[]{
     return categorias.map(c=>{
@@ -197,5 +200,27 @@ export class CreatetockcommercialproductsComponent {
   }
   private navigateUrlBack(){
     this._router.navigate(["/"+this.urlBack]);
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (file) {
+      if (allowedTypes.indexOf(file.type) === -1) {
+        ToastManager.showToastError("Tipo de archivo "+file.type+" no permitido");
+        event.target.value = null;
+        return
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64=reader.result as string;
+        this.imageBase64=this.imageBase64.split(',',2)[1];
+      };
+      reader.onerror = (error) => {
+        ToastManager.showToastError("Ocurrió un error al procesar la fotografía")
+      };
+      return;
+    }
+    this.imageBase64=undefined;
   }
 }

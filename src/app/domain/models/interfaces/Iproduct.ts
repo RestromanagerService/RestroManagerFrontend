@@ -16,21 +16,25 @@ export interface IProduct {
 }
 export interface INewProduct {
     name:string;
+    description?:string;
     productType:ProductType;
     productionCost?:number;
     productCategories:INewProductCategory[];
     productCategoriesNumber?:number;
+    photo?:string;
     price?:number;
 }
 export interface IProductRecipe {
     id?:string;
     name:string;
+    description?:string;
     productType:ProductType;
     productFoods?:IProductFoods[];
     productFoodsNumber?:number;
     productCategories?:INewProductCategory[];
     productCategoriesNumber?:number;
     productionCost?:number;
+    photo?:string;
     price?:number;
 }
 export interface IProductFoods {

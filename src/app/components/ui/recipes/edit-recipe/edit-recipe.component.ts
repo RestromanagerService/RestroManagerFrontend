@@ -25,6 +25,7 @@ export class EditRecipeComponent implements OnChanges {
   settingsCategories;
   categories: ICategory[] = [];
   loading: boolean = true;
+  imageBase64?:string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,6 +35,9 @@ export class EditRecipeComponent implements OnChanges {
       nameE: ['', Validators.required],
       productionCostE: [0, [Validators.min(0), Validators.required]],
       categoriesE: [[]],
+      priceE:[0,Validators.required],
+      photoE:[''],
+      descriptionE:['',Validators.required]
     });
     this.settingsCategories = {
       singleSelection: false,
@@ -68,18 +72,27 @@ export class EditRecipeComponent implements OnChanges {
           this.editModelForm.controls['categoriesE'].setValue(categoriesP);
           this.editModelForm.controls['nameE'].setValue(this.recipe.name);
           this.editModelForm.controls['productionCostE'].setValue(this.recipe.productionCost);
+          this.editModelForm.controls['priceE'].setValue(this.recipe.price);
+          this.editModelForm.controls['descriptionE'].setValue(this.recipe.description);
           this.loading = false;
         });
       });
   }
   saveModel() {
+    if(this.imageBase64==undefined && this.recipe.photo==''){
+      ToastManager.showToastError("La foto es necesaria");
+      return;
+    }
     if (this.editModelForm.valid) {
       var saveModel: IProductRecipe = {
         id:this.recipe.id,
         name: this.editModelForm.get('nameE')?.value,
         productType: ProductType.Recipe,
         productionCost: this.editModelForm.get('productionCostE')?.value,
-        productCategories:this.categoryToProductCategory(this.editModelForm.get('categoriesE')?.value,this.recipe.id)
+        productCategories:this.categoryToProductCategory(this.editModelForm.get('categoriesE')?.value,this.recipe.id),
+        price:this.editModelForm.get('priceE')?.value,
+        description:this.editModelForm.get('descriptionE')?.value,
+        photo:this.imageBase64
       };
       this.service
         .put<IProductRecipe, IProductRecipe>(
@@ -106,5 +119,27 @@ export class EditRecipeComponent implements OnChanges {
       let category:IProductCategory={categoryId:c.id,productId:productId,category:c};
       return category;
     });
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (file) {
+      if (allowedTypes.indexOf(file.type) === -1) {
+        ToastManager.showToastError("Tipo de archivo "+file.type+" no permitido");
+        event.target.value = null;
+        return
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64=reader.result as string;
+        this.imageBase64=this.imageBase64.split(',',2)[1];
+      };
+      reader.onerror = (error) => {
+        ToastManager.showToastError("Ocurrió un error al procesar la fotografía")
+      };
+      return;
+    }
+    this.imageBase64=undefined;
   }
 }

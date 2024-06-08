@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
-import { IStockCommercialProducts } from '../../../../domain/models/stock-commercial-products';
+import { IStockCommercialProducts } from '../../../../domain/models/interfaces/stock-commercial-products';
 import { IUnits } from '../../../../domain/models/Iunits';
 import { ICategory } from '../../../../domain/models/interfaces/ICategory';
 import { IProductCategory } from '../../../../domain/models/interfaces/IProductCategory';
@@ -34,6 +34,7 @@ export class EditstockcommercialproductsComponent {
   urlBack:string="/stockCommercialProducts";
   idModel:string='';
   loading:boolean=true;
+  imageBase64?:string;
 
   settingsCategories;
   settingsUnits;
@@ -47,11 +48,14 @@ export class EditstockcommercialproductsComponent {
       
     this.idModel=_routeData.snapshot.params['id'];
     this.editModelForm = new FormGroup({
-      nameProduct: new FormControl(''),
+      nameProduct: new FormControl('',[Validators.required]),
       categoriesProduct:new FormControl([]),
-      amount:new FormControl(''),
-      unitsId:new FormControl([]),
-      unitCost:new FormControl(''),
+      amount:new FormControl('',[Validators.required]),
+      unitsId:new FormControl([],[Validators.required]),
+      unitCost:new FormControl(0,[Validators.required]),
+      description:new FormControl('',[Validators.required]),
+      photo:new FormControl(''),
+      price:new FormControl(0,[Validators.required])
     });
     this.settingsCategories = {
       singleSelection: false,
@@ -102,12 +106,12 @@ export class EditstockcommercialproductsComponent {
           units.push({id:this.model.unitsId,name:this.model.units?.name});
           this.editModelForm.controls['unitsId'].setValue(units);
           this.editModelForm.controls['unitCost'].setValue(this.model.unitCost);
+          this.editModelForm.controls['description'].setValue(this.model.product.description)
+          this.editModelForm.controls['photo'].setValue(this.model.product.photo)
+          this.editModelForm.controls['price'].setValue(this.model.product.price)
           this.loading=false;
         })
-        });
-      
-      
-      
+        });  
    })
   }
 
@@ -131,11 +135,14 @@ export class EditstockcommercialproductsComponent {
           id:this.model.product.id,
           name:this.editModelForm.value.nameProduct,
           productType:ProductType.Commercial,
-          productCategories:this.categoryToProductCategory(this.editModelForm.value.categoriesProduct,this.model.product.id)
+          productCategories:this.categoryToProductCategory(this.editModelForm.value.categoriesProduct,this.model.product.id),
+          price:this.editModelForm.get("price")?.value,
+          description:this.editModelForm.get("description")?.value,
+          photo:this.imageBase64
         },
         aumount:this.editModelForm.value.amount,
         unitsId:this.editModelForm.value.unitsId[0].id,
-        unitCost:this.editModelForm.value.unitCost
+        unitCost:this.editModelForm.value.unitCost,
       }
       this.service.put<IStockCommercialProducts,IStockCommercialProducts>(updateModel,this.urlRequest).subscribe(data=>{
         if(data.getError()){
@@ -185,6 +192,15 @@ export class EditstockcommercialproductsComponent {
     if(this.editModelForm.value.unitCost!=this.model.unitCost){
       return true;
     }
+    if(this.editModelForm.value.description!=this.model.product.description){
+      return true;
+    }
+    if(this.editModelForm.value.price!=this.model.product.price){
+      return true;
+    }
+    if(this.imageBase64!=undefined){
+      return true;
+    }
     return false;
   }
   private categoryToProductCategory(categorias:ICategory[],productId:string):IProductCategory[]{
@@ -204,5 +220,28 @@ export class EditstockcommercialproductsComponent {
   }
   private navigateUrlBack(){
     this._router.navigate(["/"+this.urlBack]);
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (file) {
+      if (allowedTypes.indexOf(file.type) === -1) {
+        ToastManager.showToastError("Tipo de archivo "+file.type+" no permitido");
+        event.target.value = null;
+        return
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageBase64=reader.result as string;
+        this.imageBase64=this.imageBase64.split(',',2)[1];
+      };
+      reader.onerror = (error) => {
+        ToastManager.showToastError("Ocurrió un error al procesar la fotografía")
+      };
+      return;
+    }
+    this.imageBase64=undefined;
   }
 }

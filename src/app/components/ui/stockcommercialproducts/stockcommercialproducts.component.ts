@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ToastManager } from '../../shared/alerts/toast-manager';
-import { IStockCommercialProducts } from '../../../domain/models/stock-commercial-products';
+import { IStockCommercialProducts } from '../../../domain/models/interfaces/stock-commercial-products';
 import { BuildPagination } from '../../../domain/models/pagination';
 import { GenericService } from '../../../infraestructure/generic/generic-service';
 

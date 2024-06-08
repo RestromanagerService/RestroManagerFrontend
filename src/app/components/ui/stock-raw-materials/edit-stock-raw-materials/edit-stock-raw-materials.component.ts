@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IStockRawMaterials } from '../../../../domain/models/stock-raw-materials';
+import { IStockRawMaterials } from '../../../../domain/models/interfaces/stock-raw-materials';
 import { ToastManager } from '../../../shared/alerts/toast-manager';
 import Swal from 'sweetalert2';
 import { IUnits } from '../../../../domain/models/Iunits';
