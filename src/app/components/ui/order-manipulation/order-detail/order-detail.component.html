@@ -1,34 +1,35 @@
 <div class="container mx-auto mt-10 p-6 bg-white rounded-xl shadow-2xl border-2 border-black">
     <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 tracking-wide">Detalle de la Orden</h2>
-
+  
     <div *ngIf="order">
-        <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Orden ID: {{ order.id }}</h3>
-        <p class="text-center text-gray-600">Estado: {{ order.status }}</p>
-        <p class="text-center text-gray-600">Fecha de Creación: {{ order.datetimeBegin }}</p>
-        <p class="text-center text-gray-600">Última Actualización: {{ order.datetimeUpdate }}</p>
-
-        <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Detalles del Pedido</h3>
-        <div class="overflow-x-auto">
-            <table class="min-w-full bg-white border-2 border-black">
-                <thead>
-                    <tr>
-                        <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Producto</th>
-                        <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Cantidad</th>
-                        <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of order.items">
-                        <td class="py-3 px-6 border-b border-black text-center">{{ item.name }}</td>
-                        <td class="py-3 px-6 border-b border-black text-center">{{ item.count }}</td>
-                        <td class="py-3 px-6 border-b border-black text-center">{{ item.value | currency }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Orden ID: {{ order.id }}</h3>
+      <p class="text-center text-gray-600">Estado: {{ getStatusClass(order.orderStatus) }}</p>
+      <p class="text-center text-gray-600">Fecha de Creación: {{ order.date | date:'short' }}</p>
+      <p class="text-center text-gray-600">Última Actualización: {{ order.date | date:'short' }}</p>
+  
+      <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Detalles del Pedido</h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border-2 border-black">
+          <thead>
+            <tr>
+              <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Producto</th>
+              <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Cantidad</th>
+              <th class="py-3 px-6 border-b border-black text-center text-lg font-semibold text-gray-700">Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of order.orderDetails">
+              <td class="py-3 px-6 border-b border-black text-center">{{ item.product.name }}</td>
+              <td class="py-3 px-6 border-b border-black text-center">{{ item.quantity }}</td>
+              <td class="py-3 px-6 border-b border-black text-center">{{ item.value | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
+  
     <div class="mt-6">
-        <button (click)="goBack()" class="px-4 py-2 bg-gray-500 text-white rounded-md">Atrás</button>
+      <button (click)="goBack()" class="px-4 py-2 bg-gray-500 text-white rounded-md">Atrás</button>
     </div>
-</div>
+  </div>
+  

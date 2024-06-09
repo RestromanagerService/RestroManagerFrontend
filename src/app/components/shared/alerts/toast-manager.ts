@@ -43,8 +43,7 @@ export class ToastManager {
             title: title,
             text: text,
             icon: icon,
-            position: 'center',
-            showConfirmButton: true
+            position: 'center'
         });
     }
 }

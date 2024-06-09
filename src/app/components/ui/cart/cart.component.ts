@@ -51,7 +51,6 @@ export class CartComponent implements OnInit {
           }
           this.items=data.getResponse()!;
           this.totalQuantity = this.items.reduce((sum, item) => sum + item.quantity, 0);
-          console.log(this.totalQuantity);
         });
       });
     }); 

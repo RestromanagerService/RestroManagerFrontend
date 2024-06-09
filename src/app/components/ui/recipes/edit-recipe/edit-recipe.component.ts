@@ -94,7 +94,6 @@ export class EditRecipeComponent implements OnChanges {
         description:this.editModelForm.get('descriptionE')?.value,
         photo:(this.imageBase64==undefined)?this.recipe.photo:this.imageBase64
       };
-      console.log(saveModel);
       this.service
         .put<IProductRecipe, IProductRecipe>(
           saveModel,

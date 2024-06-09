@@ -69,10 +69,12 @@ export interface INewFood {
     name:string;
 }
 
-export interface IItemCart{
-    id?:string;
-    productId:string;
-    product?:IProduct;
+export interface IItemCart {
+    id?: string;
+    name?: string;
+    productId: string;
+    product?: IProduct;
     quantity: number;
-    value?:number;
-}
+    value?: number;
+  }
+  
