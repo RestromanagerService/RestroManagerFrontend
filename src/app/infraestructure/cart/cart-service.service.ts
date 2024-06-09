@@ -102,7 +102,8 @@ export class CartService {
         items: cartData.items,
         status: orderStatus,
         datetimeBegin: this.formatDate(now),
-        datetimeUpdate: this.formatDate(now)
+        datetimeUpdate: this.formatDate(now),
+        tableId: this.ORDER_TABLE
       };
       localStorage.setItem(`order_${orderId}`, JSON.stringify(order));
       this.clearCart();

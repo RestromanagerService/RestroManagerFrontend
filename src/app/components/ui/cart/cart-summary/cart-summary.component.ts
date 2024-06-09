@@ -5,9 +5,9 @@ import { CartService } from '../../../../infraestructure/cart/cart-service.servi
 import { AuthenticatorJWTService } from '../../../../security/Auth/authenticator-jwt.service';
 import { GenericService } from '../../../../infraestructure/generic/generic-service';
 import { AuthenticationState } from '../../../../security/Auth/authentication-state';
-import { IOrder, IOrderDTO, ITable, ITemporalOrderDTO } from '../../../../domain/models/interfaces/IOrder';
+import { IOrderDTO, ITable, ITemporalOrderDTO } from '../../../../domain/models/interfaces/IOrder';
 import { LocalStorageService } from '../../../../security/helper/local-storage.service';
-import { EMPTY, catchError, mapTo, of, switchMap, tap, timeout } from 'rxjs';
+import { EMPTY, Observable, catchError, mapTo, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,28 +16,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart-summary.component.css']
 })
 export class CartSummaryComponent {
-  @Input() items: IItemCart[] =[];
-  user? : AuthenticationState;
+  @Input() items: IItemCart[] = [];
+  user?: AuthenticationState;
   private ORDER_TABLE: string = "ORDER_TABLE";
   tableId!: string;
 
-  constructor(private cartService: CartService, 
-    private authenticator:AuthenticatorJWTService, 
-    private genericService:GenericService,
-    private localStorage:LocalStorageService,
-    private _router: Router
-  ) {}
+  constructor(
+    private cartService: CartService,
+    private authenticator: AuthenticatorJWTService,
+    private genericService: GenericService,
+    private localStorage: LocalStorageService,
+    private router: Router
+  ) {
+    this.authenticator.getAuthenticationState().subscribe(authState => {
+      this.user = authState;
+    });
+  }
 
   getTotalCost(): number {
     return this.items.reduce((total, item) => total + (item.product?.price ?? 0) * item.quantity, 0);
   }
-  
+
   getTotalItems(): number {
     return this.items.reduce((total, item) => total + item.quantity, 0);
   }
 
-  continuePurchase() {
-    this.localStorage.getItem(this.ORDER_TABLE).pipe(
+  handleTable(): Observable<string> {
+    return this.localStorage.getItem(this.ORDER_TABLE).pipe(
       switchMap(table => {
         if (table) {
           return this.genericService.getById<ITable>("tables/", table).pipe(
@@ -49,24 +54,70 @@ export class CartSummaryComponent {
               const response = resp?.getResponse();
               if (!resp || resp.getError() || !response) {
                 this.localStorage.removeItem(this.ORDER_TABLE).subscribe();
-                throw new Error('Respuesta invalida');
+                throw new Error('Respuesta inválida');
               }
               this.tableId = response.id;
             }),
-            mapTo(table)  
+            mapTo(table)
           );
         } else {
-          return of("");  
+          return of("");
         }
-      }),
-      switchMap(() => this.authenticator.getAuthenticationState()),
-      switchMap(authState => {
-        this.user = authState;
-        if (this.user.role === "anonymous") {
-          return EMPTY;
+      })
+    );
+  }
+
+  continuePurchaseAnonymous() {
+    this.handleTable().pipe(
+      switchMap(() => this.localStorage.getItem("shopping_cart")),
+      switchMap(cart => {
+        const parsedCart = JSON.parse(cart);
+        const temporalOrders = [];
+
+        for (const item of parsedCart.items) {
+          temporalOrders.push({
+            ProductId: item.productId,
+            Quantity: item.quantity,
+            TableId: this.tableId
+          });
         }
-        const orderDTO: ITemporalOrderDTO = { tableId: this.tableId };
-        return this.genericService.post<ITemporalOrderDTO, IOrderDTO>(orderDTO, "Orders");
+
+        const orderDTO: ITemporalOrderDTO = {
+          tableId: this.tableId,
+          temporalOrders: temporalOrders
+        };
+        this.cartService.clearCart();
+        return this.genericService.post<ITemporalOrderDTO, any>(orderDTO, "Annonymous");
+      })
+    ).subscribe(
+      data => {
+        console.log(data);
+        if (data.getError()) {
+          ToastManager.showToastError(data.getResponseMessage());
+          return;
+        }
+        ToastManager.showCenteredMessage("Se ha creado su orden satisfactoriamente", "Se ha creado la orden con el ID: " + data.getResponse(), 'success');
+        this.router.navigate(['/']);
+      },
+      error => {
+        ToastManager.showToastError("Ha sucedido un error inesperado");
+      }
+    );
+  }
+
+  continuePurchaseAuthenticated() {
+    this.handleTable().pipe(
+      switchMap(() => {
+        const temporalOrders = this.items.map(item => ({
+          ProductId: item.productId,
+          Quantity: item.quantity,
+          TableId: this.tableId
+        }));
+
+        const orderDTO: ITemporalOrderDTO = {
+          tableId: this.tableId
+        };
+        return this.genericService.post<ITemporalOrderDTO, any>(orderDTO, "Orders");
       })
     ).subscribe(
       data => {
@@ -74,14 +125,12 @@ export class CartSummaryComponent {
           ToastManager.showToastError(data.getResponseMessage());
           return;
         }
-        ToastManager.showCenteredMessage("Se ha creado su orden satisfactoriamente","Se ha creado la orden con el ID: " + data.getResponse(),'success')
-        this._router.navigate(['/']);
+        ToastManager.showCenteredMessage("Se ha creado su orden satisfactoriamente", "Se ha creado la orden con el ID: " + data, 'success');
+        this.router.navigate(['/']);
       },
       error => {
         ToastManager.showToastError("Ha sucedido un error inesperado");
       }
     );
   }
-  
-  
 }

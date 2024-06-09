@@ -7,6 +7,7 @@ export interface IOrder {
     status: string;
     datetimeBegin: string;
     datetimeUpdate: string;
+    tableId: string;
 }
 export interface ITable{
   id:string;
@@ -26,6 +27,7 @@ export interface ITemporalOrderDTO{
   tableId:string;
   productId?: string;
   quantity?: number;
+  temporalOrders?: any;
 }
 
 interface IOrderDetail {

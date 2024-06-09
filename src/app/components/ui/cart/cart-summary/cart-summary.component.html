@@ -2,6 +2,14 @@
   <h2 class="text-2xl font-bold mb-4 text-gray-800">Resumen de compra</h2>
   <p class="text-gray-700 mb-2">Productos ({{ getTotalItems() }})</p>
   <p class="text-gray-700 mb-6">Total: <span class="font-semibold">{{ getTotalCost() | currency }}</span></p>
-  <button (click)="continuePurchase()" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 mb-4">Continuar compra</button>
+
+  <ng-container *ngIf="user?.role === 'anonimous'; else authenticatedFlow">
+    <button (click)="continuePurchaseAnonymous()" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 mb-4">Continuar compra</button>
+  </ng-container>
+
+  <ng-template #authenticatedFlow>
+    <button (click)="continuePurchaseAuthenticated()" class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 mb-4">Continuar compra</button>
+  </ng-template>
+
   <button [routerLink]="['/getOrder']" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300">Revisar Orden</button>
 </div>
