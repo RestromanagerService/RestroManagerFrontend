@@ -8,7 +8,7 @@ import { CategoryGateway } from '../../domain/models/category/gateway/category.g
   providedIn: 'root'
 })
 export class CategoryService extends CategoryGateway {
-  private CATEGORY_URL_BASE: string = `https://restromanagerbackend.azurewebsites.net/api/Categories`; 
+  private CATEGORY_URL_BASE: string = `https://restromanagerbackend20240608191608.azurewebsites.net/api/Categories`; 
 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',

@@ -8,7 +8,7 @@ import { IExpense } from '../../domain/models/interfaces/IExpense';
   providedIn: 'root'
 })
 export class ExpenseService extends ExpenseGateway{
-  private EXPENSE_URL_BASE: string = `https://restromanagerbackend.azurewebsites.net/api/Expense`;
+  private EXPENSE_URL_BASE: string = `https://restromanagerbackend20240608191608.azurewebsites.net/api/Expense`;
  
 
   private httpHeaders = new HttpHeaders({
