@@ -7,7 +7,7 @@ import { Observable, catchError, map, of } from "rxjs";
     providedIn: 'root'
 })
 export class GenericService {
-  private URL_BASE: string = `https://localhost:7056/api/`; 
+  private URL_BASE: string = `https://restromanagerbackend20240608191608.azurewebsites.net/api/`; 
   private httpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

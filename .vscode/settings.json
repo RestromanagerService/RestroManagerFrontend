@@ -1,0 +1,5 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/40fcf6c8-d7e4-4afd-ba01-582af7bfb1c8/resourceGroups/Construcción-ESP-ITM/providers/Microsoft.Web/sites/restromanager",
+    "appService.deploySubpath": "dist",
+    "appService.showBuildDuringDeployPrompt": false
+}
