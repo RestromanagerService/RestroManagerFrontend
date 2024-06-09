@@ -48,8 +48,6 @@ export class AddCityComponent {
     }
 
     ngOnInit(): void {
-      console.log(this.idCountry);
-      console.log(this.idState);
       this.urlBack = '/state/'+this.idCountry+ '/cities/'+ this.idState;
 
 

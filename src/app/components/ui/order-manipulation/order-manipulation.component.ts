@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IOrder } from '../../../domain/models/interfaces/IOrder';
-import { OrderService } from './order-service.service';
+import { HttpParams } from '@angular/common/http';
+import { GenericService } from '../../../infraestructure/generic/generic-service';
+import { HttpResponseWrapper } from '../../../infraestructure/generic/http-response-wrapper';
 
 @Component({
   selector: 'app-order-manipulation',
@@ -14,21 +16,32 @@ export class OrderManipulationComponent implements OnInit {
   pageSize = 5;
   hasMoreOrders = true;
 
-  constructor(private orderService: OrderService, private router: Router) { }
+  constructor(private genericService: GenericService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadOrders();
   }
 
   loadOrders(): void {
-    const data = this.orderService.getOrders('Nuevo', this.page, this.pageSize);
-    this.orders = data.orders;
-    this.hasMoreOrders = data.hasMoreOrders;
+    const params = new HttpParams()
+      .set('status', '0')
+      .set('page', this.page.toString())
+      .set('pageSize', this.pageSize.toString());
+
+    this.genericService.getAll<IOrder>('Orders/status', params)
+      .subscribe((response: HttpResponseWrapper<IOrder[]>) => {
+        this.orders = response.getResponse()!;
+        this.hasMoreOrders = this.orders.length === this.pageSize;
+      });
   }
 
   changeStatusToInProgress(orderId: number): void {
-    this.orderService.updateOrderStatus(orderId, 'Preparado');
-    this.loadOrders();
+    const payload = { orderStatus: 1 };
+
+    this.genericService.patch<any>(`Orders/${orderId}/status`, payload)
+      .subscribe((response: HttpResponseWrapper<any>) => {
+          this.loadOrders();
+      });
   }
 
   viewOrderDetails(orderId: number): void {

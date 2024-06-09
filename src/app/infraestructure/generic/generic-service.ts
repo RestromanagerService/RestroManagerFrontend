@@ -53,20 +53,27 @@ export class GenericService {
     );
   }
 
+  patch<T>(path: string, payload: any): Observable<HttpResponseWrapper<T>> {
+    return this.http.patch<T>(this.URL_BASE + path, payload, { headers: this.httpHeaders }).pipe(
+      map((response: T) => new HttpResponseWrapper(false, '', response)),
+      catchError(this.handleError<T>)
+    );
+  }
+
   private handleError<C>(error: HttpErrorResponse) {
     if (error.status == HttpStatusCode.NotFound) {
-      return of(new HttpResponseWrapper<C>(true,'Recurso no encontrado.'));
+      return of(new HttpResponseWrapper<C>(true, 'Recurso no encontrado.'));
     } 
     if (error.status == HttpStatusCode.BadRequest) {
       const errorMessage = error.error ? error.error : 'Ha ocurrido un error.';
-      return of(new HttpResponseWrapper<C>(true,errorMessage));
+      return of(new HttpResponseWrapper<C>(true, errorMessage));
     } 
     if (error.status == HttpStatusCode.Unauthorized) {
-      return of(new HttpResponseWrapper<C>(true,'Tienes que estar logueado para ejecutar esta operación.'));
+      return of(new HttpResponseWrapper<C>(true, 'Tienes que estar logueado para ejecutar esta operación.'));
     } 
     if (error.status == HttpStatusCode.Forbidden) {
-      return of(new HttpResponseWrapper<C>(true,'No tienes permisos para hacer esta operación'));
+      return of(new HttpResponseWrapper<C>(true, 'No tienes permisos para hacer esta operación'));
     } 
-    return of(new HttpResponseWrapper<C>(true,'Error desconocido'));
+    return of(new HttpResponseWrapper<C>(true, 'Error desconocido'));
   }
   }
