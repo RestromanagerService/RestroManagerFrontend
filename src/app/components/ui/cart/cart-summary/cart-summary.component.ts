@@ -78,7 +78,8 @@ export class CartSummaryComponent {
           temporalOrders.push({
             ProductId: item.productId,
             Quantity: item.quantity,
-            TableId: this.tableId
+            TableId: this.tableId,
+            Value: item.value
           });
         }
 
@@ -91,7 +92,6 @@ export class CartSummaryComponent {
       })
     ).subscribe(
       data => {
-        console.log(data);
         if (data.getError()) {
           ToastManager.showToastError(data.getResponseMessage());
           return;
@@ -125,7 +125,7 @@ export class CartSummaryComponent {
           ToastManager.showToastError(data.getResponseMessage());
           return;
         }
-        ToastManager.showCenteredMessage("Se ha creado su orden satisfactoriamente", "Se ha creado la orden con el ID: " + data, 'success');
+        ToastManager.showCenteredMessage("Se ha creado su orden satisfactoriamente", "Se ha creado la orden con el ID: " + data.getResponse(), 'success');
         this.router.navigate(['/']);
       },
       error => {
