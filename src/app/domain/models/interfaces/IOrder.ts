@@ -24,6 +24,29 @@ export interface ITemporalOrder{
 }
 export interface ITemporalOrderDTO{
   tableId:string;
-  productId: string;
+  productId?: string;
+  quantity?: number;
+}
+
+interface IOrderDetail {
+  id: number;
+  order: any | null;
+  orderId: number;
+  product: IProduct;
+  productId: number;
   quantity: number;
+  value: number;
+}
+
+export interface IOrderDTO{
+  id: number;
+  date: string;
+  user: IUser;
+  userId: string;
+  table: any | null;
+  tableId: number;
+  orderStatus: number;
+  orderDetails: IOrderDetail[];
+  quantity: number;
+  value: number;
 }
