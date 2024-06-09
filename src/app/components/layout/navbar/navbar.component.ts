@@ -45,12 +45,14 @@ export class NavbarComponent {
     new Item('Administración', 'item-4', undefined, [
       new SubItem('Almacén de materias primas', '/stockRawMaterials'),
       new SubItem('Administración de recetas', '/recipes'),
+      new SubItem('Administración de pedidos nuevos', '/order-manipulation')
     ]),
     new Item('Productos', 'item-5', '/products'),
   ];
 
   private readonly menuWaiter = [
     new Item('Productos', 'item-8', '/products'),
+    new Item('Productos preparados', 'item-9a', '/order-manipulation-waiter'),
     new Item('Para el mesero', 'item-9', '/waiter'),
   ];
 
